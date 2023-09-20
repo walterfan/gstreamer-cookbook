@@ -1,0 +1,1 @@
+docker run -it --rm --name gstdev -v `pwd`:/opt walterfan/gstdev:1.0
