@@ -14,4 +14,3 @@ sudo apt-get install -y gstreamer1.0-tools gstreamer1.0-nice gstreamer1.0-plugin
 ```
 
 
-# start signal
