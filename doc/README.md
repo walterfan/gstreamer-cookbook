@@ -16,6 +16,11 @@ docsify serve doc
 ```
 
 # Tutorial
-* [preliminary](preliminary.md)
+* [preliminary](0.preliminary.md)
+* [basic](1.basic.md)
+* [faq](10.faq.md)
+* [tool](11.tool.md)
+* [glib](12.glib.md)
+* [gobject](13.gobject.md)
 
 

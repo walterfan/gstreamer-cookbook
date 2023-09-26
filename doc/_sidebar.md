@@ -1,4 +1,6 @@
 <!-- docs/_sidebar.md -->
 
 * [Home](/)
-* [Guide](guide.md "The greatest guide in the world")
+* [Guide](guide.md "gstreamer guide")
+* [FAQ](10.faq.md "gstreamer faq")
+* [Tool](11.tool.md "gstreamer tool")
