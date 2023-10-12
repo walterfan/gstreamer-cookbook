@@ -6,7 +6,7 @@ add_executable(unit_test
 	gobject_test.cpp
 )
 
-target_link_libraries(unit_test GTest::gtest)
+target_link_libraries(unit_test GTest::gtest ${GST_LIBRARIES})
 
 add_test(AllTestsInFoo unit_test)
 

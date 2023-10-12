@@ -1,6 +1,8 @@
 #include <gst/gst.h>
 
-/* Structure to contain all our information, so we can pass it to callbacks */
+/* Structure to contain all our information, so we can pass it to callbacks 
+定义一个结构来存放所需的信息，可以传递给回调函数
+*/
 typedef struct _CustomData
 {
   GstElement *pipeline;
@@ -10,7 +12,7 @@ typedef struct _CustomData
   GstElement *sink;
 } CustomData;
 
-/* Handler for the pad-added signal */
+/* Handler for the pad-added signal 处理 pad-added 信号的处理器 */
 static void pad_added_handler (GstElement * src, GstPad * pad,
     CustomData * data);
 
@@ -23,16 +25,16 @@ main (int argc, char *argv[])
   GstStateChangeReturn ret;
   gboolean terminate = FALSE;
 
-  /* Initialize GStreamer */
+  /* Initialize GStreamer 初始化 */
   gst_init (&argc, &argv);
 
-  /* Create the elements */
+  /* Create the elements 创建元素 */
   data.source = gst_element_factory_make ("uridecodebin", "source");
   data.convert = gst_element_factory_make ("audioconvert", "convert");
   data.resample = gst_element_factory_make ("audioresample", "resample");
   data.sink = gst_element_factory_make ("autoaudiosink", "sink");
-
-  /* Create the empty pipeline */
+  /* 上述元素有 uridecodebin, audioconvert, audioresample, autoaudiosink  */
+  /* Create the empty pipeline 创建空的流水线 */
   data.pipeline = gst_pipeline_new ("test-pipeline");
 
   if (!data.pipeline || !data.source || !data.convert || !data.resample
@@ -42,7 +44,9 @@ main (int argc, char *argv[])
   }
 
   /* Build the pipeline. Note that we are NOT linking the source at this
-   * point. We will do it later. */
+   * point. We will do it later. 
+   * 构建流水线，注意我们并没有连接 source 元素，后面再做
+   */
   gst_bin_add_many (GST_BIN (data.pipeline), data.source, data.convert,
       data.resample, data.sink, NULL);
   if (!gst_element_link_many (data.convert, data.resample, data.sink, NULL)) {
@@ -51,16 +55,16 @@ main (int argc, char *argv[])
     return -1;
   }
 
-  /* Set the URI to play */
+  /* Set the URI to play 设置要播放的 uri  */
   g_object_set (data.source, "uri",
       "https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm",
       NULL);
 
-  /* Connect to the pad-added signal */
+  /* Connect to the pad-added signal 连接 pad-added 的信号 */
   g_signal_connect (data.source, "pad-added", G_CALLBACK (pad_added_handler),
       &data);
 
-  /* Start playing */
+  /* Start playing 设置状态为 PLAYING 以开始播放 */
   ret = gst_element_set_state (data.pipeline, GST_STATE_PLAYING);
   if (ret == GST_STATE_CHANGE_FAILURE) {
     g_printerr ("Unable to set the pipeline to the playing state.\n");
@@ -68,13 +72,20 @@ main (int argc, char *argv[])
     return -1;
   }
 
-  /* Listen to the bus */
+  /* Listen to the bus 侦听 bus */
   bus = gst_element_get_bus (data.pipeline);
   do {
+    /*
+    Gets a message from the bus whose type matches the message type mask types, waiting up to the specified timeout (and discarding any messages that do not match the mask provided).
+    从 bus 中取得消息，这个消息的类型匹配于 message type mask types, 等到指定的超时。
+    丢弃不匹配 mask 的任何消息
+    如果 timeout 是 0， 也就是等于 gst_bus_pop_filtered
+    如果 timeout 是 GST_CLOCK_TIME_NONE, 这个函数会阻塞，直到一个匹配的消息提交到 bus 上
+    */
     msg = gst_bus_timed_pop_filtered (bus, GST_CLOCK_TIME_NONE,
         GST_MESSAGE_STATE_CHANGED | GST_MESSAGE_ERROR | GST_MESSAGE_EOS);
 
-    /* Parse message */
+    /* Parse message 解析消息 */
     if (msg != NULL) {
       GError *err;
       gchar *debug_info;
@@ -121,10 +132,16 @@ main (int argc, char *argv[])
   return 0;
 }
 
-/* This function will be called by the pad-added signal */
+/* This function will be called by the pad-added signal 
+当 pad-added 信号发生的调用此函数
+*/
 static void
 pad_added_handler (GstElement * src, GstPad * new_pad, CustomData * data)
 {
+  /* 
+  Retrieves a pad from element by name. 
+  This version only retrieves already-existing (i.e. 'static') pads.
+  */
   GstPad *sink_pad = gst_element_get_static_pad (data->convert, "sink");
   GstPadLinkReturn ret;
   GstCaps *new_pad_caps = NULL;

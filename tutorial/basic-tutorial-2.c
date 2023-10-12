@@ -8,14 +8,14 @@ main (int argc, char *argv[])
   GstMessage *msg;
   GstStateChangeReturn ret;
 
-  /* Initialize GStreamer */
+  /* Initialize GStreamer 初始化 */
   gst_init (&argc, &argv);
 
-  /* Create the elements */
+  /* Create the elements 创建元素 */
   source = gst_element_factory_make ("videotestsrc", "source");
   sink = gst_element_factory_make ("autovideosink", "sink");
 
-  /* Create the empty pipeline */
+  /* Create the empty pipeline 创新流水线 */
   pipeline = gst_pipeline_new ("test-pipeline");
 
   if (!pipeline || !source || !sink) {
@@ -23,7 +23,7 @@ main (int argc, char *argv[])
     return -1;
   }
 
-  /* Build the pipeline */
+  /* Build the pipeline 构建流水线 */
   gst_bin_add_many (GST_BIN (pipeline), source, sink, NULL);
   if (gst_element_link (source, sink) != TRUE) {
     g_printerr ("Elements could not be linked.\n");
@@ -31,10 +31,10 @@ main (int argc, char *argv[])
     return -1;
   }
 
-  /* Modify the source's properties */
+  /* Modify the source's properties 修改源元素的属性 */
   g_object_set (source, "pattern", 0, NULL);
 
-  /* Start playing */
+  /* Start playing 开始播放 */
   ret = gst_element_set_state (pipeline, GST_STATE_PLAYING);
   if (ret == GST_STATE_CHANGE_FAILURE) {
     g_printerr ("Unable to set the pipeline to the playing state.\n");
@@ -42,13 +42,13 @@ main (int argc, char *argv[])
     return -1;
   }
 
-  /* Wait until error or EOS */
+  /* Wait until error or EOS 等待出错或结束 */
   bus = gst_element_get_bus (pipeline);
   msg =
       gst_bus_timed_pop_filtered (bus, GST_CLOCK_TIME_NONE,
       GST_MESSAGE_ERROR | GST_MESSAGE_EOS);
 
-  /* Parse message */
+  /* Parse message 解析消息 */
   if (msg != NULL) {
     GError *err;
     gchar *debug_info;
@@ -74,7 +74,7 @@ main (int argc, char *argv[])
     gst_message_unref (msg);
   }
 
-  /* Free resources */
+  /* Free resources 释放资源 */
   gst_object_unref (bus);
   gst_element_set_state (pipeline, GST_STATE_NULL);
   gst_object_unref (pipeline);
