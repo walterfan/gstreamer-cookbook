@@ -20,10 +20,18 @@ sudo apt-get install -y gstreamer1.0-tools gstreamer1.0-nice gstreamer1.0-plugin
 ## use vcpkg
 
 ```
-export VCPKG_HOME=~/workspace/cpp/vcpkg && \
-mkdir -p build && \
-cd build && \
-cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_HOME/scripts/buildsystems/vcpkg.cmake && \
+
+
+git clone https://github.com/Microsoft/vcpkg.git
+cd vcpkg
+./bootstrap-vcpkg.sh
+./vcpkg integrate install
+./vcpkg install fmt
+
+export VCPKG_HOME=~/workspace/cpp/vcpkg 
+mkdir -p build
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_HOME/scripts/buildsystems/vcpkg.cmake
 make
 ```
 

@@ -1,15 +1,17 @@
-#include <gst/gst.h>
-#include <glib.h>
-#include <chrono>
-#include <thread>
 #include <iostream>
 #include <chrono>  // chrono::system_clock
 #include <ctime>   // localtime
 #include <sstream> // stringstream
 #include <iomanip> // put_time
 #include <string>  // string
+#include <fmt/core.h>
+#include <chrono>
+#include <thread>
+#include <gst/gst.h>
+#include <glib.h>
 
 #define PAD_NAME "video"
+#define TIME_FMT "%Y%m%d%H%M%S"
 #define DEBUG_TRACE(msg) std::cout << "[" \
     << time(NULL) <<","<< __FILE__ << "," << __LINE__ << "]\t"<< msg << std::endl
 
@@ -18,14 +20,15 @@ static const GstPadProbeType pad_probe_type = GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREA
 
 static uint32_t deleted_fragments = 0;
 
-std::string get_time_str_with_presuffix(const std::chrono::system_clock::time_point& timePoint, 
-    const std::string& prefix, const std::string& suffix)
+std::string get_time_str(
+    const std::chrono::system_clock::time_point& timePoint, 
+    const std::string& strPattern)
 {
     auto in_time_t = std::chrono::system_clock::to_time_t(timePoint);
 
     std::stringstream ss;
-    ss << prefix << std::put_time(std::localtime(&in_time_t), "%Y%m%d%H%M%S") << suffix;
-    return ss.str();
+    ss << std::put_time(std::localtime(&in_time_t), TIME_FMT);
+    return fmt::format(fmt::runtime(strPattern), ss.str());
 }
 
 static void check_pads(GstElement *element) {
@@ -41,7 +44,7 @@ static void check_pads(GstElement *element) {
 }
 
 
-static gboolean my_delete_fragment_callback(GstElement *element, const gchar *uri, gpointer user_data) {
+static gboolean delete_fragment_callback(GstElement *element, const gchar *uri, gpointer user_data) {
     // Your custom logic for handling fragment deletion here.
     // In this example, we will simply print a message.
     DEBUG_TRACE(++deleted_fragments << ". Deleted fragment: " << uri);
@@ -104,8 +107,8 @@ std::string_view get_option(
 
 void set_element_prop(GstElement* hlssink) {
     auto now = std::chrono::system_clock::now();
-    std::string playlist_filename = get_time_str_with_presuffix(now, "/tmp/playlist_", ".m3u8");
-    std::string record_filename = get_time_str_with_presuffix(now, "/tmp/record_", "_%05d.ts");
+    std::string playlist_filename = get_time_str(now, "/tmp/playlist_{}.m3u8");
+    std::string record_filename = get_time_str(now, "/tmp/record_{}_%05d.ts");
 
     DEBUG_TRACE("playlist filename: " << playlist_filename 
         << ", record_filename=" << record_filename);
@@ -118,10 +121,6 @@ void set_element_prop(GstElement* hlssink) {
     g_object_set(hlssink, "target-duration", 10, NULL);
 }
 
-/*
-gst-launch-1.0 avfvideosrc device-index=1 ! \
-video/x-raw,width=1920,height=1080,format=UYVY,framerate=30/1 ! autovideosink
-*/
 int main(int argc, char *argv[]) {
     
     const std::vector<std::string_view> args(argv, argv + argc);
@@ -171,7 +170,7 @@ int main(int argc, char *argv[]) {
 
     set_element_prop(hlssink);
 
-    g_signal_connect(G_OBJECT(hlssink), "delete-fragment", G_CALLBACK(my_delete_fragment_callback), NULL);
+    g_signal_connect(G_OBJECT(hlssink), "delete-fragment", G_CALLBACK(delete_fragment_callback), NULL);
 
     GstBus *bus = gst_element_get_bus(pipeline);
 
