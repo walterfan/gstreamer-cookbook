@@ -15,3 +15,30 @@ sudo apt-get install -y gstreamer1.0-tools gstreamer1.0-nice gstreamer1.0-plugin
 ```
 
 
+# Build
+
+## use vcpkg
+
+```
+export VCPKG_HOME=~/workspace/cpp/vcpkg && \
+mkdir -p build && \
+cd build && \
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_HOME/scripts/buildsystems/vcpkg.cmake && \
+make
+```
+
+## use conan
+
+```
+mkdir -p build && \
+conan install . --output-folder=build --build=missing && \
+cd build && \
+cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake && \
+make
+
+conan install . 
+cmake .. -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake
+cmake --build . 
+```
+
+

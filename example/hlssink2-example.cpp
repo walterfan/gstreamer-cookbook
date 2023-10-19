@@ -3,6 +3,11 @@
 #include <chrono>
 #include <thread>
 #include <iostream>
+#include <chrono>  // chrono::system_clock
+#include <ctime>   // localtime
+#include <sstream> // stringstream
+#include <iomanip> // put_time
+#include <string>  // string
 
 #define PAD_NAME "video"
 #define DEBUG_TRACE(msg) std::cout << "[" \
@@ -13,6 +18,15 @@ static const GstPadProbeType pad_probe_type = GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREA
 
 static uint32_t deleted_fragments = 0;
 
+std::string get_time_str_with_presuffix(const std::chrono::system_clock::time_point& timePoint, 
+    const std::string& prefix, const std::string& suffix)
+{
+    auto in_time_t = std::chrono::system_clock::to_time_t(timePoint);
+
+    std::stringstream ss;
+    ss << prefix << std::put_time(std::localtime(&in_time_t), "%Y%m%d%H%M%S") << suffix;
+    return ss.str();
+}
 
 static void check_pads(GstElement *element) {
     GstIterator *iter = gst_element_iterate_pads(element);
@@ -65,38 +79,110 @@ gulong stop_record(GstElement* hlssink) {
     return ret;
 }
 
+bool has_option(
+    const std::vector<std::string_view>& args, 
+    const std::string_view& option_name) {
+    for (auto it = args.begin(), end = args.end(); it != end; ++it) {
+        if (*it == option_name)
+            return true;
+    }
+    
+    return false;
+}
 
+std::string_view get_option(
+    const std::vector<std::string_view>& args, 
+    const std::string_view& option_name) {
+    for (auto it = args.begin(), end = args.end(); it != end; ++it) {
+        if (*it == option_name)
+            if (it + 1 != end)
+                return *(it + 1);
+    }
+    
+    return "";
+}
+
+void set_element_prop(GstElement* hlssink) {
+    auto now = std::chrono::system_clock::now();
+    std::string playlist_filename = get_time_str_with_presuffix(now, "/tmp/playlist_", ".m3u8");
+    std::string record_filename = get_time_str_with_presuffix(now, "/tmp/record_", "_%05d.ts");
+
+    DEBUG_TRACE("playlist filename: " << playlist_filename 
+        << ", record_filename=" << record_filename);
+
+    g_object_set(hlssink, "location", record_filename.c_str(), NULL);
+    g_object_set(hlssink, "playlist-location", playlist_filename.c_str(), NULL);
+    //g_object_set(hlssink, "playlist-root", "/tmp", NULL);
+    g_object_set(hlssink, "playlist-length", 20, NULL);
+    g_object_set(hlssink, "max-files", 20, NULL);
+    g_object_set(hlssink, "target-duration", 10, NULL);
+}
+
+/*
+gst-launch-1.0 avfvideosrc device-index=1 ! \
+video/x-raw,width=1920,height=1080,format=UYVY,framerate=30/1 ! autovideosink
+*/
 int main(int argc, char *argv[]) {
-    gst_init(&argc, &argv);
+    
+    const std::vector<std::string_view> args(argv, argv + argc);
+    const std::string_view video_source_plugin = get_option(args, "-s");
+    const std::string_view video_target_plugin = get_option(args, "-t");
 
-    GstElement *pipeline, *videotestsrc, *x264enc, *hlssink;
+    std::string video_source = "videotestsrc";
+    std::string video_target = "hlssink2";
+
+    if (!video_source_plugin.empty()) {
+        video_source = video_source_plugin;
+    }
+
+    if (!video_target_plugin.empty()) {
+        video_target = video_target_plugin;
+    }
+
+    gst_init(&argc, &argv);
+    GstElement *pipeline, *avfvideosrc, *videosrc, *tee, *x264enc, *hlssink;
 
     pipeline = gst_pipeline_new("hls-pipeline");
-    videotestsrc = gst_element_factory_make("videotestsrc", "video-source");
+
+    videosrc = gst_element_factory_make(video_source.c_str(), "video-source");
+    tee = gst_element_factory_make("tee", "video-tee");
     x264enc = gst_element_factory_make("x264enc", "video-encoder");
     hlssink = gst_element_factory_make("hlssink2", "hls-sink");
 
-    if (!pipeline || !videotestsrc || !x264enc || !hlssink) {
+    if (!pipeline || !videosrc || !x264enc || !hlssink) {
         g_printerr("One or more elements could not be created. Exiting.\n");
         return -1;
     }
 
-    g_object_set(videotestsrc, "pattern", 0, NULL); // Set the test pattern
-    g_object_set(hlssink, "location", "/tmp/record_%05d.ts", NULL);
-    g_object_set(hlssink, "playlist-location", "/tmp/playlist.m3u8", NULL);
-    g_object_set(hlssink, "playlist-root", "/tmp", NULL);
-    g_object_set(hlssink, "playlist-length", 20, NULL);
-    g_object_set(hlssink, "max-files", 20, NULL);
-    g_object_set(hlssink, "target-duration", 10, NULL);
+    if (video_source == "videotestsrc") {
+        g_object_set(videosrc, "pattern", 0, NULL); // Set the test pattern
+    } else if(video_source == "avfvideosrc") {
+        g_object_set(videosrc, "device-index", 0, NULL); // Set the test pattern
+        /*
+        GstCaps* caps = gst_caps_new_simple("video/x-raw",       
+            "width", G_TYPE_INT, 1920,                               
+            "height", G_TYPE_INT, 1080,                              
+            "framerate", GST_TYPE_FRACTION, 30, 1, NULL);
+             
+        g_object_set(G_OBJECT(videosrc), "caps", caps, nullptr);
+        gst_caps_unref(caps); 
+        */
+    }
+
+    set_element_prop(hlssink);
 
     g_signal_connect(G_OBJECT(hlssink), "delete-fragment", G_CALLBACK(my_delete_fragment_callback), NULL);
 
     GstBus *bus = gst_element_get_bus(pipeline);
 
-    gst_bin_add_many(GST_BIN(pipeline), videotestsrc, x264enc, hlssink, NULL);
-    gst_element_link_many(videotestsrc, x264enc, hlssink, NULL);
+    gst_bin_add_many(GST_BIN(pipeline), videosrc, tee, x264enc, hlssink, NULL);
+    gst_element_link_many(videosrc, tee, x264enc, hlssink, NULL);
     
     check_pads(hlssink);
+
+    std::string dot_file = "video_hls_pipeline";
+    //set environment variable, such as export GST_DEBUG_DUMP_DOT_DIR=/tmp
+    GST_DEBUG_BIN_TO_DOT_FILE(GST_BIN_CAST(pipeline), GST_DEBUG_GRAPH_SHOW_VERBOSE, dot_file.c_str());
 
     DEBUG_TRACE("start playing for 10s...");
     gst_element_set_state(pipeline, GST_STATE_PLAYING);
@@ -107,7 +193,7 @@ int main(int argc, char *argv[]) {
     DEBUG_TRACE("stop record for 10s...");
     std::this_thread::sleep_for(std::chrono::seconds(10));
     
-    
+    set_element_prop(hlssink);
     DEBUG_TRACE("start record for 10s...");
     start_record(hlssink, probe_id);
     std::this_thread::sleep_for(std::chrono::seconds(10));
@@ -124,8 +210,15 @@ int main(int argc, char *argv[]) {
     */
     DEBUG_TRACE("byebye.");
     gst_element_set_state(pipeline, GST_STATE_NULL);
+    
+    std::vector<GstElement*> elements{pipeline, videosrc, tee, x264enc, hlssink};
+    for(auto el: elements) {
+        gchar* name;
+        g_object_get (G_OBJECT (el), "name", &name, NULL);
+        g_print ("need unlink and remove element: '%s'.\n", name);
+        g_free (name);
+    }
     gst_object_unref(pipeline);
     gst_object_unref(bus);
-
     return 0;
 }
