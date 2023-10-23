@@ -23,6 +23,7 @@ endif()
 
 set(GST_LIBRARIES -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0)
 
+add_subdirectory(util)
 add_subdirectory(tutorial)
 add_subdirectory(example)
 add_subdirectory(test)

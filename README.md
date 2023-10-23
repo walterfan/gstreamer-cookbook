@@ -1,8 +1,12 @@
-# Overview
+# GStreamer Cookbook
 
 A cookbook for gstreamer developer
 
-# Environment
+
+
+## build
+
+### Environment
 
 You can build a docker image by `build-docker.sh`
 and start it by `start-docker.sh`
@@ -14,18 +18,15 @@ sudo apt-get install -y gstreamer1.0-tools gstreamer1.0-nice gstreamer1.0-plugin
 
 ```
 
-
-# Build
-
-## use vcpkg
+### use vcpkg
 
 ```
-
 
 git clone https://github.com/Microsoft/vcpkg.git
 cd vcpkg
 ./bootstrap-vcpkg.sh
 ./vcpkg integrate install
+./vcpkg install spdlog
 ./vcpkg install fmt
 
 export VCPKG_HOME=~/workspace/cpp/vcpkg 
@@ -35,7 +36,7 @@ cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_HOME/scripts/buildsystems/vcpkg.cmake
 make
 ```
 
-## use conan
+### use conan
 
 ```
 mkdir -p build && \

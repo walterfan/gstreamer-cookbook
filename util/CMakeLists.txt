@@ -1,0 +1,16 @@
+find_package(fmt CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+
+set(common_utils_SRCS
+    time_util.cpp
+    hls_util.cpp
+    string_util.cpp
+    logger.cpp
+)
+
+add_library(common_utils STATIC ${common_utils_SRCS})
+target_include_directories(common_utils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(common_utils PRIVATE 
+    fmt::fmt 
+    spdlog::spdlog
+)
