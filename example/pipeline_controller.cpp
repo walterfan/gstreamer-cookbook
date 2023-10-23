@@ -16,7 +16,7 @@
 #define PAD_NAME "video"
 #define TIME_FMT "%Y%m%d%H%M%S"
 #define DEBUG_TRACE(msg) std::cout << "[" \
-    << time(NULL) <<","<< __FILE__ << "," << __LINE__ << "]\t"<< msg << std::endl
+    << time(NULL) <<","<< __FILE_NAME__ << "," << __LINE__ << "]\t"<< msg << std::endl
 
 
 static const GstPadProbeType pad_probe_type = GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM;

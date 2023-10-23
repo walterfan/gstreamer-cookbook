@@ -1,0 +1,102 @@
+# GstPad Overview
+
+## GstPad
+A GstElement is linked to other elements via "pads", which are extremely light-weight generic link points.
+
+> GstPad 是 GstElement 之间的连接点
+
+Pads have a GstPadDirection, source pads produce data, sink pads consume data.
+
+> GstPad 是有方向的 GstPadDirection, source pads 产生数据， sink pads 消费数据
+
+Pads are typically created from a GstPadTemplate with gst_pad_new_from_template and are then added to a GstElement. This usually happens when the element is created but it can also happen dynamically based on the data that the element is processing or based on the pads that the application requests.
+
+> gst_pad_new_from_template 用来从 GstPadTemplate 创建 Pad, 它可以动态创建
+
+Pads without pad templates can be created with gst_pad_new, which takes a direction and a name as an argument. If the name is NULL, then a guaranteed unique name will be assigned to it.
+
+A GstElement creating a pad will typically use the various gst_pad_set_*_function() calls to register callbacks for events, queries or dataflow on the pads.
+
+gst_pad_get_parent will retrieve the GstElement that owns the pad.
+
+After two pads are retrieved from an element by gst_element_get_static_pad, the pads can be linked with gst_pad_link. (For quick links, you can also use gst_element_link, which will make the obvious link for you if it's straightforward.). Pads can be unlinked again with gst_pad_unlink. gst_pad_get_peer can be used to check what the pad is linked to.
+
+Before dataflow is possible on the pads, they need to be activated with gst_pad_set_active.
+
+gst_pad_query and gst_pad_peer_query can be used to query various properties of the pad and the stream.
+
+To send a GstEvent on a pad, use gst_pad_send_event and gst_pad_push_event. Some events will be sticky on the pad, meaning that after they pass on the pad they can be queried later with gst_pad_get_sticky_event and gst_pad_sticky_events_foreach. gst_pad_get_current_caps and gst_pad_has_current_caps are convenience functions to query the current sticky CAPS event on a pad.
+
+> gst_pad_send_event 和 gst_pad_push_event 可用来发送 GstEvent
+
+GstElements will use gst_pad_push and gst_pad_pull_range to push out or pull in a buffer.
+
+> gst_pad_push and gst_pad_pull_range 也可从推或拉数据
+
+The dataflow, events and queries that happen on a pad can be monitored with probes that can be installed with gst_pad_add_probe. gst_pad_is_blocked can be used to check if a block probe is installed on the pad. gst_pad_is_blocking checks if the blocking probe is currently blocking the pad. gst_pad_remove_probe is used to remove a previously installed probe and unblock blocking probes if any.
+
+> 在 pad 中经过的数据流，events 以及 queries 可通过 probes 来监测，方法是 gst_pad_add_probe
+
+Pad have an offset that can be retrieved with gst_pad_get_offset. This offset will be applied to the running_time of all data passing over the pad. gst_pad_set_offset can be used to change the offset.
+
+Convenience functions exist to start, pause and stop the task on a pad with gst_pad_start_task, gst_pad_pause_task and gst_pad_stop_task respectively.
+
+
+## gst_pad_add_probe 
+```
+gulong
+gst_pad_add_probe (GstPad * pad,
+                   GstPadProbeType mask,
+                   GstPadProbeCallback callback,
+                   gpointer user_data,
+                   GDestroyNotify destroy_data)
+```
+
+Be notified of different states of pads. The provided callback is called for every state that matches mask.
+
+Probes are called in groups: First GST_PAD_PROBE_TYPE_BLOCK probes are called, then others, then finally GST_PAD_PROBE_TYPE_IDLE. The only exception here are GST_PAD_PROBE_TYPE_IDLE probes that are called immediately if the pad is already idle while calling gst_pad_add_probe. In each of the groups, probes are called in the order in which they were added.
+
+### Parameters:
+
+* pad – the GstPad to add the probe to
+* mask – the probe mask
+* callback – GstPadProbeCallback that will be called with notifications of the pad state
+* user_data ( [closure]) – user data passed to the callback
+* destroy_data – GDestroyNotify for user_data
+
+
+GstPadProbeType 有如下定义
+
+```
+typedef enum
+{
+  GST_PAD_PROBE_TYPE_INVALID          = 0,
+  /* flags to control blocking */
+  GST_PAD_PROBE_TYPE_IDLE             = (1 << 0),
+  GST_PAD_PROBE_TYPE_BLOCK            = (1 << 1),
+  /* flags to select datatypes */
+  GST_PAD_PROBE_TYPE_BUFFER           = (1 << 4),
+  GST_PAD_PROBE_TYPE_BUFFER_LIST      = (1 << 5),
+  GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM = (1 << 6),
+  GST_PAD_PROBE_TYPE_EVENT_UPSTREAM   = (1 << 7),
+  GST_PAD_PROBE_TYPE_EVENT_FLUSH      = (1 << 8),
+  GST_PAD_PROBE_TYPE_QUERY_DOWNSTREAM = (1 << 9),
+  GST_PAD_PROBE_TYPE_QUERY_UPSTREAM   = (1 << 10),
+  /* flags to select scheduling mode */
+  GST_PAD_PROBE_TYPE_PUSH             = (1 << 12),
+  GST_PAD_PROBE_TYPE_PULL             = (1 << 13),
+
+  /* flag combinations */
+  GST_PAD_PROBE_TYPE_BLOCKING         = GST_PAD_PROBE_TYPE_IDLE | GST_PAD_PROBE_TYPE_BLOCK,
+  GST_PAD_PROBE_TYPE_DATA_DOWNSTREAM  = GST_PAD_PROBE_TYPE_BUFFER | GST_PAD_PROBE_TYPE_BUFFER_LIST | GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM,
+  GST_PAD_PROBE_TYPE_DATA_UPSTREAM    = GST_PAD_PROBE_TYPE_EVENT_UPSTREAM,
+  GST_PAD_PROBE_TYPE_DATA_BOTH        = GST_PAD_PROBE_TYPE_DATA_DOWNSTREAM | GST_PAD_PROBE_TYPE_DATA_UPSTREAM,
+  GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM = GST_PAD_PROBE_TYPE_BLOCK | GST_PAD_PROBE_TYPE_DATA_DOWNSTREAM,
+  GST_PAD_PROBE_TYPE_BLOCK_UPSTREAM   = GST_PAD_PROBE_TYPE_BLOCK | GST_PAD_PROBE_TYPE_DATA_UPSTREAM,
+  GST_PAD_PROBE_TYPE_EVENT_BOTH       = GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM | GST_PAD_PROBE_TYPE_EVENT_UPSTREAM,
+  GST_PAD_PROBE_TYPE_QUERY_BOTH       = GST_PAD_PROBE_TYPE_QUERY_DOWNSTREAM | GST_PAD_PROBE_TYPE_QUERY_UPSTREAM,
+  GST_PAD_PROBE_TYPE_ALL_BOTH         = GST_PAD_PROBE_TYPE_DATA_BOTH | GST_PAD_PROBE_TYPE_QUERY_BOTH,
+  GST_PAD_PROBE_TYPE_SCHEDULING       = GST_PAD_PROBE_TYPE_PUSH | GST_PAD_PROBE_TYPE_PULL
+} GstPadProbeType;
+
+```

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GStreamer的插件机制 &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Overview" href="filesink.html" />
+    <link rel="prev" title="3. GStreamer 插件" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 插件</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GStreamer的插件机制</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#elements-and-plugins">Elements and Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pads">Pads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gstminiobject-buffers-and-events">GstMiniObject, Buffers and Events</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html#hierarchy">Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="frequent-plugin.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hlssink2.html">hlssink2 plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mp4mux.html">mp4mux plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nvdsosd.html">nvdsosd plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="queue.html">queue plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="splitmuxsink.html">splitmuxsink plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tee.html">tee plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v4l2src.html">v4l2src plugin</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 插件</a></li>
+      <li class="breadcrumb-item active">GStreamer的插件机制</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/4.plugin/overview.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gstreamer">
+<h1>GStreamer的插件机制<a class="headerlink" href="#gstreamer" title="Link to this heading"></a></h1>
+<p>GStreamer 是一个极其强大且多功能的框架，用于创建流媒体应用程序。 GStreamer 框架的许多优点都来自于其模块化：GStreamer 可以无缝合并新的插件模块。 但由于模块化和强大功能通常会以更高的复杂性为代价，因此编写新应用程序并不总是那么容易。</p>
+<section id="elements-and-plugins">
+<h2>Elements and Plugins<a class="headerlink" href="#elements-and-plugins" title="Link to this heading"></a></h2>
+<p>元素是 GStreamer 的核心。 在插件开发的上下文中，元素是从 GstElement 类派生的对象。 元素与其他元素链接时提供某种功能：例如，源元素向流提供数据，过滤器元素作用于流中的数据。 如果没有元素，GStreamer 只是一堆概念性的管道配件，没有任何链接。 GStreamer 附带了大量元素，但也可以写入额外的元素。</p>
+<p>然而，仅编写一个新元素还不够：您需要将元素封装在插件中以使 GStreamer 能够使用它。 插件本质上是一个可加载的代码块，通常称为共享对象文件或动态链接库。 单个插件可能包含多个元素的实现，或者仅包含一个元素。 为简单起见，本指南主要关注包含一个元素的插件。</p>
+<p>过滤器是处理数据流的一种重要元素。 数据的生产者和消费者分别称为源元素和接收器元素。 Bin 元素包含其他元素。 一种类型的 bin 负责同步它们所包含的元素，以便数据顺利流动。 另一种类型的 bin 称为 autoplugger 元素，它会自动将其他元素添加到 bin 并将它们链接在一起，以便它们充当两个任意流类型之间的过滤器。</p>
+<p>即使只使用标准包，GStreamer 中到处都使用插件机制。 一些非常基本的功能驻留在核心库中，所有其他功能都在插件中实现。 插件注册表用于将插件的详细信息存储在二进制注册表文件中。 这样，使用 GStreamer 的程序不必加载所有插件来确定需要哪些插件。 仅当请求插件提供的元素时才会加载插件。</p>
+</section>
+<section id="pads">
+<h2>Pads<a class="headerlink" href="#pads" title="Link to this heading"></a></h2>
+<p>Pad 用于协商 GStreamer 中元素之间的链接和数据流。 pad 可以被视为元素上的“位置”或“端口”，可以在其中与其他元素建立链接，并且数据可以通过它流入或流出这些元素。 Pad 具有特定的数据处理功能：Pad 可以限制流经它的数据类型。 仅当两个焊盘允许的数据类型兼容时，才允许两个焊盘之间存在链接。</p>
+<p>在这里做一个类比可能会有所帮助。Pad 类似于物理设备上的插头或插孔。 例如，考虑一个由放大器、DVD 播放器和（静音）视频投影仪组成的家庭影院系统。 允许将 DVD 播放器连接到放大器，因为这两个设备都有音频插孔，并且允许将投影仪连接到 DVD 播放器，因为这两个设备都有兼容的视频插孔。 由于投影仪和放大器具有不同类型的插孔，因此投影仪和放大器之间可能无法建立链接。 GStreamer 中的 Pad 与家庭影院系统中的插孔具有相同的用途。</p>
+<p>大多数情况下，GStreamer 中的所有数据都通过元素之间的链接以一种方式流动。 数据通过一个或多个source pad 流出一个 element，并且 element 通过一个或多个 sink pad 接受传入数据。 source element 只有 src pad, sink element 仅具有 sink pad。</p>
+</section>
+<section id="gstminiobject-buffers-and-events">
+<h2>GstMiniObject, Buffers and Events<a class="headerlink" href="#gstminiobject-buffers-and-events" title="Link to this heading"></a></h2>
+<p>GStreamer 中的所有数据流都被分成块，这些块从一个元素上的source pad传递到另一元素上的sink pad。 GstMiniObject 是用于保存这些数据块的结构。</p>
+<p>GstMiniObject 包含以下重要类型：</p>
+<ul class="simple">
+<li><p>指示此 GstMiniObject 的数据类型（事件、缓冲区等）的确切类型。</p></li>
+<li><p>引用计数指示当前持有对微型对象的引用的元素的数量。 当引用计数降至零时，GstMiniObject将被释放，并且其内存将在某种意义上被释放（更多详细信息请参见下文）。</p></li>
+</ul>
+<p>对于数据传输，定义了两种类型的 GstMiniObject：event（控制）和 buffer（内容）。</p>
+<p>缓冲区可以包含任何类型的数据, 两个连接在一起的 pads 知道如何处理这些数据。 通常，缓冲区包含从一个元素流向另一个元素的某种音频或视频数据块。</p>
+<p>缓冲区还包含描述缓冲区内容的元数据 metadata。 一些重要的元数据类型是：</p>
+<ul class="simple">
+<li><p>指向一个或多个 GstMemory 对象的指针。 GstMemory 对象是封装内存区域的重新计数对象。</p></li>
+</ul>
+<p>指示缓冲区中内容的首选显示时间戳的时间戳。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="3. GStreamer 插件" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="filesink.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GStreamer 基础知识 &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="基本概念" href="concept.html" />
+    <link rel="prev" title="预备知识" href="preliminary.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 概论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html">预备知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html#basic-types">Basic Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html#glib-core-application-support">GLib Core Application Support</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GStreamer 基础知识</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">概述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">多平台</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">强大的核心库</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">智能的插件架构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">多媒体技术的广泛覆盖</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">可扩展的开发工具</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linux">Linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#macos">MacOS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-started">Get started</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tools">Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="concept.html">基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glib.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glib.html#api">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gobject.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gobject.html#g-signal-emit-by-name">g_signal_emit_by_name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstelement.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstelement.html#api">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstpad.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstpad.html#api">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstbus.html">GstBus</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">1. GStreamer 基础</a></li>
+      <li class="breadcrumb-item active">GStreamer 基础知识</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/1.basic/basic.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gstreamer">
+<h1>GStreamer 基础知识<a class="headerlink" href="#gstreamer" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>GStreamer is a the multi-platform, modular, open-source, media streaming
+framework.</p>
+</div></blockquote>
+<p>它是一个跨多平台，模块化的开源媒体流处理框架，功能强大。GStreamer 核心功能提供了一个框架，用于插件，数据流和媒体处理和协商， 它还提供了一些 API 来用不同的插件编写应用程序</p>
+<ul class="simple">
+<li><p>an API for multimedia applications</p></li>
+<li><p>a plugin architecture</p></li>
+<li><p>a pipeline architecture</p></li>
+<li><p>a mechanism for media type handling/negotiation</p></li>
+<li><p>a mechanism for synchronization</p></li>
+<li><p>over 250 plug-ins providing more than 1000 elements</p></li>
+<li><p>a set of tools</p></li>
+</ul>
+<p>GStreamer 插件可以分为以下几类:</p>
+<ul class="simple">
+<li><p>protocols handling 协议处理</p></li>
+<li><p>sources: for audio and video (involves protocol plugins)</p></li>
+<li><p>formats: parsers, formaters, muxers, demuxers, metadata, subtitles</p></li>
+<li><p>codecs: coders and decoders</p></li>
+<li><p>filters: converters, mixers, effects, …</p></li>
+<li><p>sinks: for audio and video (involves protocol plugins)</p></li>
+</ul>
+<p><img alt="" src="../_images/gstreamer-overview.png" /></p>
+<p>GStreamer 被打包为</p>
+<ul class="simple">
+<li><p>gstreamer: the core package</p></li>
+<li><p>gst-plugins-base: an essential exemplary set of elements</p></li>
+<li><p>gst-plugins-good: a set of good-quality plug-ins under LGPL</p></li>
+<li><p>gst-plugins-ugly: a set of good-quality plug-ins that might pose distribution problems</p></li>
+<li><p>gst-plugins-bad: a set of plug-ins that need more quality</p></li>
+<li><p>gst-libav: a set of plug-ins that wrap libav for decoding and encoding</p></li>
+<li><p>a few others packages</p></li>
+</ul>
+<section id="id2">
+<h3>多平台<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>GStreamer 适用于所有主要操作系统，例如 Linux、Android、Windows、Max OS
+X、iOS，以及大多数 BSD、商业 Unix、Solaris 和 Symbian。</p>
+<p>它已被移植到广泛的操作系统、处理器和编译器。
+它在所有主要硬件架构上运行，包括 x86、ARM、MIPS、SPARC 和 PowerPC，在 32
+位和 64 位以及小端或大端上运行。</p>
+<p>GStreamer
+可以桥接到其他多媒体框架，以便重用现有组件（例如编解码器）并使用平台输入/输出机制：</p>
+<ul class="simple">
+<li><p>Linux/Unix: OpenMAX-IL (via gst-omx)</p></li>
+<li><p>Windows: DirectShow</p></li>
+<li><p>Mac OS X: QuickTime</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>强大的核心库<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>基于图的结构允许构建任意的流水线 pipeline</p></li>
+<li><p>基于 GLib 2.0 对象模型进行面向对象设计和继承</p></li>
+<li><p>小于 500KB 的紧凑型核心库，约 65 K 行代码</p></li>
+<li><p>多线程 pipeline 的构建简单透明</p></li>
+<li><p>为插件和应用程序开发人员提供干净、简单和稳定的 API</p></li>
+<li><p>极其轻量级的数据传递意味着高性能和低延迟</p></li>
+<li><p>为核心和插件/应用程序开发人员提供完整的调试系统</p></li>
+<li><p>时钟确保全局的数据流之间的的同步（音视频同步）</p></li>
+<li><p>通过服务质量 (qos) 确保在高 CPU 负载下获得最佳质量</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>智能的插件架构<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>动态加载的插件提供 Element
+和媒体类型，通过注册表缓存按需加载，类似于 ld.so.cache</p></li>
+<li><p>Element 接口处理所有已知类型的源 source、过滤器 filter 和接收器
+sinks</p></li>
+<li><p>Capabilities 系统允许使用 MIME 类型和媒体特定属性验证元素兼容性</p></li>
+<li><p>Autoplugging 使用 Capabilities系统自动完成复杂路径匹配</p></li>
+<li><p>可以通过将 pipeline 转储到 .dot 文件并从中创建 PNG 图像来可视化
+pipeline</p></li>
+<li><p>资源友好的插件不会浪费内存</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>多媒体技术的广泛覆盖<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>GStreamers 功能可以通过新插件进行扩展。
+下面列出的功能只是一个粗略的概述，使用了 GStreamers
+自带的插件，不包括任何第三方插件。</p>
+<ul class="simple">
+<li><p>容器格式 container formats: asf, avi, 3gp/mp4/mov, flv, mpeg-ps/ts,
+mkv/webm, mxf, ogg</p></li>
+<li><p>流媒体 streaming: http, mms, rtsp</p></li>
+<li><p>编码 codecs: FFmpeg, various codec libraries, 3rd party codec packs</p></li>
+<li><p>元数据 metadata: native container formats with a common mapping
+between them</p></li>
+<li><p>视频 video: various colorspaces, support for progressive and
+interlaced video</p></li>
+<li><p>音频 audio: integer and float audio in various bit depths and
+multichannel configurations</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>可扩展的开发工具<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>gst-launch 是用于快速原型设计和测试的命令行工具，类似于 ecasound</p></li>
+<li><p>有大量文档，包括部分完成的手册和插件编写者指南</p></li>
+<li><p>每个模块中有大量测试程序和示例代码</p></li>
+<li><p>可使用各种编程语言访问 GStreamer API</p></li>
+</ul>
+</section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<section id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">gstreamer1</span><span class="mf">.0</span><span class="o">-</span><span class="n">tools</span> <span class="n">gstreamer1</span><span class="mf">.0</span><span class="o">-</span><span class="n">nice</span> <span class="n">gstreamer1</span><span class="mf">.0</span><span class="o">-</span><span class="n">plugins</span><span class="o">-</span><span class="n">bad</span> <span class="n">gstreamer1</span><span class="mf">.0</span><span class="o">-</span><span class="n">plugins</span><span class="o">-</span><span class="n">ugly</span> <span class="n">gstreamer1</span><span class="mf">.0</span><span class="o">-</span><span class="n">plugins</span><span class="o">-</span><span class="n">good</span> <span class="n">libgstreamer1</span><span class="mf">.0</span><span class="o">-</span><span class="n">dev</span> <span class="n">libglib2</span><span class="mf">.0</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgstreamer</span><span class="o">-</span><span class="n">plugins</span><span class="o">-</span><span class="n">bad1</span><span class="mf">.0</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+</section>
+<section id="macos">
+<h3>MacOS<a class="headerlink" href="#macos" title="Link to this heading"></a></h3>
+<p>可从下面的链接下载
+<a class="reference external" href="https://gstreamer.freedesktop.org/documentation/installing/on-mac-osx.html?gi-language=c">https://gstreamer.freedesktop.org/documentation/installing/on-mac-osx.html?gi-language=c</a></p>
+<p>安装后有如下文件:</p>
+<ul class="simple">
+<li><p>/Library/Frameworks/GStreamer.framework/: Framework’s root path</p></li>
+<li><p>/Library/Frameworks/GStreamer.framework/Versions: path with all the
+versions of the framework</p></li>
+<li><p>/Library/Frameworks/GStreamer.framework/Versions/Current: link to
+the current version of the framework</p></li>
+<li><p>/Library/Frameworks/GStreamer.framework/Headers: path with the
+development headers</p></li>
+<li><p>/Library/Frameworks/GStreamer.framework/Commands: link to the
+commands provided by the framework, such as gst-inspect-1.0 or
+gst-launch-1.0</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include_path=/Library/Frameworks/GStreamer.framework/Headers
+export PATH=$PATH:/Library/Frameworks/GStreamer.framework/Versions/1.0/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/Library/Frameworks/GStreamer.framework/Versions/1.0/lib
+</pre></div>
+</div>
+</section>
+</section>
+<section id="get-started">
+<h2>Get started<a class="headerlink" href="#get-started" title="Link to this heading"></a></h2>
+<section id="tools">
+<h3>Tools<a class="headerlink" href="#tools" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>gst-inspect-1.0 显示可用的插件及 element 列表</p></li>
+<li><p>gst-launch-1.0 运行 pipeline</p></li>
+<li><p>gst-typfind</p></li>
+<li><p>gst-codec-info</p></li>
+<li><p>gst-device-monitor</p></li>
+</ul>
+<section id="gst-launch">
+<h4>gst-launch<a class="headerlink" href="#gst-launch" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>查看测试视频</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 videotestsrc ! videoconvert ! autovideosink
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>捕获麦克风并显示声音的波形</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 -v -m autoaudiosrc ! audioconvert ! wavescope style=3 shader=2 ! videoconvert ! autovideosink
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>播放 mp4 文件</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 playbin uri=file:///opt/webrtc_primer/material/obama_talk.mp4
+gst-launch-1.0 -v playbin uri=file:///`pwd`/obama_talk.mp4
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>UDP 媒体流传输</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># linux send h264 rtp stream:
+gst-launch-1.0 -v ximagesrc ! video/x-raw,framerate=20/1 ! videoscale ! videoconvert ! x264enc tune=zerolatency bitrate=500 speed-preset=superfast ! rtph264pay ! udpsink host=127.0.0.1 port=5000
+
+# Macos send h264 rtp stream:
+gst-launch-1.0 -v avfvideosrc capture-screen=true ! video/x-raw,framerate=20/1 ! videoscale ! videoconvert ! x264enc tune=zerolatency bitrate=500 speed-preset=superfast ! rtph264pay ! udpsink host=127.0.0.1 port=5000
+
+# receive h264 rtp stream:
+gst-launch-1.0 -v udpsrc port=5000 caps = &quot;application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96&quot; ! rtph264depay ! decodebin ! videoconvert ! autovideosink
+</pre></div>
+</div>
+</section>
+<section id="gst-inspect">
+<h4>gst-inspect<a class="headerlink" href="#gst-inspect" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>view plugin videotestsrc</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gst</span><span class="o">-</span><span class="n">inspect</span><span class="o">-</span><span class="mf">1.0</span> <span class="n">videotestsrc</span>
+</pre></div>
+</div>
+</section>
+<section id="gst-discoverer">
+<h4>gst-discoverer<a class="headerlink" href="#gst-discoverer" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>check video file codec</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gst</span><span class="o">-</span><span class="n">discoverer</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">../../../</span><span class="n">material</span><span class="o">/</span><span class="n">obama_talk</span><span class="o">.</span><span class="n">mp4</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="preliminary.html" class="btn btn-neutral float-left" title="预备知识" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="concept.html" class="btn btn-neutral float-right" title="基本概念" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GstPad Overview &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="GstBus overview" href="gstbus.html" />
+    <link rel="prev" title="gst element overview" href="gstelement.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 概论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html">预备知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html#basic-types">Basic Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html#glib-core-application-support">GLib Core Application Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html">GStreamer 基础知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept.html">基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glib.html">glib Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstelement.html">gst element overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GstPad Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gstpad">GstPad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gst-pad-add-probe">gst_pad_add_probe</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gstbus.html">GstBus overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">1. GStreamer 基础</a></li>
+      <li class="breadcrumb-item active">GstPad Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/1.basic/gstpad.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gstpad-overview">
+<h1>GstPad Overview<a class="headerlink" href="#gstpad-overview" title="Link to this heading"></a></h1>
+<section id="gstpad">
+<h2>GstPad<a class="headerlink" href="#gstpad" title="Link to this heading"></a></h2>
+<p>A GstElement is linked to other elements via “pads”, which are extremely light-weight generic link points.</p>
+<blockquote>
+<div><p>GstPad 是 GstElement 之间的连接点</p>
+</div></blockquote>
+<p>Pads have a GstPadDirection, source pads produce data, sink pads consume data.</p>
+<blockquote>
+<div><p>GstPad 是有方向的 GstPadDirection, source pads 产生数据， sink pads 消费数据</p>
+</div></blockquote>
+<p>Pads are typically created from a GstPadTemplate with gst_pad_new_from_template and are then added to a GstElement. This usually happens when the element is created but it can also happen dynamically based on the data that the element is processing or based on the pads that the application requests.</p>
+<blockquote>
+<div><p>gst_pad_new_from_template 用来从 GstPadTemplate 创建 Pad, 它可以动态创建</p>
+</div></blockquote>
+<p>Pads without pad templates can be created with gst_pad_new, which takes a direction and a name as an argument. If the name is NULL, then a guaranteed unique name will be assigned to it.</p>
+<p>A GstElement creating a pad will typically use the various gst_pad_set_*_function() calls to register callbacks for events, queries or dataflow on the pads.</p>
+<p>gst_pad_get_parent will retrieve the GstElement that owns the pad.</p>
+<p>After two pads are retrieved from an element by gst_element_get_static_pad, the pads can be linked with gst_pad_link. (For quick links, you can also use gst_element_link, which will make the obvious link for you if it’s straightforward.). Pads can be unlinked again with gst_pad_unlink. gst_pad_get_peer can be used to check what the pad is linked to.</p>
+<p>Before dataflow is possible on the pads, they need to be activated with gst_pad_set_active.</p>
+<p>gst_pad_query and gst_pad_peer_query can be used to query various properties of the pad and the stream.</p>
+<p>To send a GstEvent on a pad, use gst_pad_send_event and gst_pad_push_event. Some events will be sticky on the pad, meaning that after they pass on the pad they can be queried later with gst_pad_get_sticky_event and gst_pad_sticky_events_foreach. gst_pad_get_current_caps and gst_pad_has_current_caps are convenience functions to query the current sticky CAPS event on a pad.</p>
+<blockquote>
+<div><p>gst_pad_send_event 和 gst_pad_push_event 可用来发送 GstEvent</p>
+</div></blockquote>
+<p>GstElements will use gst_pad_push and gst_pad_pull_range to push out or pull in a buffer.</p>
+<blockquote>
+<div><p>gst_pad_push and gst_pad_pull_range 也可从推或拉数据</p>
+</div></blockquote>
+<p>The dataflow, events and queries that happen on a pad can be monitored with probes that can be installed with gst_pad_add_probe. gst_pad_is_blocked can be used to check if a block probe is installed on the pad. gst_pad_is_blocking checks if the blocking probe is currently blocking the pad. gst_pad_remove_probe is used to remove a previously installed probe and unblock blocking probes if any.</p>
+<blockquote>
+<div><p>在 pad 中经过的数据流，events 以及 queries 可通过 probes 来监测，方法是 gst_pad_add_probe</p>
+</div></blockquote>
+<p>Pad have an offset that can be retrieved with gst_pad_get_offset. This offset will be applied to the running_time of all data passing over the pad. gst_pad_set_offset can be used to change the offset.</p>
+<p>Convenience functions exist to start, pause and stop the task on a pad with gst_pad_start_task, gst_pad_pause_task and gst_pad_stop_task respectively.</p>
+</section>
+<section id="gst-pad-add-probe">
+<h2>gst_pad_add_probe<a class="headerlink" href="#gst-pad-add-probe" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gulong</span>
+<span class="n">gst_pad_add_probe</span> <span class="p">(</span><span class="n">GstPad</span> <span class="o">*</span> <span class="n">pad</span><span class="p">,</span>
+                   <span class="n">GstPadProbeType</span> <span class="n">mask</span><span class="p">,</span>
+                   <span class="n">GstPadProbeCallback</span> <span class="n">callback</span><span class="p">,</span>
+                   <span class="n">gpointer</span> <span class="n">user_data</span><span class="p">,</span>
+                   <span class="n">GDestroyNotify</span> <span class="n">destroy_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Be notified of different states of pads. The provided callback is called for every state that matches mask.</p>
+<p>Probes are called in groups: First GST_PAD_PROBE_TYPE_BLOCK probes are called, then others, then finally GST_PAD_PROBE_TYPE_IDLE. The only exception here are GST_PAD_PROBE_TYPE_IDLE probes that are called immediately if the pad is already idle while calling gst_pad_add_probe. In each of the groups, probes are called in the order in which they were added.</p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>pad – the GstPad to add the probe to</p></li>
+<li><p>mask – the probe mask</p></li>
+<li><p>callback – GstPadProbeCallback that will be called with notifications of the pad state</p></li>
+<li><p>user_data ( [closure]) – user data passed to the callback</p></li>
+<li><p>destroy_data – GDestroyNotify for user_data</p></li>
+</ul>
+<p>GstPadProbeType 有如下定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">enum</span>
+<span class="p">{</span>
+  <span class="n">GST_PAD_PROBE_TYPE_INVALID</span>          <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="o">/*</span> <span class="n">flags</span> <span class="n">to</span> <span class="n">control</span> <span class="n">blocking</span> <span class="o">*/</span>
+  <span class="n">GST_PAD_PROBE_TYPE_IDLE</span>             <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">),</span>
+  <span class="n">GST_PAD_PROBE_TYPE_BLOCK</span>            <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">),</span>
+  <span class="o">/*</span> <span class="n">flags</span> <span class="n">to</span> <span class="n">select</span> <span class="n">datatypes</span> <span class="o">*/</span>
+  <span class="n">GST_PAD_PROBE_TYPE_BUFFER</span>           <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">),</span>
+  <span class="n">GST_PAD_PROBE_TYPE_BUFFER_LIST</span>      <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">),</span>
+  <span class="n">GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span><span class="p">),</span>
+  <span class="n">GST_PAD_PROBE_TYPE_EVENT_UPSTREAM</span>   <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">),</span>
+  <span class="n">GST_PAD_PROBE_TYPE_EVENT_FLUSH</span>      <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">),</span>
+  <span class="n">GST_PAD_PROBE_TYPE_QUERY_DOWNSTREAM</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">9</span><span class="p">),</span>
+  <span class="n">GST_PAD_PROBE_TYPE_QUERY_UPSTREAM</span>   <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span><span class="p">),</span>
+  <span class="o">/*</span> <span class="n">flags</span> <span class="n">to</span> <span class="n">select</span> <span class="n">scheduling</span> <span class="n">mode</span> <span class="o">*/</span>
+  <span class="n">GST_PAD_PROBE_TYPE_PUSH</span>             <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="p">),</span>
+  <span class="n">GST_PAD_PROBE_TYPE_PULL</span>             <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">13</span><span class="p">),</span>
+
+  <span class="o">/*</span> <span class="n">flag</span> <span class="n">combinations</span> <span class="o">*/</span>
+  <span class="n">GST_PAD_PROBE_TYPE_BLOCKING</span>         <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_IDLE</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_BLOCK</span><span class="p">,</span>
+  <span class="n">GST_PAD_PROBE_TYPE_DATA_DOWNSTREAM</span>  <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_BUFFER</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_BUFFER_LIST</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM</span><span class="p">,</span>
+  <span class="n">GST_PAD_PROBE_TYPE_DATA_UPSTREAM</span>    <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_EVENT_UPSTREAM</span><span class="p">,</span>
+  <span class="n">GST_PAD_PROBE_TYPE_DATA_BOTH</span>        <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_DATA_DOWNSTREAM</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_DATA_UPSTREAM</span><span class="p">,</span>
+  <span class="n">GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM</span> <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_BLOCK</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_DATA_DOWNSTREAM</span><span class="p">,</span>
+  <span class="n">GST_PAD_PROBE_TYPE_BLOCK_UPSTREAM</span>   <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_BLOCK</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_DATA_UPSTREAM</span><span class="p">,</span>
+  <span class="n">GST_PAD_PROBE_TYPE_EVENT_BOTH</span>       <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_EVENT_UPSTREAM</span><span class="p">,</span>
+  <span class="n">GST_PAD_PROBE_TYPE_QUERY_BOTH</span>       <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_QUERY_DOWNSTREAM</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_QUERY_UPSTREAM</span><span class="p">,</span>
+  <span class="n">GST_PAD_PROBE_TYPE_ALL_BOTH</span>         <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_DATA_BOTH</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_QUERY_BOTH</span><span class="p">,</span>
+  <span class="n">GST_PAD_PROBE_TYPE_SCHEDULING</span>       <span class="o">=</span> <span class="n">GST_PAD_PROBE_TYPE_PUSH</span> <span class="o">|</span> <span class="n">GST_PAD_PROBE_TYPE_PULL</span>
+<span class="p">}</span> <span class="n">GstPadProbeType</span><span class="p">;</span>
+
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gstelement.html" class="btn btn-neutral float-left" title="gst element overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gstbus.html" class="btn btn-neutral float-right" title="GstBus overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

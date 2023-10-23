@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>glib Overview &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gobject overview" href="gobject.html" />
+    <link rel="prev" title="基本概念" href="concept.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 概论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html">预备知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html#basic-types">Basic Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html#glib-core-application-support">GLib Core Application Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html">GStreamer 基础知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept.html">基本概念</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">glib Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#g-signal-connect">g_signal_connect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#declaration">Declaration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#g-timeout-add">g_timeout_add</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Declaration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#g-source-remove">g_source_remove</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Declaration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Description</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstelement.html">gst element overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstpad.html">GstPad Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstbus.html">GstBus overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">1. GStreamer 基础</a></li>
+      <li class="breadcrumb-item active">glib Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/1.basic/glib.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <nav class="contents" id="table-of-contents" role="doc-toc">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#glib-overview" id="id5">glib Overview</a></p>
+<ul>
+<li><p><a class="reference internal" href="#g-signal-connect" id="id6">g_signal_connect</a></p>
+<ul>
+<li><p><a class="reference internal" href="#declaration" id="id7">Declaration</a></p></li>
+<li><p><a class="reference internal" href="#description" id="id8">Description</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#g-timeout-add" id="id9">g_timeout_add</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id10">Declaration</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id11">Description</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#g-source-remove" id="id12">g_source_remove</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id3" id="id13">Declaration</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id14">Description</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="glib-overview">
+<h1><a class="toc-backref" href="#id5" role="doc-backlink">glib Overview</a><a class="headerlink" href="#glib-overview" title="Link to this heading"></a></h1>
+<p>GLib is a general-purpose, portable utility library, which provides many useful data types, macros, type conversions, string utilities, file utilities, a mainloop abstraction, and so on.</p>
+<section id="g-signal-connect">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">g_signal_connect</a><a class="headerlink" href="#g-signal-connect" title="Link to this heading"></a></h2>
+<p>将信号绑定于回调函数</p>
+<p>refer to https://docs.gtk.org/gobject/func.signal_connect.html</p>
+<section id="declaration">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Declaration</a><a class="headerlink" href="#declaration" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define g_signal_connect (</span>
+  <span class="n">instance</span><span class="p">,</span>
+  <span class="n">detailed_signal</span><span class="p">,</span>
+  <span class="n">c_handler</span><span class="p">,</span>
+  <span class="n">data</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="description">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Description</a><a class="headerlink" href="#description" title="Link to this heading"></a></h3>
+<p>Connects a GCallback function to a signal for a particular object.</p>
+<p>The handler will be called synchronously, before the default handler of the signal. g_signal_emit() will not return control until all handlers are called.</p>
+<p>See [memory management of signal handlers][signal-memory-management] for details on how to handle the return value and memory management of data.</p>
+<p>This function is not directly available to language bindings.</p>
+</section>
+</section>
+<section id="g-timeout-add">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">g_timeout_add</a><a class="headerlink" href="#g-timeout-add" title="Link to this heading"></a></h2>
+<p>refer to https://docs.gtk.org/glib/func.timeout_add.html</p>
+<section id="id1">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Declaration</a><a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">guint</span>
+<span class="n">g_timeout_add</span> <span class="p">(</span>
+  <span class="n">guint</span> <span class="n">interval</span><span class="p">,</span>
+  <span class="n">GSourceFunc</span> <span class="n">function</span><span class="p">,</span>
+  <span class="n">gpointer</span> <span class="n">data</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Description</a><a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>Sets a function to be called at regular intervals, with the default priority, G_PRIORITY_DEFAULT.</p>
+<p>The given function is called repeatedly until it returns G_SOURCE_REMOVE or FALSE, at which point the timeout is automatically destroyed and the function will not be called again. The first call to the function will be at the end of the first interval.</p>
+<p>Note that timeout functions may be delayed, due to the processing of other event sources. Thus they should not be relied on for precise timing. After each call to the timeout function, the time of the next timeout is recalculated based on the current time and the given interval (it does not try to ‘catch up’ time lost in delays).</p>
+<p>See [memory management of sources][mainloop-memory-management] for details on how to handle the return value and memory management of data.</p>
+<p>If you want to have a timer in the “seconds” range and do not care about the exact time of the first call of the timer, use the g_timeout_add_seconds() function; this function allows for more optimizations and more efficient system power usage.</p>
+<p>This internally creates a main loop source using g_timeout_source_new() and attaches it to the global GMainContext using g_source_attach(), so the callback will be invoked in whichever thread is running that main context. You can do these steps manually if you need greater control or to use a custom main context.</p>
+<p>It is safe to call this function from any thread.</p>
+<p>The interval given is in terms of monotonic time, not wall clock time. See g_get_monotonic_time().</p>
+<p>This function is not directly available to language bindings.</p>
+<p>The implementation of this method is provided by g_timeout_add_full() in language bindings</p>
+</section>
+</section>
+<section id="g-source-remove">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">g_source_remove</a><a class="headerlink" href="#g-source-remove" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Declaration</a><a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gboolean</span>
+<span class="n">g_source_remove</span> <span class="p">(</span>
+  <span class="n">guint</span> <span class="n">tag</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Description</a><a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>Removes the source with the given ID from the default main context. You must use g_source_destroy() for sources added to a non-default main context.</p>
+<p>The ID of a GSource is given by g_source_get_id(), or will be returned by the functions g_source_attach(), g_idle_add(), g_idle_add_full(), g_timeout_add(), g_timeout_add_full(), g_child_watch_add(), g_child_watch_add_full(), g_io_add_watch(), and g_io_add_watch_full().</p>
+<p>It is a programmer error to attempt to remove a non-existent source.</p>
+<p>More specifically: source IDs can be reissued after a source has been destroyed and therefore it is never valid to use this function with a source ID which may have already been removed. An example is when scheduling an idle to run in another thread with g_idle_add(): the idle may already have run and been removed by the time this function is called on its (now invalid) source ID. This source ID may have been reissued, leading to the operation being performed against the wrong source.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="concept.html" class="btn btn-neutral float-left" title="基本概念" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gobject.html" class="btn btn-neutral float-right" title="gobject overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
