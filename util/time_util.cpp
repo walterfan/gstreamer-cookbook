@@ -4,6 +4,7 @@
 #include <ctime>   // localtime
 #include <sstream> // stringstream
 #include <iomanip> // put_time
+#include <iostream>
 #include <fmt/core.h>
 
 
@@ -20,11 +21,30 @@ std::string get_current_time(const std::string& format) {
 
 std::string get_time_str(
     const std::chrono::system_clock::time_point& timePoint,
-    const std::string& strPattern)
+    const std::string& timeFormat) {
+    auto in_time_t = std::chrono::system_clock::to_time_t(timePoint);
+
+    std::stringstream ss;
+    ss << std::put_time(std::localtime(&in_time_t), timeFormat.c_str());
+    return ss.str();    
+}
+
+std::string get_format_time(
+    const std::chrono::system_clock::time_point& timePoint,
+    const std::string& strPattern,
+    const std::string& timeFormat)
 {
     auto in_time_t = std::chrono::system_clock::to_time_t(timePoint);
 
     std::stringstream ss;
-    ss << std::put_time(std::localtime(&in_time_t), DEFAUT_TIME_FMT);
+    ss << std::put_time(std::localtime(&in_time_t), timeFormat.c_str());
     return fmt::format(fmt::runtime(strPattern), ss.str());
+}
+
+TimePoint get_timepoint(const std::string& strTime, const std::string& strPattern) {
+    std::istringstream ss(strTime);
+    std::tm timeInfo = {};
+    ss >> std::get_time(&timeInfo, strPattern.c_str());
+
+    return std::chrono::system_clock::from_time_t(std::mktime(&timeInfo));
 }

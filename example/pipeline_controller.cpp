@@ -9,9 +9,11 @@
 #include <thread>
 #include <gst/gst.h>
 #include <glib.h>
+#include <filesystem>
+#include "time_util.h"
 #include "pipeline_controller.h"
 
-
+namespace fs = std::filesystem;
 
 #define PAD_NAME "video"
 #define TIME_FMT "%Y%m%d%H%M%S"
@@ -44,17 +46,6 @@ std::string_view get_option(
     }
     
     return "";
-}
-
-std::string get_time_str(
-    const std::chrono::system_clock::time_point& timePoint, 
-    const std::string& strPattern)
-{
-    auto in_time_t = std::chrono::system_clock::to_time_t(timePoint);
-
-    std::stringstream ss;
-    ss << std::put_time(std::localtime(&in_time_t), TIME_FMT);
-    return fmt::format(fmt::runtime(strPattern), ss.str());
 }
 
 static void check_pads(GstElement *element) {
@@ -212,8 +203,9 @@ int PipelineController::setup_elements() {
     }
 
     auto now = std::chrono::system_clock::now();
-    std::string playlist_filename = get_time_str(now, "/tmp/playlist_{}.m3u8");
-    std::string record_filename = get_time_str(now, "/tmp/record_{}_%05d.ts");
+    fs::create_directories("/tmp/record/");
+    std::string playlist_filename = get_format_time(now, "/tmp/record/playlist_{}.m3u8");
+    std::string record_filename = get_format_time(now, "/tmp/record/record_{}_%05d.ts");
 
     DEBUG_TRACE("playlist filename: " << playlist_filename 
         << ", record_filename=" << record_filename);

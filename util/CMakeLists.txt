@@ -5,6 +5,7 @@ set(common_utils_SRCS
     time_util.cpp
     hls_util.cpp
     string_util.cpp
+    file_util.cpp
     logger.cpp
 )
 
