@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Constructing the Boilerplate &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Specifying the pads" href="2.plugin-pads.html" />
+    <link rel="prev" title="GStreamer的插件机制" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 插件</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer的插件机制</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Constructing the Boilerplate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#git-template">1. 检出 git-template 的样板代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2. 设置项目的印章</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">自动生成基础代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">设置元素的基本信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gststaticpadtemplate">GstStaticPadTemplate</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2.plugin-pads.html">Specifying the pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html#hierarchy">Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="frequent-plugin.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hlssink2.html">hlssink2 plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mp4mux.html">mp4mux plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nvdsosd.html">nvdsosd plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="queue.html">queue plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="splitmuxsink.html">splitmuxsink plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tee.html">tee plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v4l2src.html">v4l2src plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webrtcbin.html">webrtcbin</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 插件</a></li>
+      <li class="breadcrumb-item active">Constructing the Boilerplate</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/4.plugin/1.plugin-boilerplate.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="constructing-the-boilerplate">
+<h1>Constructing the Boilerplate<a class="headerlink" href="#constructing-the-boilerplate" title="Link to this heading"></a></h1>
+<section id="git-template">
+<h2>1. 检出 git-template 的样板代码<a class="headerlink" href="#git-template" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">gitlab</span><span class="o">.</span><span class="n">freedesktop</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">gstreamer</span><span class="o">/</span><span class="n">gst</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2>2. 设置项目的印章<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>创建新元素时要做的第一件事是指定它的一些基本细节：它的名字是什么，谁编写的，它的版本号是什么等等。我们还需要定义一个对象来表示元素并存储 元素需要的数据。 这些细节统称为样板 (boilerplate)。</p>
+<p>定义样板文件的标准方法就是编写一些代码，并填充一些结构。 如上一节所述，最简单的方法是复制模板并根据您的需要添加功能。 为了帮助您做到这一点，./gst-plugin/tools/ 目录中有一个工具。 这个工具 make_element 是一个命令行实用程序，可以为您创建样板代码。</p>
+<p>要使用 make_element，首先打开一个终端窗口。 切换到 gst-template/gst-plugin/src 目录，然后运行 make_element 命令。 make_element 的参数是：</p>
+<ol class="arabic simple">
+<li><p>插件的名称</p></li>
+<li><p>该工具将使用的源文件。 默认情况下，使用 gstplugin。</p></li>
+</ol>
+<p>例如，以下命令根据插件模板创建 MyFilter 插件，并将输出文件放在 gst-template/gst-plugin/src 目录中：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd gst-template/gst-plugin/src
+$ ../tools/make_element MyFilter
+
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>自动生成基础代码<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>这个新插件的代码可以通过 meson 和 ninja 来构建</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">meson</span> <span class="n">build</span>
+<span class="n">ninja</span> <span class="o">-</span><span class="n">C</span> <span class="n">build</span>
+
+</pre></div>
+</div>
+<p>自动生成的代码为我们做了这几件事</p>
+<ol class="arabic simple">
+<li><p>生成 生成 gstmyfilter.c 和 gstmyfilter.h</p></li>
+<li><p>注册 my-filter 这个 element</p></li>
+</ol>
+</section>
+<section id="id3">
+<h2>设置元素的基本信息<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>设置此元素的基本信息，例如 element name, type, description and author 信息</p>
+</section>
+<section id="gststaticpadtemplate">
+<h2>GstStaticPadTemplate<a class="headerlink" href="#gststaticpadtemplate" title="Link to this heading"></a></h2>
+<p>通过 GstStaticPadTemplate 来描述这个 element 将要创建和使用的 pad</p>
+<ul class="simple">
+<li><p>pad 的简短名称</p></li>
+<li><p>pad 的方向</p></li>
+<li><p>pad 的扩展属性</p></li>
+<li><p>这个 element 所支持的类型(capabilities)</p></li>
+</ul>
+<p>例如</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">the</span> <span class="n">capabilities</span> <span class="n">of</span> <span class="n">the</span> <span class="n">inputs</span> <span class="ow">and</span> <span class="n">outputs</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">describe</span> <span class="n">the</span> <span class="n">real</span> <span class="n">formats</span> <span class="n">here</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">static</span> <span class="n">GstStaticPadTemplate</span> <span class="n">sink_factory</span> <span class="o">=</span> <span class="n">GST_STATIC_PAD_TEMPLATE</span> <span class="p">(</span><span class="s2">&quot;sink&quot;</span><span class="p">,</span>
+    <span class="n">GST_PAD_SINK</span><span class="p">,</span>
+    <span class="n">GST_PAD_ALWAYS</span><span class="p">,</span>
+    <span class="n">GST_STATIC_CAPS</span> <span class="p">(</span><span class="s2">&quot;ANY&quot;</span><span class="p">)</span>
+    <span class="p">);</span>
+
+<span class="n">static</span> <span class="n">GstStaticPadTemplate</span> <span class="n">src_factory</span> <span class="o">=</span> <span class="n">GST_STATIC_PAD_TEMPLATE</span> <span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span>
+    <span class="n">GST_PAD_SRC</span><span class="p">,</span>
+    <span class="n">GST_PAD_ALWAYS</span><span class="p">,</span>
+    <span class="n">GST_STATIC_CAPS</span> <span class="p">(</span><span class="s2">&quot;ANY&quot;</span><span class="p">)</span>
+    <span class="p">);</span>
+</pre></div>
+</div>
+<p>这些 pad templates 在 <code class="docutils literal notranslate"><span class="pre">_class_init()</span></code> 函数被注册</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="GStreamer的插件机制" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="2.plugin-pads.html" class="btn btn-neutral float-right" title="Specifying the pads" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

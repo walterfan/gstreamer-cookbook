@@ -89,3 +89,52 @@ The ID of a GSource is given by g_source_get_id(), or will be returned by the fu
 It is a programmer error to attempt to remove a non-existent source.
 
 More specifically: source IDs can be reissued after a source has been destroyed and therefore it is never valid to use this function with a source ID which may have already been removed. An example is when scheduling an idle to run in another thread with g_idle_add(): the idle may already have run and been removed by the time this function is called on its (now invalid) source ID. This source ID may have been reissued, leading to the operation being performed against the wrong source.
+
+
+## g_signal_emit_by_name
+
+### Declaration
+
+```
+void
+g_signal_emit_by_name (
+  GObject* instance,
+  const gchar* detailed_signal,
+  ...
+)
+
+```
+
+### Description
+
+Emits a signal. Signal emission is done synchronously. The method will only return control after all handlers are called or signal emission was stopped.
+
+Note that g_signal_emit_by_name() resets the return value to the default if no handlers are connected, in contrast to g_signal_emitv().
+
+This function is not directly available to language bindings.
+
+
+### Parameters 
+
+* instance
+Type: GObject
+
+The instance the signal is being emitted on.
+
+The data is owned by the caller of the function.
+
+* detailed_signal
+
+Type: const gchar*
+
+A string of the form “signal-name::detail”.
+
+The data is owned by the caller of the function.
+
+The value is a NUL terminated UTF-8 string.
+
+* ...
+
+Type: 
+
+Parameters to be passed to the signal, followed by a location for the return value. If the return type of the signal is G_TYPE_NONE, the return value location can be omitted. The number of parameters to pass to this function is defined when creating the signal.

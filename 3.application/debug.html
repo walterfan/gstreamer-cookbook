@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gstreamer Debug &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. GStreamer 插件" href="../4.plugin/index.html" />
+    <link rel="prev" title="v4l-utils" href="tool.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool.html">v4l-utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool.html#gst-python">Gst Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool.html#gstreamer-tools">GStreamer Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool.html#pipeline">如何在命令行下建立一个pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool.html#elementcapabilities">如何找出一个element的Capabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool.html#id1">如何发现一个媒体文件的内部结构</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Gstreamer Debug</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#debug-level">Debug Level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
+      <li class="breadcrumb-item active">Gstreamer Debug</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/3.application/debug.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gstreamer-debug">
+<h1>Gstreamer Debug<a class="headerlink" href="#gstreamer-debug" title="Link to this heading"></a></h1>
+<p>To enable debug output, set the GST_DEBUG environment variable to the desired debug level. All levels below that will also be shown (i.e., if you set <code class="docutils literal notranslate"><span class="pre">GST_DEBUG=2</span></code>, you will get both ERROR and WARNING messages).</p>
+<p>Furthermore, each plugin or part of the GStreamer defines its own category, so you can specify a debug level for each individual category. For example, <code class="docutils literal notranslate"><span class="pre">GST_DEBUG=2,audiotestsrc:6</span></code>, will use Debug Level 6 for the audiotestsrc element, and 2 for all the others.</p>
+<section id="debug-level">
+<h2>Debug Level<a class="headerlink" href="#debug-level" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>none</p></td>
+<td><p>No debug information is output.</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>ERROR</p></td>
+<td><p>Logs all fatal errors. These are errors that do not allow the</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>core or elements to perform the requested action. The</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p></p></td>
+<td><p>application can still recover if programmed to handle the</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>conditions that triggered the error.</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>WARNING</p></td>
+<td><p>Logs all warnings. Typically these are non-fatal, but</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>user-visible problems are expected to happen.</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>FIXME</p></td>
+<td><p>Logs all “fixme” messages. Those typically that a codepath that</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>is known to be incomplete has been triggered. It may work in</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p></p></td>
+<td><p>most cases, but may cause problems in specific instances.</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>INFO</p></td>
+<td><p>Logs all informational messages. These are typically used for</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p></p></td>
+<td><p>events in the system that only happen once, or are important</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>and rare enough to be logged at this level.</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>DEBUG</p></td>
+<td><p>Logs all debug messages. These are general debug messages for</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>events that happen only a limited number of times during an</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p></p></td>
+<td><p>object’s lifetime; these include setup, teardown, change of</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>parameters, etc.</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>LOG</p></td>
+<td><p>Logs all log messages. These are messages for events that</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>happen repeatedly during an object’s lifetime; these include</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p></p></td>
+<td><p>streaming and steady-state conditions. This is used for log</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>messages that happen on every buffer in an element for example.</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>TRACE</p></td>
+<td><p>Logs all trace messages. Those are message that happen very</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>very often. This is for example is each time the reference</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p></p></td>
+<td><p>count of a GstMiniObject, such as a GstBuffer or GstEvent, is</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>modified.</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>MEMDUMP</p></td>
+<td><p>Logs all memory dump messages. This is the heaviest logging and</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p>may include dumping the content of blocks of memory.</p></td>
+</tr>
+<tr class="row-odd"><td><p>+——————————————————————————+</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>How to get more debug information from GStreamer</p>
+<ul>
+<li><p>using the GST_DEBUG environment variable.</p></li>
+</ul>
+</li>
+<li><p>How to print your own debug information into the GStreamer log?</p></li>
+</ul>
+<ul class="simple">
+<li><p>with the GST_ERROR() macro and relatives.</p></li>
+</ul>
+<ul class="simple">
+<li><p>How to get pipeline graphs?</p></li>
+</ul>
+<ul class="simple">
+<li><p>with the GST_DEBUG_DUMP_DOT_DIR environment variable.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tool.html" class="btn btn-neutral float-left" title="v4l-utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../4.plugin/index.html" class="btn btn-neutral float-right" title="3. GStreamer 插件" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
