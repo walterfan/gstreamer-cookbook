@@ -13,6 +13,8 @@
    concept
    glib
    gobject
+
    gstelement
    gstpad
    gstbus
+   gstpromise

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GstPromise &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. GStreamer 教程" href="../2.tutorial/index.html" />
+    <link rel="prev" title="GstBus overview" href="gstbus.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 概论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html">GStreamer 预备知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html">GStreamer 基础知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept.html">GStreamer 基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glib.html">glib Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstelement.html">gst element overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstpad.html">GstPad Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gstbus.html">GstBus overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GstPromise</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">1. GStreamer 基础</a></li>
+      <li class="breadcrumb-item active">GstPromise</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/1.basic/gstpromise.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gstpromise">
+<h1>GstPromise<a class="headerlink" href="#gstpromise" title="Link to this heading"></a></h1>
+<p>The GstPromise object implements the container for values that may be available later. i.e. a Future or a Promise in https://en.wikipedia.org/wiki/Futures_and_promises.</p>
+<p>As with all Future/Promise-like functionality, there is the concept of the producer of the value and the consumer of the value.</p>
+<p>A GstPromise is created with <code class="docutils literal notranslate"><span class="pre">gst_promise_new</span></code> by the consumer and passed to the producer to avoid thread safety issues with the change callback.</p>
+<p>A GstPromise can be replied to with a value (or an error) by the producer with <code class="docutils literal notranslate"><span class="pre">gst_promise_reply</span></code>. The exact value returned is defined by the API contract of the producer and NULL may be a valid reply.</p>
+<p><code class="docutils literal notranslate"><span class="pre">gst_promise_interrupt</span></code> is for the consumer to indicate to the producer that the value is not needed anymore and producing that value can stop.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">GST_PROMISE_RESULT_EXPIRED</span></code> state set by a call to <code class="docutils literal notranslate"><span class="pre">gst_promise_expire</span></code> indicates to the consumer that a value will never be produced and is intended to be called by a third party that implements some notion of message handling such as GstBus.</p>
+<p>A callback can also be installed at GstPromise creation for result changes with <code class="docutils literal notranslate"><span class="pre">gst_promise_new_with_change_func</span></code>. The change callback can be used to chain GstPromise’s together as in the following example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">GstStructure</span> <span class="o">*</span><span class="n">reply</span><span class="p">;</span>
+<span class="n">GstPromise</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">gst_promise_wait</span> <span class="p">(</span><span class="n">promise</span><span class="p">)</span> <span class="o">!=</span> <span class="n">GST_PROMISE_RESULT_REPLIED</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">;</span> <span class="o">//</span> <span class="n">interrupted</span> <span class="ow">or</span> <span class="n">expired</span> <span class="n">value</span>
+<span class="n">reply</span> <span class="o">=</span> <span class="n">gst_promise_get_reply</span> <span class="p">(</span><span class="n">promise</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="ow">in</span> <span class="n">reply</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">;</span> <span class="o">//</span> <span class="n">propagate</span> <span class="n">error</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">gst_promise_new_with_change_func</span> <span class="p">(</span><span class="n">another_promise_change_func</span><span class="p">,</span> <span class="n">user_data</span><span class="p">,</span> <span class="n">notify</span><span class="p">);</span>
+<span class="o">//</span><span class="k">pass</span> <span class="n">p</span> <span class="n">to</span> <span class="n">promise</span><span class="o">-</span><span class="n">using</span> <span class="n">API</span>
+</pre></div>
+</div>
+<p>Each GstPromise starts out with a <code class="docutils literal notranslate"><span class="pre">GstPromiseResult</span></code> of <code class="docutils literal notranslate"><span class="pre">GST_PROMISE_RESULT_PENDING</span></code> and only ever transitions once into one of the other GstPromiseResult’s.</p>
+<p>In order to support multi-threaded code, <code class="docutils literal notranslate"><span class="pre">gst_promise_reply</span></code>, <code class="docutils literal notranslate"><span class="pre">gst_promise_interrupt</span></code> and <code class="docutils literal notranslate"><span class="pre">gst_promise_expire</span></code> may all be from different threads with some restrictions and the final result of the promise is whichever call is made first. There are two restrictions on ordering:</p>
+<p>That <code class="docutils literal notranslate"><span class="pre">gst_promise_reply</span></code> and <code class="docutils literal notranslate"><span class="pre">gst_promise_interrupt</span></code> cannot be called after <code class="docutils literal notranslate"><span class="pre">gst_promise_expire</span></code>
+That <code class="docutils literal notranslate"><span class="pre">gst_promise_reply</span></code> and <code class="docutils literal notranslate"><span class="pre">gst_promise_interrupt</span></code> cannot be called twice.</p>
+<p>The change function set with <code class="docutils literal notranslate"><span class="pre">gst_promise_new_with_change_func</span></code> is called directly from either the gst_promise_reply, gst_promise_interrupt or gst_promise_expire and can be called from an arbitrary thread. GstPromise using APIs can restrict this to a single thread or a subset of threads but that is entirely up to the API that uses GstPromise.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gstbus.html" class="btn btn-neutral float-left" title="GstBus overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../2.tutorial/index.html" class="btn btn-neutral float-right" title="2. GStreamer 教程" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

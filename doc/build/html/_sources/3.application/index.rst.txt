@@ -10,3 +10,4 @@
    overview
    faq
    tool
+   debug

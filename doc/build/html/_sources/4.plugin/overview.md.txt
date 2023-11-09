@@ -41,3 +41,31 @@ GstMiniObject 包含以下重要类型：
 指示缓冲区中内容的首选显示时间戳的时间戳。
 
 
+## How to write a plugin
+
+1. 构建样板代码
+Constructing the Boilerplate
+
+2. 指定 pads
+Specifying the pads
+
+3. 实现 chain 函数
+The chain function
+
+4. 实现 event 函数
+The event function
+
+5. 实现 query 函数
+The query function
+
+6. 实现 state 处理
+What are states?
+
+7. 增加属性
+Adding Properties
+
+8. 处理信号
+Signals
+
+9. 构建一个测试程序
+Building a Test Application

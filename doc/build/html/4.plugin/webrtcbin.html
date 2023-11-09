@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>webrtcbin &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="v4l2src plugin" href="v4l2src.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 插件</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer的插件机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.plugin-boilerplate.html">Constructing the Boilerplate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.plugin-pads.html">Specifying the pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html#hierarchy">Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="frequent-plugin.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hlssink2.html">hlssink2 plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mp4mux.html">mp4mux plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nvdsosd.html">nvdsosd plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="queue.html">queue plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="splitmuxsink.html">splitmuxsink plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tee.html">tee plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v4l2src.html">v4l2src plugin</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">webrtcbin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">WebrtcBin 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">WebrtcBin 使用实例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">快速测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">参考资料</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 插件</a></li>
+      <li class="breadcrumb-item active">webrtcbin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/4.plugin/webrtcbin.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="webrtcbin">
+<h1>webrtcbin<a class="headerlink" href="#webrtcbin" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>WebrtcBin 简介<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>webrtcbin 是由 Matthew Waters 编写的 GStreamer 插件，使用此插件，您可以连接到网络浏览器或者其他 WebRTC 端点或服务器进行音视频的实时传输。  它实现点对点连接握手（使用 ICE 和外部 STUN 服务器）、或者在无法直连时重新路由数据包（使用外部 TURN 服务器中转），然后维护传输音视频数据包的会话(DTLS, SCTP 和 SRTP)</p>
+<p>不过需要设计自己的信令协议, 实现自己的信令服务器(这里有一个简单的<a class="reference external" href="https://github.com/centricular/gstwebrtc-demos/blob/master/signalling/simple_server.py">信令服务的例子</a>)来交换 SDP 和 ICE candidate，并处理数据包丢失和重传，管理网络拥塞并调整编码比特率，以在不同质量的网络上保持可接受的用户体验。例如常用的 NACK/PLI, FEC, RTX, Congestion Control method(REMB and TWCC)</p>
+<p>参见 https://gstreamer.freedesktop.org/documentation/webrtc/index.html?gi-language=c</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GObject
+    ╰──GInitiallyUnowned
+        ╰──GstObject
+            ╰──GstElement
+                ╰──GstBin
+                    ╰──webrtcbin
+</pre></div>
+</div>
+<p>它有一个sink pad 和一个 src pad:</p>
+<ul class="simple">
+<li><p>GstWebRTCBinSinkPad</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GObject
+    ╰──GInitiallyUnowned
+        ╰──GstObject
+            ╰──GstPad
+                ╰──GstProxyPad
+                    ╰──GstGhostPad
+                        ╰──GstWebRTCBinPad
+                            ╰──GstWebRTCBinSinkPad
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>GstWebRTCBinSrcPad</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GObject
+    ╰──GInitiallyUnowned
+        ╰──GstObject
+            ╰──GstPad
+                ╰──GstProxyPad
+                    ╰──GstGhostPad
+                        ╰──GstWebRTCBinPad
+                            ╰──GstWebRTCBinSrcPad
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>WebrtcBin 使用实例<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>– 注：这里的例子编译自 https://blog.nirbheek.in/2018/02/gstreamer-webrtc.html</p>
+<ul class="simple">
+<li><p>首先我们从摄像头中捕获视频，并将视频流发送至 webrtc 的对端，并从对端接收视频流，第一步是构建视频流水线， 由插件 v4l2src 捕获视频流，放在 queue 中，由 vp8enc 来进行 vp8 编码，由 rtpvp8pay 将编码过的视频流封装成 rtp 包，再由 webrtcbin 插件通过 RTCPeerConnection 发送出去(DTLS/SRTP), 这其中要经过 SDP 协商和 ICE Candidate 协商</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GstElement</span> <span class="o">*</span><span class="n">pipe</span><span class="p">;</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">gst_parse_launch</span> <span class="p">(</span><span class="s2">&quot;v4l2src ! queue ! vp8enc ! rtpvp8pay ! &quot;</span>
+    <span class="s2">&quot;application/x-rtp,media=video,encoding-name=VP8,payload=96 !&quot;</span>
+    <span class="s2">&quot; webrtcbin name=sendrecv&quot;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>获取一个 webrtcbin 的引用，并设置它的一些回调.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GstElement</span> <span class="o">*</span><span class="n">webrtc</span><span class="p">;</span>
+
+<span class="n">webrtc</span> <span class="o">=</span> <span class="n">gst_bin_get_by_name</span> <span class="p">(</span><span class="n">GST_BIN</span> <span class="p">(</span><span class="n">pipe</span><span class="p">),</span> <span class="s2">&quot;sendrecv&quot;</span><span class="p">);</span>
+<span class="n">g_assert</span> <span class="p">(</span><span class="n">webrtc</span> <span class="o">!=</span> <span class="n">NULL</span><span class="p">);</span>
+
+<span class="o">/*</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">gstwebrtc</span> <span class="n">entry</span> <span class="n">point</span> <span class="n">where</span> <span class="n">we</span> <span class="n">create</span> <span class="n">the</span> <span class="n">offer</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">It</span> <span class="n">will</span> <span class="n">be</span> <span class="n">called</span> <span class="n">when</span> <span class="n">the</span> <span class="n">pipeline</span> <span class="n">goes</span> <span class="n">to</span> <span class="n">PLAYING</span><span class="o">.</span> <span class="o">*/</span>
+<span class="n">g_signal_connect</span> <span class="p">(</span><span class="n">webrtc</span><span class="p">,</span> <span class="s2">&quot;on-negotiation-needed&quot;</span><span class="p">,</span>
+    <span class="n">G_CALLBACK</span> <span class="p">(</span><span class="n">on_negotiation_needed</span><span class="p">),</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="o">/*</span> <span class="n">We</span> <span class="n">will</span> <span class="n">transmit</span> <span class="n">this</span> <span class="n">ICE</span> <span class="n">candidate</span> <span class="n">to</span> <span class="n">the</span> <span class="n">remote</span> <span class="n">using</span> <span class="n">some</span>
+ <span class="o">*</span> <span class="n">signalling</span><span class="o">.</span> <span class="n">Incoming</span> <span class="n">ICE</span> <span class="n">candidates</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">remote</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span>
+ <span class="o">*</span> <span class="n">added</span> <span class="n">by</span> <span class="n">us</span> <span class="n">too</span><span class="o">.</span> <span class="o">*/</span>
+<span class="n">g_signal_connect</span> <span class="p">(</span><span class="n">webrtc</span><span class="p">,</span> <span class="s2">&quot;on-ice-candidate&quot;</span><span class="p">,</span>
+    <span class="n">G_CALLBACK</span> <span class="p">(</span><span class="n">send_ice_candidate_message</span><span class="p">),</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="o">/*</span> <span class="n">Incoming</span> <span class="n">streams</span> <span class="n">will</span> <span class="n">be</span> <span class="n">exposed</span> <span class="n">via</span> <span class="n">this</span> <span class="n">signal</span> <span class="o">*/</span>
+<span class="n">g_signal_connect</span> <span class="p">(</span><span class="n">webrtc</span><span class="p">,</span> <span class="s2">&quot;pad-added&quot;</span><span class="p">,</span>
+    <span class="n">G_CALLBACK</span> <span class="p">(</span><span class="n">on_incoming_stream</span><span class="p">),</span> <span class="n">pipe</span><span class="p">);</span>
+<span class="o">/*</span> <span class="n">Lifetime</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">same</span> <span class="k">as</span> <span class="n">the</span> <span class="n">pipeline</span> <span class="n">itself</span> <span class="o">*/</span>
+<span class="n">gst_object_unref</span> <span class="p">(</span><span class="n">webrtc</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>当 pipeline 状态变成 PLAYING, <code class="docutils literal notranslate"><span class="pre">on_negotiation_needed()</span> </code> 回调函数将被调用， 我们将请求 webrtcbin 去创建一个匹配以上 pipeline 的 offer</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span>
+<span class="n">on_negotiation_needed</span> <span class="p">(</span><span class="n">GstElement</span> <span class="o">*</span> <span class="n">webrtc</span><span class="p">,</span> <span class="n">gpointer</span> <span class="n">user_data</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">GstPromise</span> <span class="o">*</span><span class="n">promise</span><span class="p">;</span>
+
+  <span class="n">promise</span> <span class="o">=</span> <span class="n">gst_promise_new_with_change_func</span> <span class="p">(</span><span class="n">on_offer_created</span><span class="p">,</span>
+      <span class="n">user_data</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+  <span class="n">g_signal_emit_by_name</span> <span class="p">(</span><span class="n">webrtc</span><span class="p">,</span> <span class="s2">&quot;create-offer&quot;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span>
+      <span class="n">promise</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>当 webrtcbin 创建 SDP Offer 后，其会调用 <code class="docutils literal notranslate"> <span class="pre">on_offer_created()</span></code>  回调函数</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span>
+<span class="n">on_offer_created</span> <span class="p">(</span><span class="n">GstPromise</span> <span class="o">*</span> <span class="n">promise</span><span class="p">,</span> <span class="n">GstElement</span> <span class="o">*</span> <span class="n">webrtc</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">GstWebRTCSessionDescription</span> <span class="o">*</span><span class="n">offer</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+  <span class="n">const</span> <span class="n">GstStructure</span> <span class="o">*</span><span class="n">reply</span><span class="p">;</span>
+  <span class="n">gchar</span> <span class="o">*</span><span class="n">desc</span><span class="p">;</span>
+
+  <span class="n">reply</span> <span class="o">=</span> <span class="n">gst_promise_get_reply</span> <span class="p">(</span><span class="n">promise</span><span class="p">);</span>
+  <span class="n">gst_structure_get</span> <span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="s2">&quot;offer&quot;</span><span class="p">,</span>
+      <span class="n">GST_TYPE_WEBRTC_SESSION_DESCRIPTION</span><span class="p">,</span> 
+      <span class="o">&amp;</span><span class="n">offer</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+  <span class="n">gst_promise_unref</span> <span class="p">(</span><span class="n">promise</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="n">We</span> <span class="n">can</span> <span class="n">edit</span> <span class="n">this</span> <span class="n">offer</span> <span class="n">before</span> <span class="n">setting</span> <span class="ow">and</span> <span class="n">sending</span> <span class="o">*/</span>
+  <span class="n">g_signal_emit_by_name</span> <span class="p">(</span><span class="n">webrtc</span><span class="p">,</span>
+      <span class="s2">&quot;set-local-description&quot;</span><span class="p">,</span> <span class="n">offer</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="n">Implement</span> <span class="n">this</span> <span class="ow">and</span> <span class="n">send</span> <span class="n">offer</span> <span class="n">to</span> <span class="n">peer</span> <span class="n">using</span> <span class="n">signalling</span> <span class="o">*/</span>
+  <span class="n">send_sdp_offer</span> <span class="p">(</span><span class="n">offer</span><span class="p">);</span>
+  <span class="n">gst_webrtc_session_description_free</span> <span class="p">(</span><span class="n">offer</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>类似的，当我们从远端接收到 SDP answer 时，我们必须调用  webrtcbin 的 <code class="docutils literal notranslate"><span class="pre">set-remote-description</span></code> 方法.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">answer</span> <span class="o">=</span> <span class="n">gst_webrtc_session_description_new</span> <span class="p">(</span>
+    <span class="n">GST_WEBRTC_SDP_TYPE_ANSWER</span><span class="p">,</span> <span class="n">sdp</span><span class="p">);</span>
+<span class="n">g_assert</span> <span class="p">(</span><span class="n">answer</span><span class="p">);</span>
+
+<span class="o">/*</span> <span class="n">Set</span> <span class="n">remote</span> <span class="n">description</span> <span class="n">on</span> <span class="n">our</span> <span class="n">pipeline</span> <span class="o">*/</span>
+<span class="n">g_signal_emit_by_name</span> <span class="p">(</span><span class="n">webrtc</span><span class="p">,</span> <span class="s2">&quot;set-remote-description&quot;</span><span class="p">,</span>  <span class="n">answer</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>ICE 的处理也是类似的，当”on-ice-candidate” 信号触发时，我们会获得一个 local ICE candidate, 并需要发送到远端，而当我们从远端收到一个 ICE candidate 时，我们需要调用 webrtcbin 的 “add-ice-candidate” 方法。</p>
+<p>现在拼图只剩下一块了，那就是处理从远端收到的媒体流。为此，我们要将 <code class="docutils literal notranslate"><span class="pre">on_incoming_stream()</span> </code> 附加到 webrtcbin 有 “pad-added” 信号。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span>
+<span class="n">on_incoming_stream</span> <span class="p">(</span><span class="n">GstElement</span> <span class="o">*</span> <span class="n">webrtc</span><span class="p">,</span> <span class="n">GstPad</span> <span class="o">*</span> <span class="n">pad</span><span class="p">,</span>
+    <span class="n">GstElement</span> <span class="o">*</span> <span class="n">pipe</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">GstElement</span> <span class="o">*</span><span class="n">play</span><span class="p">;</span>
+
+  <span class="n">play</span> <span class="o">=</span> <span class="n">gst_parse_bin_from_description</span> <span class="p">(</span>
+      <span class="s2">&quot;queue ! vp8dec ! videoconvert ! autovideosink&quot;</span><span class="p">,</span>
+      <span class="n">TRUE</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+  <span class="n">gst_bin_add</span> <span class="p">(</span><span class="n">GST_BIN</span> <span class="p">(</span><span class="n">pipe</span><span class="p">),</span> <span class="n">play</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="n">Start</span> <span class="n">displaying</span> <span class="n">video</span> <span class="o">*/</span>
+  <span class="n">gst_element_sync_state_with_parent</span> <span class="p">(</span><span class="n">play</span><span class="p">);</span>
+  <span class="n">gst_element_link</span> <span class="p">(</span><span class="n">webrtc</span><span class="p">,</span> <span class="n">play</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这就是基本的 webrtc 工作流程。 那些以前使用过 PeerConnection API 的人会很高兴看到这与调用 Web JS API 的流程非常接近。</p>
+<ol class="arabic simple">
+<li><p>SDP 协商</p></li>
+</ol>
+<p><img alt="sdp negotiation" src="https://upload-images.jianshu.io/upload_images/1598924-cc2325953073bd82.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/207/format/webp" /></p>
+<ol class="arabic simple" start="2">
+<li><p>ICE 检查</p></li>
+</ol>
+<p><img alt="ice candidate exchange" src="https://upload-images.jianshu.io/upload_images/1598924-3390ea3ce1951b13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/315/format/webp" /></p>
+</section>
+<section id="id3">
+<h2>快速测试<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>参考 https://github.com/centricular/gstwebrtc-demos 的示例 sendrecv: 发送和接收音视频</p>
+<ul class="simple">
+<li><p>复制示例代码</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">centricular</span><span class="o">/</span><span class="n">gstwebrtc</span><span class="o">-</span><span class="n">demos</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">js/</span></code> 目录放到网站的根目录下，或者打开 <a class="reference external" href="https://webrtc.nirbheek.in/">https://webrtc.nirbheek.in</a></p></li>
+<li><p>此段 JS 代码假设信令服务在 Web 服务器的端口 8443 侦听</p></li>
+<li><p>打开网站，确保状态为 “Registered with server, waiting for call”, 并记下 <code class="docutils literal notranslate"><span class="pre">id</span></code></p></li>
+<li><p>编译 C 代码</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>gst
+$<span class="w"> </span>gcc<span class="w"> </span>webrtc-sendrecv.c<span class="w"> </span><span class="k">$(</span>pkg-config<span class="w"> </span>--cflags<span class="w"> </span>--libs<span class="w"> </span>gstreamer-webrtc-1.0<span class="w"> </span>gstreamer-sdp-1.0<span class="w"> </span>libsoup-2.4<span class="w"> </span>json-glib-1.0<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span>webrtc-sendrecv
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>运行 <code class="docutils literal notranslate"><span class="pre">webrtc-sendrecv</span> <span class="pre">--peer-id=ID</span></code> ，  <code class="docutils literal notranslate"><span class="pre">id</span></code> 即在浏览器上显示的 peerId.</p></li>
+</ul>
+<p>例如:</p>
+<ol class="arabic simple">
+<li><p>打开 https://webrtc.nirbheek.in/, 显示的 peer id 为 5323</p></li>
+<li><p>运行 <code class="docutils literal notranslate"> <span class="pre">./webrtc-sendrecv</span> <span class="pre">--peer-id=5323</span></code></p></li>
+<li><p>在浏览器上可以看到跳动的小球视频</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; GET  HTTP/1.1
+&gt; Soup-Debug-Timestamp: 1692837597
+&gt; Soup-Debug: SoupSession 1 (0x557842e85100), SoupMessage 1 (0x5578431cf8e0), SoupSocket 1 (0x557842d51c40)
+&gt; Host: webrtc.nirbheek.in:8443
+&gt; Upgrade: websocket
+&gt; Connection: Upgrade
+&gt; Sec-WebSocket-Key: e/WoYP6Gr85M4iqaZYTd3g==
+&gt; Sec-WebSocket-Version: 13
+&gt; Accept-Encoding: gzip, deflate
+
+&lt; HTTP/1.1 101 Switching Protocols
+&lt; Soup-Debug-Timestamp: 1692837597
+&lt; Soup-Debug: SoupMessage 1 (0x5578431cf8e0)
+&lt; Upgrade: websocket
+&lt; Connection: Upgrade
+&lt; Sec-WebSocket-Accept: jnGmBhPRHb9szcxQnGoSZAe5WMc=
+&lt; Date: Thu, 24 Aug 2023 00:39:08 GMT
+&lt; Server: Python/3.11 websockets/11.0.2
+
+Connected to signalling server
+Registering id 8634 with server
+Registered with server
+Setting up signalling server call with 5323
+Created data channel
+Starting pipeline
+Sending offer:
+v=0
+o=- 4050401179331307259 0 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=ice-options:trickle
+a=group:BUNDLE video0 audio1 application2
+m=video 9 UDP/TLS/RTP/SAVPF 96
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=ice-ufrag:SSUHGjApzvSrB6fACYzhFG6WFQpL4qrh
+a=ice-pwd:scHMe5CJ57NpqnHp70OzrGSmAI1kJoCB
+a=rtcp-mux
+a=rtcp-rsize
+a=sendrecv
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 nack pli
+a=rtcp-fb:96 transport-cc
+a=framerate:30
+a=ssrc:199344106 msid:user3365093335@host-d6d503be webrtctransceiver0
+a=ssrc:199344106 cname:user3365093335@host-d6d503be
+a=mid:video0
+a=fingerprint:sha-256 3B:D3:71:E5:B4:AA:A1:A3:D9:6A:22:8E:D3:49:27:6F:55:83:AC:A7:A2:E2:6B:88:3C:53:F7:E0:1D:8D:A7:B0
+a=rtcp-mux-only
+m=audio 0 UDP/TLS/RTP/SAVPF 97
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=ice-ufrag:SSUHGjApzvSrB6fACYzhFG6WFQpL4qrh
+a=ice-pwd:scHMe5CJ57NpqnHp70OzrGSmAI1kJoCB
+a=bundle-only
+a=rtcp-mux
+a=rtcp-rsize
+a=sendrecv
+a=rtpmap:97 OPUS/48000/2
+a=rtcp-fb:97 transport-cc
+a=fmtp:97 sprop-stereo=0;sprop-maxcapturerate=48000
+a=ssrc:1019736707 msid:user3365093335@host-d6d503be webrtctransceiver1
+a=ssrc:1019736707 cname:user3365093335@host-d6d503be
+a=mid:audio1
+a=fingerprint:sha-256 3B:D3:71:E5:B4:AA:A1:A3:D9:6A:22:8E:D3:49:27:6F:55:83:AC:A7:A2:E2:6B:88:3C:53:F7:E0:1D:8D:A7:B0
+a=rtcp-mux-only
+m=application 0 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=ice-ufrag:SSUHGjApzvSrB6fACYzhFG6WFQpL4qrh
+a=ice-pwd:scHMe5CJ57NpqnHp70OzrGSmAI1kJoCB
+a=bundle-only
+a=mid:application2
+a=sctp-port:5000
+a=fingerprint:sha-256 3B:D3:71:E5:B4:AA:A1:A3:D9:6A:22:8E:D3:49:27:6F:55:83:AC:A7:A2:E2:6B:88:3C:53:F7:E0:1D:8D:A7:B0
+
+ICE gathering state changed to gathering
+Received answer:
+v=0
+o=- 5928460106182311303 2 IN IP4 127.0.0.1
+s=-
+t=0 0
+a=group:BUNDLE video0 audio1 application2
+a=msid-semantic: WMS 80f0e9a6-a2ba-434e-94f0-4d8d0d0e18fe
+m=video 9 UDP/TLS/RTP/SAVPF 96
+c=IN IP4 0.0.0.0
+a=rtcp:9 IN IP4 0.0.0.0
+a=ice-ufrag:aV9x
+a=ice-pwd:1hBp2fLGi7bW+QZvEs9C58Du
+a=ice-options:trickle
+a=fingerprint:sha-256 59:8C:C4:46:92:99:D6:7B:71:D9:7C:AD:CB:8C:5D:50:96:B6:70:37:CC:F9:EF:25:FF:34:F2:6E:34:52:8F:CA
+a=setup:active
+a=mid:video0
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 transport-cc
+a=rtcp-fb:96 nack pli
+a=ssrc:1621313799 cname:C+l5r9FJua3urdCO
+a=ssrc:1621313799 msid:80f0e9a6-a2ba-434e-94f0-4d8d0d0e18fe 19830fc8-a2d5-4d54-8aa7-cfe22b1720d3
+m=audio 9 UDP/TLS/RTP/SAVPF 97
+c=IN IP4 0.0.0.0
+a=rtcp:9 IN IP4 0.0.0.0
+a=ice-ufrag:aV9x
+a=ice-pwd:1hBp2fLGi7bW+QZvEs9C58Du
+a=ice-options:trickle
+a=fingerprint:sha-256 59:8C:C4:46:92:99:D6:7B:71:D9:7C:AD:CB:8C:5D:50:96:B6:70:37:CC:F9:EF:25:FF:34:F2:6E:34:52:8F:CA
+a=setup:active
+a=mid:audio1
+a=sendrecv
+a=rtcp-mux
+a=rtpmap:97 OPUS/48000/2
+a=rtcp-fb:97 transport-cc
+a=fmtp:97 minptime=10;useinbandfec=1
+a=ssrc:1489599020 cname:C+l5r9FJua3urdCO
+a=ssrc:1489599020 msid:80f0e9a6-a2ba-434e-94f0-4d8d0d0e18fe c64ee897-790a-497c-8edd-06d08d1691c3
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=ice-ufrag:aV9x
+a=ice-pwd:1hBp2fLGi7bW+QZvEs9C58Du
+a=ice-options:trickle
+a=fingerprint:sha-256 59:8C:C4:46:92:99:D6:7B:71:D9:7C:AD:CB:8C:5D:50:96:B6:70:37:CC:F9:EF:25:FF:34:F2:6E:34:52:8F:CA
+a=setup:active
+a=mid:application2
+a=sctp-port:5000
+
+data channel opened
+data channel opened
+Received data channel message: Hi! (from browser)
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2>参考资料<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>WebRTC 插件介绍 https://blog.nirbheek.in/2018/02/gstreamer-webrtc.html</p></li>
+<li><p>WebRTC 插件源码</p>
+<ul>
+<li><p><a class="reference external" href="https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/-/tree/1.18/ext/webrtc?ref_type=heads">gst v1.8 webrtcbin plugin</a></p></li>
+<li><p><a class="reference external" href="https://gitlab.freedesktop.org/gstreamer/gstreamer/-/tree/main/subprojects/gst-plugins-bad/gst-libs/gst/webrtc?ref_type=heads">gst newest webrtcbin plugin</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://gitlab.freedesktop.org/gstreamer/gst-examples/-/tree/1.18/webrtc">bidirectional audio-video demos</a>.</p></li>
+<li><p><a class="reference external" href="https://gitlab.freedesktop.org/gstreamer/gst-examples/-/tree/1.18/webrtc">webrtcbin demo</a></p></li>
+<li><p><a class="reference external" href="https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/-/tree/1.18/tests/examples/webrtc">webrtcbin example</a></p></li>
+<li><p>https://gstreamer.freedesktop.org/documentation/webrtc/index.html?gi-language=c</p></li>
+<li><p>https://blogs.igalia.com/llepage/webrtc-gstreamer-and-html5-part-1</p></li>
+<li><p>https://blogs.igalia.com/llepage/webrtc-gstreamer-and-html5-part-2</p></li>
+<li><p>https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/tree/main/net/webrtc</p></li>
+<li><p>https://developer.ridgerun.com/wiki/index.php/GstWebRTC_-_Vp8-Opus_Examples</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="v4l2src.html" class="btn btn-neutral float-left" title="v4l2src plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

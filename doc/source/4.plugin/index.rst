@@ -7,6 +7,10 @@
    :caption: Contents:
 
    overview
+   
+   1.plugin-boilerplate
+   2.plugin-pads
+
    filesink
    frequent-plugin
    hlssink2
@@ -16,3 +20,4 @@
    splitmuxsink
    tee
    v4l2src
+   webrtcbin
