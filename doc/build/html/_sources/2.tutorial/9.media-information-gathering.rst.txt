@@ -1,0 +1,20 @@
+######################################################
+Basic tutorial 9: media information grthering
+######################################################
+
+.. include:: ../links.ref
+.. include:: ../tags.ref
+.. include:: ../abbrs.ref
+
+============ ==========================
+**Abstract** media information grthering
+**Authors**  Walter Fan
+**Status**   WIP as draft
+**Updated**  |date|
+============ ==========================
+
+.. contents::
+   :local:
+
+Goal
+=======================================

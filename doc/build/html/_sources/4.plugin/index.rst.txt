@@ -11,6 +11,7 @@
    1.plugin-boilerplate
    2.plugin-pads
 
+   decodebin
    filesink
    frequent-plugin
    hlssink2
@@ -20,4 +21,6 @@
    splitmuxsink
    tee
    v4l2src
+   
    webrtcbin
+   webrtc_flow

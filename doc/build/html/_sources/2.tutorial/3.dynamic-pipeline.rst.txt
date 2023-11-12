@@ -1,0 +1,29 @@
+############################################
+Basic tutorial 3: Dynamic pipelines
+############################################
+
+.. include:: ../links.ref
+.. include:: ../tags.ref
+.. include:: ../abbrs.ref
+
+============ ==========================
+**Abstract** Basic tutorial 3: Dynamic pipelines
+**Authors**  Walter Fan
+**Status**   WIP as draft
+**Updated**  |date|
+============ ==========================
+
+.. contents::
+   :local:
+
+
+Goal
+=======================================
+
+本教程展示了使用 GStreamer 所需的其余基本概念，这些概念允许在信息可用时“动态”构建管道，而不是在应用程序开始时定义整体管道。
+
+要点：
+
+* 如何在链接元素时获得更精细的控制。
+* 如何收到所感兴趣事件的通知，以便及时做出反应。
+* 元素可能处于的各种状态。

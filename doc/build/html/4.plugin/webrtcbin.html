@@ -30,6 +30,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="webrtcbin flow" href="webrtc_flow.html" />
     <link rel="prev" title="v4l2src plugin" href="v4l2src.html" /> 
 </head>
 
@@ -61,6 +62,7 @@
 <li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer的插件机制</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1.plugin-boilerplate.html">Constructing the Boilerplate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2.plugin-pads.html">Specifying the pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decodebin.html">decodebin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filesink.html">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filesink.html#example">Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filesink.html#hierarchy">Hierarchy</a></li>
@@ -79,6 +81,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id4">参考资料</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="webrtc_flow.html">webrtcbin flow</a></li>
 </ul>
 </li>
 </ul>
@@ -123,7 +126,7 @@
                     ╰──webrtcbin
 </pre></div>
 </div>
-<p>它有一个sink pad 和一个 src pad:</p>
+<p>它有一个sink pad 和一个 src pad, 收发的格式是 “application/x-rtp”</p>
 <ul class="simple">
 <li><p>GstWebRTCBinSinkPad</p></li>
 </ul>
@@ -458,6 +461,7 @@ Received data channel message: Hi! (from browser)
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="v4l2src.html" class="btn btn-neutral float-left" title="v4l2src plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="webrtc_flow.html" class="btn btn-neutral float-right" title="webrtcbin flow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

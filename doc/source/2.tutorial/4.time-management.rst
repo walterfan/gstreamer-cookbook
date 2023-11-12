@@ -1,0 +1,20 @@
+######################################################
+Basic tutorial 4: gstreamer time management
+######################################################
+
+.. include:: ../links.ref
+.. include:: ../tags.ref
+.. include:: ../abbrs.ref
+
+============ ==========================
+**Abstract** gstreamer time management
+**Authors**  Walter Fan
+**Status**   WIP as draft
+**Updated**  |date|
+============ ==========================
+
+.. contents::
+   :local:
+
+Goal
+=======================================

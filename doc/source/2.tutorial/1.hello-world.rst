@@ -1,0 +1,20 @@
+######################################################
+Basic tutorial 1: gstreamer hello world
+######################################################
+
+.. include:: ../links.ref
+.. include:: ../tags.ref
+.. include:: ../abbrs.ref
+
+============ ==========================
+**Abstract** gstreamer hello world
+**Authors**  Walter Fan
+**Status**   WIP as draft
+**Updated**  |date|
+============ ==========================
+
+.. contents::
+   :local:
+
+Goal
+=======================================

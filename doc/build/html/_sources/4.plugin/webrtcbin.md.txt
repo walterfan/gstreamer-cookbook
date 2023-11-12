@@ -16,7 +16,7 @@ GObject
                 ╰──GstBin
                     ╰──webrtcbin
 ```
-它有一个sink pad 和一个 src pad:
+它有一个sink pad 和一个 src pad, 收发的格式是 “application/x-rtp”
 
 * GstWebRTCBinSinkPad
 ```

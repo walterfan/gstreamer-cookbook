@@ -8,6 +8,7 @@
    :caption: Contents:
 
    overview
+   caps_negotiation
    faq
    tool
    debug

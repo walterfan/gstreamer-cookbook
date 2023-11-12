@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basic tutorial 6: Media formats and Pad Capabilities &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Basic tutorial 7: multithreading and pad availability" href="7.multithreading-pad-availability.html" />
+    <link rel="prev" title="Basic tutorial 5: gui toolkit integration" href="5.gui-toolkit-integration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. GStreamer 教程</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 教程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.hello-world.html">Basic tutorial 1: gstreamer hello world</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.concepts.html">Basic tutorial 2: gstreamer concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.dynamic-pipeline.html">Basic tutorial 3: Dynamic pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.time-management.html">Basic tutorial 4: gstreamer time management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.gui-toolkit-integration.html">Basic tutorial 5: gui toolkit integration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Basic tutorial 6: Media formats and Pad Capabilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pad-templates">Pad templates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="7.multithreading-pad-availability.html">Basic tutorial 7: multithreading and pad availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="8.short-cutting-pipeline.html">Basic tutorial 8: multithreading and pad availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9.media-information-gathering.html">Basic tutorial 9: media information grthering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">2. GStreamer 教程</a></li>
+      <li class="breadcrumb-item active">Basic tutorial 6: Media formats and Pad Capabilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/2.tutorial/6.mdeia-formats-pad-capabilities.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="basic-tutorial-6-media-formats-and-pad-capabilities">
+<h1>Basic tutorial 6: Media formats and Pad Capabilities<a class="headerlink" href="#basic-tutorial-6-media-formats-and-pad-capabilities" title="Link to this heading"></a></h1>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>Abstract</strong></p></td>
+<td><p>Basic tutorial 3: Dynamic pipelines</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Authors</strong></p></td>
+<td><p>Walter Fan</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Status</strong></p></td>
+<td><p>WIP as draft</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Updated</strong></p></td>
+<td><p>2023-11-12</p></td>
+</tr>
+</tbody>
+</table>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#id1" id="id3">目标</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id4">介绍</a></p></li>
+<li><p><a class="reference internal" href="#pad-templates" id="id5">Pad templates</a></p></li>
+</ul>
+</nav>
+<section id="id1">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">目标</a><a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>Pad Capabilities 是 GStreamer 的基本元素，尽管大多数时候它们是不可见的，因为框架会自动处理它们。</p>
+<ul class="simple">
+<li><p>什么是 Pad Capabilities</p></li>
+<li><p>如何找回它们。</p></li>
+<li><p>何时取回它们。</p></li>
+<li><p>为什么您需要了解它们。</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">介绍</a><a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>Pad 允许信息进入和离开元素。 然后 Pad Caps 指定可以通过 Pad 传输的信息类型</p>
+<p>例如：</p>
+<ul class="simple">
+<li><p>分辨率为 640*360 像素，帧率为 30 fps 的 RGB 视频</p></li>
+<li><p>音频采样为 16bit, 采样频率为 44.1k, 5.1 声道的音频</p></li>
+<li><p>或者指定为 mp3 或 h264 的压缩格式</p></li>
+</ul>
+<p>Pads 可以支持多种能力 Capabilities (例如, Video sink 可以支持不同类型的 RGB 或 YUV 格式的视频), 并且可以将 Caps 指定为一个范围 (例如 audio sink 可以支持 8k 到 48k的采样率)</p>
+<p>然而，从一个 pad 到另一个 pad 实际上传输的信息必须只有一种明确指定的类型。
+通过一个称为协商的过程，两个链接的 pad 就共同的类型达成一致，这样 pad 的 Capabilities 会固定下来。</p>
+<p>为了将两个元素链接在一起，我们必须共享一个公共的 Capabilities 子集，否则它们不可能相互理解，这是 Capabilities 的主要目标</p>
+<p>作为应用程序开发人员，您通常会通过将元素链接在一起来构建管道（如果您使用像 playbin 这样的 all-in-all 元素，则程度较小）。 在这种情况下，您需要了解元素的 Pad Caps（如人们所熟悉的那样），或者至少知道当 GStreamer 因协商错误而拒绝链接两个元素时它们是什么。</p>
+</section>
+<section id="pad-templates">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Pad templates</a><a class="headerlink" href="#pad-templates" title="Link to this heading"></a></h2>
+<p>Pads are created from Pad Templates, which indicate all possible Capabilities a Pad could ever have. Templates are useful to create several similar Pads, and also allow early refusal of connections between elements: If the Capabilities of their Pad Templates do not have a common subset (their intersection is empty), there is no need to negotiate further.</p>
+<p>Pad Templates can be viewed as the first step in the negotiation process. As the process evolves, actual Pads are instantiated and their Capabilities refined until they are fixed (or negotiation fails).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="5.gui-toolkit-integration.html" class="btn btn-neutral float-left" title="Basic tutorial 5: gui toolkit integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="7.multithreading-pad-availability.html" class="btn btn-neutral float-right" title="Basic tutorial 7: multithreading and pad availability" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
