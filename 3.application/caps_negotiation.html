@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gstreamer Debug &mdash; gstreamer_tutorial 1 documentation</title>
+  <title>Caps negotiation &mdash; gstreamer_tutorial 1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -30,8 +30,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. GStreamer 插件" href="../4.plugin/index.html" />
-    <link rel="prev" title="v4l-utils" href="tool.html" /> 
+    <link rel="next" title="FAQ" href="faq.html" />
+    <link rel="prev" title="GStreamer 应用" href="overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -59,7 +59,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
-<li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Caps negotiation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caps-negotiation-basics">Caps negotiation basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caps-negotiation-use-cases">Caps negotiation use cases</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
@@ -70,11 +75,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tool.html#pipeline">如何在命令行下建立一个pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tool.html#elementcapabilities">如何找出一个element的Capabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tool.html#id1">如何发现一个媒体文件的内部结构</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Gstreamer Debug</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#debug-level">Debug Level</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
@@ -95,9 +96,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
-      <li class="breadcrumb-item active">Gstreamer Debug</li>
+      <li class="breadcrumb-item active">Caps negotiation</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/3.application/debug.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/3.application/caps_negotiation.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -105,154 +106,57 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="gstreamer-debug">
-<h1>Gstreamer Debug<a class="headerlink" href="#gstreamer-debug" title="Link to this heading"></a></h1>
-<p>To enable debug output, set the GST_DEBUG environment variable to the desired debug level. All levels below that will also be shown (i.e., if you set <code class="docutils literal notranslate"><span class="pre">GST_DEBUG=2</span></code>, you will get both ERROR and WARNING messages).</p>
-<p>Furthermore, each plugin or part of the GStreamer defines its own category, so you can specify a debug level for each individual category. For example, <code class="docutils literal notranslate"><span class="pre">GST_DEBUG=2,audiotestsrc:6</span></code>, will use Debug Level 6 for the audiotestsrc element, and 2 for all the others.</p>
-<section id="debug-level">
-<h2>Debug Level<a class="headerlink" href="#debug-level" title="Link to this heading"></a></h2>
+  <section id="caps-negotiation">
+<h1>Caps negotiation<a class="headerlink" href="#caps-negotiation" title="Link to this heading"></a></h1>
 <table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>#</p></th>
-<th class="head"><p>Name</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
 <tbody>
-<tr class="row-even"><td><p>0</p></td>
-<td><p>none</p></td>
-<td><p>No debug information is output.</p></td>
+<tr class="row-odd"><td><p><strong>Abstract</strong></p></td>
+<td><p>Caps negotiation</p></td>
 </tr>
-<tr class="row-odd"><td><p>1</p></td>
-<td><p>ERROR</p></td>
-<td><p>Logs all fatal errors. These are errors that do not allow the</p></td>
+<tr class="row-even"><td><p><strong>Category</strong></p></td>
+<td><p>Learning note</p></td>
 </tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>core or elements to perform the requested action. The</p></td>
+<tr class="row-odd"><td><p><strong>Authors</strong></p></td>
+<td><p>Walter Fan</p></td>
 </tr>
-<tr class="row-odd"><td><p></p></td>
-<td><p></p></td>
-<td><p>application can still recover if programmed to handle the</p></td>
+<tr class="row-even"><td><p><strong>Status</strong></p></td>
+<td><p>WIP</p></td>
 </tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>conditions that triggered the error.</p></td>
-</tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>WARNING</p></td>
-<td><p>Logs all warnings. Typically these are non-fatal, but</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>user-visible problems are expected to happen.</p></td>
-</tr>
-<tr class="row-odd"><td><p>3</p></td>
-<td><p>FIXME</p></td>
-<td><p>Logs all “fixme” messages. Those typically that a codepath that</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>is known to be incomplete has been triggered. It may work in</p></td>
-</tr>
-<tr class="row-odd"><td><p></p></td>
-<td><p></p></td>
-<td><p>most cases, but may cause problems in specific instances.</p></td>
-</tr>
-<tr class="row-even"><td><p>4</p></td>
-<td><p>INFO</p></td>
-<td><p>Logs all informational messages. These are typically used for</p></td>
-</tr>
-<tr class="row-odd"><td><p></p></td>
-<td><p></p></td>
-<td><p>events in the system that only happen once, or are important</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>and rare enough to be logged at this level.</p></td>
-</tr>
-<tr class="row-odd"><td><p>5</p></td>
-<td><p>DEBUG</p></td>
-<td><p>Logs all debug messages. These are general debug messages for</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>events that happen only a limited number of times during an</p></td>
-</tr>
-<tr class="row-odd"><td><p></p></td>
-<td><p></p></td>
-<td><p>object’s lifetime; these include setup, teardown, change of</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>parameters, etc.</p></td>
-</tr>
-<tr class="row-odd"><td><p>6</p></td>
-<td><p>LOG</p></td>
-<td><p>Logs all log messages. These are messages for events that</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>happen repeatedly during an object’s lifetime; these include</p></td>
-</tr>
-<tr class="row-odd"><td><p></p></td>
-<td><p></p></td>
-<td><p>streaming and steady-state conditions. This is used for log</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>messages that happen on every buffer in an element for example.</p></td>
-</tr>
-<tr class="row-odd"><td><p>7</p></td>
-<td><p>TRACE</p></td>
-<td><p>Logs all trace messages. Those are message that happen very</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>very often. This is for example is each time the reference</p></td>
-</tr>
-<tr class="row-odd"><td><p></p></td>
-<td><p></p></td>
-<td><p>count of a GstMiniObject, such as a GstBuffer or GstEvent, is</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>modified.</p></td>
-</tr>
-<tr class="row-odd"><td><p>9</p></td>
-<td><p>MEMDUMP</p></td>
-<td><p>Logs all memory dump messages. This is the heaviest logging and</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p>may include dumping the content of blocks of memory.</p></td>
-</tr>
-<tr class="row-odd"><td><p>+——————————————————————————+</p></td>
-<td><p></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><strong>Updated</strong></p></td>
+<td><p>2023-11-12</p></td>
 </tr>
 </tbody>
 </table>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#caps-negotiation-basics" id="id2">Caps negotiation basics</a></p></li>
+<li><p><a class="reference internal" href="#caps-negotiation-use-cases" id="id3">Caps negotiation use cases</a></p></li>
+</ul>
+</nav>
+<section id="overview">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Caps negotiation is the act of finding a media format (GstCaps) between elements that they can handle. This process in GStreamer can in most cases find an optimal solution for the complete pipeline. In this section we explain how this works.</p>
 </section>
-<section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>How to get more debug information from GStreamer</p>
-<ul>
-<li><p>using the GST_DEBUG environment variable.</p></li>
-</ul>
-</li>
-<li><p>How to print your own debug information into the GStreamer log?</p></li>
-</ul>
-<ul class="simple">
-<li><p>with the GST_ERROR() macro and relatives.</p></li>
-</ul>
-<ul class="simple">
-<li><p>How to get pipeline graphs?</p></li>
-</ul>
-<ul class="simple">
-<li><p>with the GST_DEBUG_DUMP_DOT_DIR environment variable.</p></li>
-</ul>
+<section id="caps-negotiation-basics">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Caps negotiation basics</a><a class="headerlink" href="#caps-negotiation-basics" title="Link to this heading"></a></h2>
+<p>In GStreamer, negotiation of the media format always follows the following simple rules:</p>
+<ol class="arabic simple">
+<li><p>A downstream element suggest a format on its sinkpad and places the suggestion in the result of the CAPS query performed on the sinkpad. See also Implementing a CAPS query function.</p></li>
+<li><p>An upstream element decides on a format. It sends the selected media format downstream on its source pad with a CAPS event. Downstream elements reconfigure themselves to handle the media type in the CAPS event on the sinkpad.</p></li>
+<li><p>A downstream element can inform upstream that it would like to suggest a new format by sending a RECONFIGURE event upstream. The RECONFIGURE event simply instructs an upstream element to restart the negotiation phase. Because the element that sent out the RECONFIGURE event is now suggesting another format, the format in the pipeline might change.</p></li>
+</ol>
+<p>In addition to the CAPS and RECONFIGURE event and the CAPS query, there is an ACCEPT_CAPS query to quickly check if a certain caps can be accepted by an element.</p>
+</section>
+<section id="caps-negotiation-use-cases">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Caps negotiation use cases</a><a class="headerlink" href="#caps-negotiation-use-cases" title="Link to this heading"></a></h2>
+<p>In what follows we will look at some use cases for push-mode scheduling. The pull-mode scheduling negotiation phase is discussed in Pull-mode Caps negotiation and is actually similar as we will see.</p>
+<p>Since the sink pads only suggest formats and the source pads need to decide, the most complicated work is done in the source pads. We can identify 3 caps negotiation use cases for the source pads:</p>
+<ol class="arabic simple">
+<li><p>Fixed negotiation. An element can output one format only. See Fixed negotiation.</p></li>
+<li><p>Transform negotiation. There is a (fixed) transform between the input and output format of the element, usually based on some element property. The caps that the element will produce depend on the upstream caps and the caps that the element can accept depend on the downstream caps. See Transform negotiation.</p></li>
+<li><p>Dynamic negotiation. An element can output many formats. See Dynamic negotiation.</p></li>
+</ol>
 </section>
 </section>
 
@@ -260,8 +164,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tool.html" class="btn btn-neutral float-left" title="v4l-utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../4.plugin/index.html" class="btn btn-neutral float-right" title="3. GStreamer 插件" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="GStreamer 应用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
