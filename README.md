@@ -2,7 +2,13 @@
 
 A cookbook for gstreamer developer
 
+# Quick test
 
+```
+
+gst-launch-1.0 -v filesrc location=material/talk.mp4 ! decodebin ! videoconvert ! autovideosink
+
+```
 
 ## build
 
