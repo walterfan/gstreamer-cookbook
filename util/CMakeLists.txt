@@ -4,6 +4,7 @@ find_package(spdlog CONFIG REQUIRED)
 set(common_utils_SRCS
     time_util.cpp
     hls_util.cpp
+    gst_util.cpp
     string_util.cpp
     file_util.cpp
     logger.cpp

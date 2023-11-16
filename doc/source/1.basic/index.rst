@@ -11,6 +11,8 @@
    preliminary
    basic
    concept
+   state
+
    glib
    gobject
 
