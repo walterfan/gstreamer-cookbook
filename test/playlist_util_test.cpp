@@ -34,10 +34,15 @@ public:
         fs::create_directories(m_test_folder);
         
         for(auto num: m_numbers) {
-            std::string m3u8_file = fmt::format(fmt::runtime("playlist_{}.m3u8"), num);
+            char buffer[64] = {0};
+            sprintf(buffer, "playlist_%d.m3u8", num);
+            std::string m3u8_file = buffer;
+       
             HlsPlaylist playlist((m_test_folder/m3u8_file).string());
             for(int i=0; i<3; ++i) {
-                std::string ts_file = fmt::format(fmt::runtime("record_{}_0000{}.ts"), num, i);
+                char buffer[128] = {0};
+                sprintf(buffer, "record_%d_0000%d.ts", num, i);
+                std::string ts_file = buffer;
                 playlist.append_segment(HlsSegment(10, ts_file));
             }
             playlist.write_m3u8_file();    

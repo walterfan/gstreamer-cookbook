@@ -2,6 +2,7 @@
 #include <string>
 #include <cstdint>
 #include <sstream>
+#include <vector>
 
 bool endswith(const std::string& filename, const std::string& suffix);
 

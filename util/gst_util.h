@@ -17,12 +17,12 @@
 
 #ifndef DEBUG_TRACE
 #define DEBUG_TRACE(msg) std::cout << "[" \
-    << time(NULL) <<","<< __FILE_NAME__ << "," << __LINE__ << "]\t"<< msg << std::endl
+    << time(NULL) <<","<< __FILE__ << "," << __LINE__ << "]\t"<< msg << std::endl
 #endif
 
 #ifndef ERROR_TRACE
 #define ERROR_TRACE(msg) std::cerr << "\033[1;31m[" \
-    << time(NULL) <<","<< __FILE_NAME__ << "," << __LINE__ << "]\t"<< msg << "\033[0m" << std::endl
+    << time(NULL) <<","<< __FILE__ << "," << __LINE__ << "]\t"<< msg << "\033[0m" << std::endl
 #endif
 
 GstCaps* get_default_caps();

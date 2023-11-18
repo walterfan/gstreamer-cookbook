@@ -22,13 +22,13 @@ static uint32_t deleted_fragments = 0;
 
 std::string get_time_str(
     const std::chrono::system_clock::time_point& timePoint, 
-    const std::string& strPattern)
+    const std::string& strPrefix, const std::string& strSuffix)
 {
     auto in_time_t = std::chrono::system_clock::to_time_t(timePoint);
 
     std::stringstream ss;
     ss << std::put_time(std::localtime(&in_time_t), TIME_FMT);
-    return fmt::format(fmt::runtime(strPattern), ss.str());
+    return strPrefix + ss.str() + strSuffix;
 }
 
 static void check_pads(GstElement *element) {
@@ -107,8 +107,8 @@ std::string_view get_option(
 
 void set_element_prop(GstElement* hlssink) {
     auto now = std::chrono::system_clock::now();
-    std::string playlist_filename = get_time_str(now, "/tmp/playlist_{}.m3u8");
-    std::string record_filename = get_time_str(now, "/tmp/record_{}_%05d.ts");
+    std::string playlist_filename = get_time_str(now, "/tmp/playlist", ".m3u8");
+    std::string record_filename = get_time_str(now, "/tmp/record", "_%05d.ts");
 
     DEBUG_TRACE("playlist filename: " << playlist_filename 
         << ", record_filename=" << record_filename);

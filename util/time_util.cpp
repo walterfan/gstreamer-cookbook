@@ -38,7 +38,10 @@ std::string get_format_time(
 
     std::stringstream ss;
     ss << std::put_time(std::localtime(&in_time_t), timeFormat.c_str());
-    return fmt::format(fmt::runtime(strPattern), ss.str());
+    char buffer[1024] = {0};
+    sprintf(buffer, strPattern.c_str(), ss.str().c_str());
+    return buffer;
+
 }
 
 TimePoint get_timepoint(const std::string& strTime, const std::string& strPattern) {

@@ -3,6 +3,7 @@
 #include <string>
 #include <chrono>
 #include <tuple>
+#include <dirent.h>
 #include "string_util.h"
 #include "time_util.h"
 #include "hls_util.h"
@@ -212,7 +213,7 @@ std::chrono::milliseconds PlaylistComposer::last_scan_dir_duration() {
     auto now = sysclock::now();
     return std::chrono::duration_cast<std::chrono::milliseconds>(now - m_scan_dir_time);
 }
-
+/*
 int PlaylistComposer::find_playlists() {
     if (last_scan_dir_duration().count() < m_scan_interval_ms) {
         return m_src_playlists.size(); 
@@ -240,6 +241,55 @@ int PlaylistComposer::find_playlists() {
             }
         }
     }
+
+    if (m_src_playlists.empty()) {
+        return 0;
+    }
+    // Sort the file as timestamp in the filename
+    std::sort(m_src_playlists.begin(), m_src_playlists.end(), comparePlaylist);
+
+    return m_src_playlists.size();
+}
+*/
+int PlaylistComposer::find_playlists() {
+    if (last_scan_dir_duration().count() < m_scan_interval_ms) {
+        return m_src_playlists.size();
+    }
+
+    m_scan_dir_time = sysclock::now();
+
+    struct dirent* direntp;
+    // Open the directory
+    DIR* dirp = opendir(m_folder.c_str());
+
+    if (!dirp) {
+        std::cerr << "Directory not found." << m_folder << std::endl;
+        return -1;
+    }
+
+    while( NULL != (direntp = readdir(dirp))) {
+        std::string filename = direntp->d_name;
+        if(".." == filename || "." == filename)
+            continue;
+
+        if (startswith(filename, PLAYLIST_PREFIX)
+                        && endswith(filename, PLAYLIST_SUFFIX)) {
+            std::string strPath = m_folder;
+            strPath.append("/");
+            strPath.append(filename);
+
+            auto playlist = std::make_shared<HlsPlaylist>(strPath);
+            int read_ret = playlist->read_m3u8_file();
+            if (read_ret < 0) {
+                std::cerr << "read error of file " << filename << std::endl;
+                
+            }
+            m_src_playlists.push_back(playlist);
+        }
+    }
+
+    while((-1 == closedir(dirp)) && (errno == EINTR));
+
 
     if (m_src_playlists.empty()) {
         return 0;

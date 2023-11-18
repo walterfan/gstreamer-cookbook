@@ -90,7 +90,7 @@ TEST_F(HlsUtilTest, find_closed_bigger_value)
 
 TEST_F(HlsUtilTest, write_m3u8_file) {
     auto now = std::chrono::system_clock::now();
-    std::string filename = get_format_time(now, "snapshot_{}.m3u8");
+    std::string filename = get_format_time(now, "snapshot_%s.m3u8");
 
     HlsPlaylist playlist(filename);
     playlist.m_target_duration = 10;

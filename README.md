@@ -123,10 +123,23 @@ gst-launch-1.0 -v udpsrc  port=5000 caps=application/x-rtp \
 ## build source code
 
 ```sh
-sudo apt install libfmt-dev
-sudo apt install libspdlog-dev
-sudo apt install libyaml-cpp-dev
-sudo apt install libgtest-dev
+sudo apt-get install -y \
+gstreamer1.0-tools \
+libgstreamer1.0-dev \
+libglib2.0-dev \
+gstreamer1.0-nice \
+gstreamer1.0-plugins-bad \
+gstreamer1.0-plugins-ugly \
+gstreamer1.0-plugins-good \
+libgstreamer-plugins-bad1.0-dev \
+gstreamer1.0-plugins-base-apps \
+libfmt-dev \
+libspdlog-dev \
+libyaml-cpp-dev \
+libgtest-dev \
+libsoup2.4-dev \
+libjson-glib-dev
+
 mkdir -p build
 cd build
 cmake ..
