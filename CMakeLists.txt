@@ -22,6 +22,7 @@ elseif(UNIX)
 endif()
 
 set(GST_LIBRARIES -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0)
+set(GST_RTC_LIBS -lgstwebrtc-1.0 -lgstsdp-1.0 -lgstrtp-1.0 -lsoup-2.4 -ljson-glib-1.0)
 
 add_subdirectory(util)
 add_subdirectory(example)
