@@ -30,7 +30,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="FAQ" href="faq.html" />
+    <link rel="next" title="pipeline manipulation" href="pipeline_manipulation.html" />
     <link rel="prev" title="GStreamer 应用" href="overview.html" /> 
 </head>
 
@@ -60,25 +60,21 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Caps negotiation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Caps Negotiation 能力协商概述</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#caps-negotiation-basics">Caps negotiation basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#caps-negotiation-use-cases">Caps negotiation use cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">能力协商用例</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_manipulation.html">pipeline manipulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tool.html">v4l-utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tool.html#gst-python">Gst Python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tool.html#gstreamer-tools">GStreamer Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tool.html#pipeline">如何在命令行下建立一个pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tool.html#elementcapabilities">如何找出一个element的Capabilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tool.html#id1">如何发现一个媒体文件的内部结构</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
 </ul>
 
         </div>
@@ -123,40 +119,84 @@
 <td><p>WIP</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Updated</strong></p></td>
-<td><p>2023-11-12</p></td>
+<td><p>2023-11-19</p></td>
 </tr>
 </tbody>
 </table>
 <nav class="contents local" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
-<li><p><a class="reference internal" href="#caps-negotiation-basics" id="id2">Caps negotiation basics</a></p></li>
-<li><p><a class="reference internal" href="#caps-negotiation-use-cases" id="id3">Caps negotiation use cases</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id3">Caps Negotiation 能力协商概述</a></p></li>
+<li><p><a class="reference internal" href="#caps-negotiation-basics" id="id4">Caps negotiation basics</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id5">能力协商用例</a></p></li>
 </ul>
 </nav>
-<section id="overview">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
-<p>Caps negotiation is the act of finding a media format (GstCaps) between elements that they can handle. This process in GStreamer can in most cases find an optimal solution for the complete pipeline. In this section we explain how this works.</p>
+<section id="id1">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Caps Negotiation 能力协商概述</a><a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>Caps negotiation is the act of finding a media format (GstCaps) between elements that they can handle. This process in GStreamer can in most cases find an optimal solution for the complete pipeline.</p>
+<p>能力协商是指在两个元素之间寻找一个彼此可以处理的媒体格式，在 GStreamer 中多数情况下是为了整个管道寻找一个优化的方案。</p>
 </section>
 <section id="caps-negotiation-basics">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Caps negotiation basics</a><a class="headerlink" href="#caps-negotiation-basics" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Caps negotiation basics</a><a class="headerlink" href="#caps-negotiation-basics" title="Link to this heading"></a></h2>
 <p>In GStreamer, negotiation of the media format always follows the following simple rules:</p>
+<p>在 GStreamer 中， 媒体格式协商总是遵循下面几条简单的规则：</p>
 <ol class="arabic simple">
 <li><p>A downstream element suggest a format on its sinkpad and places the suggestion in the result of the CAPS query performed on the sinkpad. See also Implementing a CAPS query function.</p></li>
+</ol>
+<p>下游的元素在它的 sinkpad 上建议一个格式，并在 sinkpad 的 CAPS query 的结果放置这个建议</p>
+<ol class="arabic simple" start="2">
 <li><p>An upstream element decides on a format. It sends the selected media format downstream on its source pad with a CAPS event. Downstream elements reconfigure themselves to handle the media type in the CAPS event on the sinkpad.</p></li>
+</ol>
+<p>上游的元素决定用哪种格式。它由其 source pad 发送所选择的媒体格式通过 CAPS event 到下游
+下游的元素在其 sink pad 上重新配置以处理 CAPS event 中指定的媒体类型</p>
+<ol class="arabic simple" start="3">
 <li><p>A downstream element can inform upstream that it would like to suggest a new format by sending a RECONFIGURE event upstream. The RECONFIGURE event simply instructs an upstream element to restart the negotiation phase. Because the element that sent out the RECONFIGURE event is now suggesting another format, the format in the pipeline might change.</p></li>
 </ol>
+<p>下游的元素可通知上游，即通过发送一个 RECONFIGURE event 到上游元素来建议一个新的格式
+RECONFIGURE event 简单地指示上游的元素重启协商过程，因为发送 RECONFIGURE event 的元素要建议另外的格式，管道中的格式可能会改变。</p>
 <p>In addition to the CAPS and RECONFIGURE event and the CAPS query, there is an ACCEPT_CAPS query to quickly check if a certain caps can be accepted by an element.</p>
+<p>除了 CAPS 和 RECONFIGURE event, 还有 CAPS query, 还有 ACCEPT_CAPS query 来快速检查是否一个特定的 caps 可以被另外一个元素接受.</p>
 </section>
-<section id="caps-negotiation-use-cases">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Caps negotiation use cases</a><a class="headerlink" href="#caps-negotiation-use-cases" title="Link to this heading"></a></h2>
+<section id="id2">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">能力协商用例</a><a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p>In what follows we will look at some use cases for push-mode scheduling. The pull-mode scheduling negotiation phase is discussed in Pull-mode Caps negotiation and is actually similar as we will see.</p>
-<p>Since the sink pads only suggest formats and the source pads need to decide, the most complicated work is done in the source pads. We can identify 3 caps negotiation use cases for the source pads:</p>
+<p>我们先看看一些 push-mode 会商的例子, pull-mode 会商的例子后面再说，其实它们很类似。
+sink pads 只建议格式, 而 source pads 需要做决定，最复杂的工作在 source pads 中完成。
+我们可以识别 source pads 的 3 个能力协商的用例</p>
 <ol class="arabic simple">
 <li><p>Fixed negotiation. An element can output one format only. See Fixed negotiation.</p></li>
-<li><p>Transform negotiation. There is a (fixed) transform between the input and output format of the element, usually based on some element property. The caps that the element will produce depend on the upstream caps and the caps that the element can accept depend on the downstream caps. See Transform negotiation.</p></li>
-<li><p>Dynamic negotiation. An element can output many formats. See Dynamic negotiation.</p></li>
 </ol>
+<p>固定协商：一个元素只可以输出一种格式</p>
+<ol class="arabic simple" start="2">
+<li><p>Transform negotiation. There is a (fixed) transform between the input and output format of the element, usually based on some element property. The caps that the element will produce depend on the upstream caps and the caps that the element can accept depend on the downstream caps. See Transform negotiation.</p></li>
+</ol>
+<p>转换协商：元素可以有一个输入与输出格式的固定转换，通常基于一些元素属性。元素将产生的能力取决于上游的能力, 而元素可接受的能力取决于下游的能力</p>
+<ol class="arabic simple" start="3">
+<li><p>Dynamic negotiation. An element can output many formats. ß</p></li>
+</ol>
+<p>动态协商：一个元素可以输出许多格式</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           src              sink
+            |                 |
+            |  querycaps?     |
+            |----------------&gt;|
+            |     caps        |
+select caps |&lt; - - - - - - - -|
+from the    |                 |
+candidates  |                 |
+            |                 |-.
+            |  accepts?       | |
+type A      |----------------&gt;| | optional
+            |      yes        | |
+            |&lt; - - - - - - - -| |
+            |                 |-&#39;
+            |  send_event()   |
+send CAP    |----------------&gt;| Receive type A, reconfigure to
+event A     |                 | process type A.
+            |                 |
+            |  push           |
+push buffe  |----------------&gt;| Process buffer of type A
+            |                 |
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -165,7 +205,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="overview.html" class="btn btn-neutral float-left" title="GStreamer 应用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pipeline_manipulation.html" class="btn btn-neutral float-right" title="pipeline manipulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

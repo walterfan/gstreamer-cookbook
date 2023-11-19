@@ -12,3 +12,8 @@
 
 error details: gstbasetransform.c(1415): gst_base_transform_reconfigure (): /GstPipeline:rvsrp/GstDecodeBin:decodebin1/GstCapsFilter:capsfilter6:
 not negotiated                        
+
+
+## referende
+* https://gstreamer.freedesktop.org/documentation/additional/design/index.html?gi-language=c
+* https://gstreamer.freedesktop.org/documentation/additional/design/decodebin.html?gi-language=c

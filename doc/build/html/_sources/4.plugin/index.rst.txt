@@ -21,6 +21,6 @@
    splitmuxsink
    tee
    v4l2src
-   
+   v4l2sink
    webrtcbin
    webrtc_flow

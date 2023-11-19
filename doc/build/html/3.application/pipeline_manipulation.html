@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pipeline manipulation &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FAQ" href="faq.html" />
+    <link rel="prev" title="Caps negotiation" href="caps_negotiation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pipeline manipulation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core-questions">core questions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-probes">Using probes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#probe-types">Probe types:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
+      <li class="breadcrumb-item active">pipeline manipulation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/3.application/pipeline_manipulation.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pipeline-manipulation">
+<h1>pipeline manipulation<a class="headerlink" href="#pipeline-manipulation" title="Link to this heading"></a></h1>
+<section id="core-questions">
+<h2>core questions<a class="headerlink" href="#core-questions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>How to insert data from an application into a pipeline</p></li>
+<li><p>How to read data from a pipeline</p></li>
+<li><p>How to manipulate the pipeline’s speed, length and starting point</p></li>
+<li><p>How to listen to a pipeline’s data processing.</p></li>
+</ul>
+</section>
+<section id="using-probes">
+<h2>Using probes<a class="headerlink" href="#using-probes" title="Link to this heading"></a></h2>
+<p>Probing is best envisioned as having access to a pad listener. Technically, a probe is nothing more than a callback that can be attached to a pad using gst_pad_add_probe (). Conversely, you can use gst_pad_remove_probe () to remove the callback. While attached, the probe notifies you of any activity on the pad. You can define what kind of notifications you are interested in when you add the probe.</p>
+<section id="probe-types">
+<h3>Probe types:<a class="headerlink" href="#probe-types" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>A buffer is pushed or pulled.</p></li>
+</ol>
+<p>You want to specify the <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_BUFFER</span></code> when registering the probe.</p>
+<p>Because the pad can be scheduled in different ways. It is also possible to specify in what scheduling mode you are interested with the optional GST_PAD_PROBE_TYPE_PUSH and GST_PAD_PROBE_TYPE_PULL flags. You can use this probe to inspect, modify or drop the buffer. See Data probes.</p>
+<ol class="arabic simple" start="2">
+<li><p>A buffer list is pushed.</p></li>
+</ol>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_BUFFER_LIST</span></code> when registering the probe.</p>
+<ol class="arabic simple" start="3">
+<li><p>An event travels over a pad.</p></li>
+</ol>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM</span></code> and <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_EVENT_UPSTREAM</span></code> flags to select downstream and upstream events.
+There is also a convenience <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_EVENT_BOTH</span></code> to be notified of events going in both directions.
+By default, flush events do not cause a notification. You need to explicitly enable <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_EVENT_FLUSH</span></code> to receive callbacks from flushing events. Events are always only notified in push mode. You can use this type of probe to inspect, modify or drop the event.</p>
+<ol class="arabic simple" start="3">
+<li><p>A query travels over a pad.</p></li>
+</ol>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_QUERY_DOWNSTREAM</span></code> and <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_QUERY_UPSTREAM</span></code> flags to select downstream and upstream queries. The convenience <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_QUERY_BOTH</span></code> can also be used to select both directions.
+Query probes are notified twice: when the <strong>query travels upstream/downstream</strong> and when the <strong>query result is returned</strong>. You can select in what stage the callback will be called with the <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_PUSH</span></code> and <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_PULL</span></code>, respectively when the query is performed and when the query result is returned.</p>
+<p>You can use a query probe to inspect or modify queries, or even to answer them in the probe callback. To answer a query you place the result value in the query and return GST_PAD_PROBE_DROP from the callback.</p>
+<ol class="arabic simple" start="4">
+<li><p>block the data flow</p></li>
+</ol>
+<p>In addition to notifying you of dataflow, you can also ask the probe to block the dataflow when the callback returns. This is called a blocking probe and is activated by specifying the <code class="docutils literal notranslate"><span class="pre">GST_PAD_PROBE_TYPE_BLOCK</span></code> flag. You can use this flag with the other flags to only block dataflow on selected activity. A pad becomes unblocked again if you remove the probe or when you return GST_PAD_PROBE_REMOVE from the callback. You can let only the currently blocked item pass by returning GST_PAD_PROBE_PASS from the callback, it will block again on the next item.</p>
+<p>Blocking probes are used to temporarily block pads because they are unlinked or because you are going to unlink them. If the dataflow is not blocked, the pipeline would go into an error state if data is pushed on an unlinked pad. We will see how to use blocking probes to partially preroll a pipeline. See also Play a section of a media file.</p>
+<ol class="arabic simple" start="5">
+<li><p>check if not activity happening</p></li>
+</ol>
+<p>Be notified when no activity is happening on a pad. You install this probe with the GST_PAD_PROBE_TYPE_IDLE flag. You can specify GST_PAD_PROBE_TYPE_PUSH and/or GST_PAD_PROBE_TYPE_PULL to only be notified depending on the pad scheduling mode. The IDLE probe is also a blocking probe in that it will not let any data pass on the pad for as long as the IDLE probe is installed.</p>
+<p>You can use idle probes to dynamically relink a pad. We will see how to use idle probes to replace an element in the pipeline. See also Dynamically changing the pipeline.</p>
+</section>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>https://gstreamer.freedesktop.org/documentation/application-development/advanced/pipeline-manipulation.html?gi-language=c</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="caps_negotiation.html" class="btn btn-neutral float-left" title="Caps negotiation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

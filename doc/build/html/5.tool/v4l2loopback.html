@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>v4l2loopback &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SRS" href="srs.html" />
+    <link rel="prev" title="v4l-utils" href="v4l2-ctl.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. GStreamer</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-launch.html">gst-launch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v4l2-ctl.html">v4l-utils</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">v4l2loopback</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">安装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">设置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">参考</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srs.html">SRS</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">5. GStreamer</a></li>
+      <li class="breadcrumb-item active">v4l2loopback</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/5.tool/v4l2loopback.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="v4l2loopback">
+<h1>v4l2loopback<a class="headerlink" href="#v4l2loopback" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>安装<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make &amp;&amp; sudo make install
+$ sudo depmod -a
+</pre></div>
+</div>
+<p>装载模块</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">modprobe</span> <span class="n">v4l2loopback</span> <span class="n">video_nr</span><span class="o">=</span><span class="mi">12</span> <span class="n">max_buffers</span><span class="o">=</span><span class="mi">2</span> <span class="n">exclusive_caps</span><span class="o">=</span><span class="mi">1</span> <span class="n">card_label</span><span class="o">=</span><span class="s2">&quot;VirtualCam&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>设置<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">v4l2loopback</span><span class="o">-</span><span class="n">ctl</span> <span class="nb">set</span><span class="o">-</span><span class="n">timeout</span><span class="o">-</span><span class="n">image</span> <span class="o">-</span><span class="n">t</span> <span class="mi">3000</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">video0</span> <span class="n">service</span><span class="o">-</span><span class="n">unavailable</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>示例<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>play a mp4 file to a virtual camera</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 -v -m --gst-debug=5 filesrc location=talk.mp4 ! decodebin ! nvvideoconvert ! identity drop-allocation=1 ! v4l2sink device=/dev/video12 
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>send video stream from local camera</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 v4l2src ! &#39;video/x-raw, width=640, height=480, \
+framerate=30/1&#39; ! videoconvert ! x264enc pass=qual quantizer=20 \
+tune=zerolatency ! rtph264pay ! udpsink host=192.168.0.5 port=1234
+
+
+gst-launch-1.0 udpsrc port=1234 ! &quot;application/x-rtp, payload=127&quot; ! \
+rtph264depay ! avdec_h264 ! videoconvert ! xvimagesink
+
+gst-launch-1.0 udpsrc port=1234 ! &quot;application/x-rtp, payload=127&quot; ! \
+rtph264depay ! avdec_h264 ! videoconvert ! v4l2sink device=/dev/video1
+
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2>参考<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>https://github.com/umlaeute/v4l2loopback</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="v4l2-ctl.html" class="btn btn-neutral float-left" title="v4l-utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="srs.html" class="btn btn-neutral float-right" title="SRS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

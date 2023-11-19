@@ -9,6 +9,6 @@
 
    overview
    caps_negotiation
+   pipeline_manipulation
    faq
-   tool
    debug
