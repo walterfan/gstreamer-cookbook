@@ -30,8 +30,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Gstreamer Debug" href="debug.html" />
-    <link rel="prev" title="FAQ" href="faq.html" /> 
+    <link rel="next" title="v4l2loopback" href="v4l2loopback.html" />
+    <link rel="prev" title="gst-launch" href="gst-launch.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,23 +57,16 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
-<li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. GStreamer</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-launch.html">gst-launch</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">v4l-utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gst-python">Gst Python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gstreamer-tools">GStreamer Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pipeline">如何在命令行下建立一个pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#elementcapabilities">如何找出一个element的Capabilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">如何发现一个媒体文件的内部结构</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v4l2loopback.html">v4l2loopback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srs.html">SRS</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
 </ul>
 
         </div>
@@ -90,10 +83,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
+          <li class="breadcrumb-item"><a href="index.html">5. GStreamer</a></li>
       <li class="breadcrumb-item active">v4l-utils</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/3.application/tool.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/5.tool/v4l2-ctl.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -152,48 +145,13 @@
 </pre></div>
 </div>
 </section>
-<section id="gst-python">
-<h1>Gst Python<a class="headerlink" href="#gst-python" title="Link to this heading"></a></h1>
-<p>https://gist.github.com/liviaerxin/9934a5780f5d3fe5402d5986fc32d070</p>
-</section>
-<section id="gstreamer-tools">
-<h1>GStreamer Tools<a class="headerlink" href="#gstreamer-tools" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p>gst-device-monitor-1.0</p></li>
-<li><p>gst-inspect-1.0</p></li>
-<li><p>gst-play-1.0</p></li>
-<li><p>gst-typefind-1.0</p></li>
-<li><p>gst-validate-launcher</p></li>
-<li><p>gst-validate-rtsp-server-1.0</p></li>
-<li><p>gst-discoverer-1.0</p></li>
-<li><p>gst-launch-1.0</p></li>
-<li><p>gst-shell</p></li>
-<li><p>gst-validate-1.0</p></li>
-<li><p>gst-validate-media-check-1.0</p></li>
-<li><p>gst-validate-transcoding-1.0</p></li>
-</ul>
-</section>
-<section id="pipeline">
-<h1>如何在命令行下建立一个pipeline<a class="headerlink" href="#pipeline" title="Link to this heading"></a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 -v v4l2src device=/dev/video0 ! &#39;video/x-raw,width=640,height=480,framerate=15/1&#39; ! fakesink
-
-gst-launch-1.0 -vv v4l2src device=/dev/video0 num-buffers=1 ! &quot;video/x-raw,format=YUY2,width=1280,height=720&quot; ! jpegenc ! filesink location=filename.jpg
-</pre></div>
-</div>
-</section>
-<section id="elementcapabilities">
-<h1>如何找出一个element的Capabilities<a class="headerlink" href="#elementcapabilities" title="Link to this heading"></a></h1>
-</section>
-<section id="id1">
-<h1>如何发现一个媒体文件的内部结构<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
-</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="faq.html" class="btn btn-neutral float-left" title="FAQ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="debug.html" class="btn btn-neutral float-right" title="Gstreamer Debug" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gst-launch.html" class="btn btn-neutral float-left" title="gst-launch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="v4l2loopback.html" class="btn btn-neutral float-right" title="v4l2loopback" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
