@@ -1,6 +1,6 @@
 # GStreamer Cookbook
 
-A cookbook for gstreamer developer
+A cookbook for gstreamer developer - [GStreamer cookbook](https://walterfan.github.io/gstreamer-cookbook/)
 
 # Quick test
 
