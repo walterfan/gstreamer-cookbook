@@ -5,6 +5,7 @@ int PipelineController::init(int argc, char *argv[]) {
 }
 
 int PipelineController::clean() {
+    //don't forget gst_object_unref (GST_OBJECT (element)) if not use it
     return 0;
 }
 
@@ -20,10 +21,10 @@ GstElement* PipelineController::create_element(const std::string& factory,
     const std::string& name) {
     GstElement* element = gst_element_factory_make (factory.c_str(), name.c_str());
     if (!element) {
-        g_print ("Failed to create element of type 'fakesrc'\n");
+        g_print ("Failed to create element %s of type %s\n", name.c_str(), factory.c_str());
         return nullptr;
     }
-    //don't forget gst_object_unref (GST_OBJECT (element)) if not use it
+    m_elements.emplace(std::make_pair(name, e));
     return element;
 }
 
