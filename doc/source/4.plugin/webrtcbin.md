@@ -333,7 +333,7 @@ Received data channel message: Hi! (from browser)
 
 * [webrtcbin demo](https://gitlab.freedesktop.org/gstreamer/gst-examples/-/tree/1.18/webrtc)
 * [webrtcbin example](https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/-/tree/1.18/tests/examples/webrtc)
-
+* https://git.aweirdimagination.net/perelman/minimal-webrtc
 * https://gstreamer.freedesktop.org/documentation/webrtc/index.html?gi-language=c
 * https://blogs.igalia.com/llepage/webrtc-gstreamer-and-html5-part-1
 * https://blogs.igalia.com/llepage/webrtc-gstreamer-and-html5-part-2

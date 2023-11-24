@@ -24,7 +24,7 @@ GstElement* PipelineController::create_element(const std::string& factory,
         g_print ("Failed to create element %s of type %s\n", name.c_str(), factory.c_str());
         return nullptr;
     }
-    m_elements.emplace(std::make_pair(name, e));
+    m_elements.emplace(std::make_pair(name, element));
     return element;
 }
 
