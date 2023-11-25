@@ -13,6 +13,12 @@ $ sudo depmod -a
 sudo modprobe v4l2loopback video_nr=12 max_buffers=2 exclusive_caps=1 card_label="VirtualCam"
 ```
 
+卸载模块
+
+```
+sudo modprobe -r v4l2loopback
+```
+
 ## 设置
 
 ```
@@ -45,3 +51,4 @@ rtph264depay ! avdec_h264 ! videoconvert ! v4l2sink device=/dev/video1
 
 ## 参考
 * https://github.com/umlaeute/v4l2loopback
+* https://aweirdimagination.net/2020/07/12/virtual-web-cam-using-gstreamer-and-v4l2loopback/

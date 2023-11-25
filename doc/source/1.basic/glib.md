@@ -7,6 +7,21 @@
 GLib is a general-purpose, portable utility library, which provides many useful data types, macros, type conversions, string utilities, file utilities, a mainloop abstraction, and so on.
 
 
+* GObject instantiation
+
+* GObject properties (set/get)
+
+* GObject casting
+
+* GObject referencing/dereferencing
+
+* glib memory management
+
+* glib signals and callbacks
+
+* glib main loop
+
+
 ## g_signal_connect
 
 将信号绑定于回调函数

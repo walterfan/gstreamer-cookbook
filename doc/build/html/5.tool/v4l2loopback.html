@@ -112,6 +112,10 @@ $ sudo depmod -a
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">modprobe</span> <span class="n">v4l2loopback</span> <span class="n">video_nr</span><span class="o">=</span><span class="mi">12</span> <span class="n">max_buffers</span><span class="o">=</span><span class="mi">2</span> <span class="n">exclusive_caps</span><span class="o">=</span><span class="mi">1</span> <span class="n">card_label</span><span class="o">=</span><span class="s2">&quot;VirtualCam&quot;</span>
 </pre></div>
 </div>
+<p>卸载模块</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">modprobe</span> <span class="o">-</span><span class="n">r</span> <span class="n">v4l2loopback</span>
+</pre></div>
+</div>
 </section>
 <section id="id2">
 <h2>设置<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
@@ -148,6 +152,7 @@ rtph264depay ! avdec_h264 ! videoconvert ! v4l2sink device=/dev/video1
 <h2>参考<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>https://github.com/umlaeute/v4l2loopback</p></li>
+<li><p>https://aweirdimagination.net/2020/07/12/virtual-web-cam-using-gstreamer-and-v4l2loopback/</p></li>
 </ul>
 </section>
 </section>

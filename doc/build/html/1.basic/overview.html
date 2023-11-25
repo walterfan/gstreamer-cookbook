@@ -30,7 +30,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="GStreamer 预备知识" href="preliminary.html" />
+    <link rel="next" title="GStreamer 设计原则" href="design_principles.html" />
     <link rel="prev" title="1. GStreamer 基础" href="index.html" /> 
 </head>
 
@@ -57,9 +57,14 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">GStreamer 概论</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#deepstream">DeepStream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">GStreamer 插件可被分类为</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">GStreamer 被封装成</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="design_principles.html">GStreamer 设计原则</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preliminary.html">GStreamer 预备知识</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic.html">GStreamer 基础知识</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concept.html">GStreamer 基本概念</a></li>
@@ -117,29 +122,61 @@
 <td><p>WIP as draft</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Updated</strong></p></td>
-<td><p>2023-11-19</p></td>
+<td><p>2023-11-25</p></td>
 </tr>
 </tbody>
 </table>
 <nav class="contents local" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#deepstream" id="id1">DeepStream</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id4">GStreamer 插件可被分类为</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id5">GStreamer 被封装成</a></p></li>
+</ul>
+</li>
 </ul>
 </nav>
-<section id="deepstream">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">DeepStream</a><a class="headerlink" href="#deepstream" title="Link to this heading"></a></h2>
-<p>DeepStream是NVIDIA基于GStreamer的插件系统开发的，继承了GStreamer的特性。DeepSream提供超过15种以上的GStreamer插件模块，以此建造一个高效的视频分析管道（Pipeline）。</p>
-<p>NVIDIA将TensorRT, cuDNN，CUDA, Video SDK等以插件的形式集成进GStreamer当中，以管道的形式进行智能视频分析应用的开发，将各个功能封装成组件，通过将对应功能的组件插入管道中，启动管道使数据按照要求在管道内流动，数据经过解析、编解码、预处理、算法处理后进行图像渲染或者发送到云端。</p>
-<p>例如</p>
+<section id="overview">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>GStreamer 是一个用于创建流媒体应用程序的框架。 基本设计来自俄勒冈研究生院的视频管道 video pipline, 以及 DirectShow 的一些想法。</p>
+<p>GStreamer的开发框架使得编写任何类型的流媒体应用程序成为可能。 GStreamer 框架旨在使编写处理音频或视频或两者的应用程序变得容易。 它不限于音频和视频, 可以处理任何类型的数据流。 管道设计的开销几乎不高于所应用的过滤器引起的开销。 这使得 GStreamer 成为设计对延迟有很高要求的高端音频应用程序的良好框架。</p>
+<p>GStreamer 最明显的用途之一是用它来构建媒体播放器。 GStreamer 已经包含用于构建媒体播放器的组件, 该播放器可以支持多种格式, 包括 MP3、Ogg/Vorbis、MPEG-1/2、AVI、Quicktime、mod 等。 然而, GStreamer 不仅仅是另一个媒体播放器。 它的主要优点是可插入组件可以混合并匹配到任意管道中, 以便可以编写成熟的视频或音频编辑应用程序。</p>
+<p>该框架基于提供各种编解码器和其他功能的插件。 插件可以链接并排列在管道中。 该管道定义了数据的流向。 还可以使用 GUI 编辑器编辑管道并将其保存为 XML, 以便可以轻松地创建管道库。</p>
+<p>GStreamer 的核心功能是为插件、数据流和媒体类型处理/协商提供框架。 它还提供了一个 API 来使用各种插件编写应用程序。</p>
+<p>具体来说, GStreamer 提供</p>
 <ul class="simple">
-<li><p>nvv4l2decoder 用于调用GPU硬件加速解码h264文件 （解码帧的格式是NV12（YUV420））</p></li>
-<li><p>nvstreammux 用于把输入按照参数处理成一系列的视频帧</p></li>
-<li><p>nvinfer 通过推理的配置文件对输入图像进行推理</p></li>
-<li><p>nvvideoconvert 视频颜色格式转换</p></li>
-<li><p>nvdsosd 处理RGBA buffer 绘制ROI等 识别对象的Bounding Box，边框， 以及识别对象的文字标签（字体、颜色、标示框）</p></li>
-<li><p>nvegltransform 转换成 EGLImage instance 给nveglglessink使用</p></li>
-<li><p>nveglglessink 渲染</p></li>
+<li><p>一套用于多媒体应用程序的 API</p></li>
+<li><p>一套插件架构</p></li>
+<li><p>一套管道架构</p></li>
+<li><p>一套媒体类型处理和协商的机制</p></li>
+<li><p>一套同步的机制</p></li>
+<li><p>超过 250 个以上的插件提供了上千个元素</p></li>
+<li><p>一套命令行工具</p></li>
 </ul>
+<section id="id1">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">GStreamer 插件可被分类为</a><a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>协议处理 protocols handling</p></li>
+<li><p>媒体源: 音频和视频源 (涉及协议插件)</p></li>
+<li><p>媒体格式: 解析器、格式化器、复用器、解复用器、元数据、字幕</p></li>
+<li><p>编解码器: 编码器和解码器</p></li>
+<li><p>滤波器: 转换器、混音器、效果器…</p></li>
+<li><p>接收器: 用于音频和视频 (涉及协议插件)</p></li>
+</ol>
+<img alt="../_images/gstreamer-overview.png" src="../_images/gstreamer-overview.png" />
+</section>
+<section id="id2">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">GStreamer 被封装成</a><a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>gstreamer: 核心包</p></li>
+<li><p>gst-plugins-base: 一组重要的示例元素</p></li>
+<li><p>gst-plugins-good: LGPL下的一组优质插件</p></li>
+<li><p>gst-plugins-ugly: 一组可能会造成分发问题的优质插件</p></li>
+<li><p>gst-plugins-bad: 一组需要更高质量的插件</p></li>
+<li><p>gst-libav: 一组封装libav进行解码和编码的插件</p></li>
+<li><p>其他一些包</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -148,7 +185,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="1. GStreamer 基础" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="preliminary.html" class="btn btn-neutral float-right" title="GStreamer 预备知识" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="design_principles.html" class="btn btn-neutral float-right" title="GStreamer 设计原则" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

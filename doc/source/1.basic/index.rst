@@ -8,6 +8,7 @@
    :caption: Contents:
 
    overview
+   design_principles
    preliminary
    basic
    concept
