@@ -160,7 +160,7 @@ docker run --rm --env CANDIDATE=$CANDIDATE \
 </pre></div>
 </div>
 <p>在我的 macbook 上，通过以下命令从摄像头中捕获视频流，发送到 SRS 上</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 -v -m avfvideosrc device-index=0 ! &quot;video/x-raw,width=1280,height=720&quot; ! queue ! videoconvert ! x264enc tune=zerolatency ! flvmux streamable=true ! rtmpsink location=&#39;rtmp://192.168.0.104:1935/live/macvideo&#39;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 -v -m avfvideosrc device-index=0 ! &quot;video/x-raw,width=1280,height=720&quot; ! queue ! videoconvert ! x264enc tune=zerolatency ! flvmux streamable=true ! rtmpsink location=&#39;rtmp://192.168.104.214:1935/live/macvideo&#39;
 </pre></div>
 </div>
 <p>note: x264enc parameters: speed-preset=superfast tune=zerolatency psy-tune=grain sync-lookahead=5 bitrate=480 key-int-max=50 ref=2</p>

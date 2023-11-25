@@ -61,7 +61,7 @@ gst-launch-1.0 -v -e videotestsrc ! clockoverlay ! queue ! videoconvert ! x264en
 在我的 macbook 上，通过以下命令从摄像头中捕获视频流，发送到 SRS 上
 
 ```
-gst-launch-1.0 -v -m avfvideosrc device-index=0 ! "video/x-raw,width=1280,height=720" ! queue ! videoconvert ! x264enc tune=zerolatency ! flvmux streamable=true ! rtmpsink location='rtmp://192.168.0.104:1935/live/macvideo'
+gst-launch-1.0 -v -m avfvideosrc device-index=0 ! "video/x-raw,width=1280,height=720" ! queue ! videoconvert ! x264enc tune=zerolatency ! flvmux streamable=true ! rtmpsink location='rtmp://192.168.104.214:1935/live/macvideo'
 ```
 
 note: x264enc parameters: speed-preset=superfast tune=zerolatency psy-tune=grain sync-lookahead=5 bitrate=480 key-int-max=50 ref=2 

@@ -10,5 +10,6 @@
    overview
    caps_negotiation
    pipeline_manipulation
+   deepstream
    faq
    debug
