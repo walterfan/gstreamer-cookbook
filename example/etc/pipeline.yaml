@@ -1,0 +1,47 @@
+pipelines:
+  pipeline_jetson:
+    - v4l2src
+    - capsfilter
+    - nvv4l2decoder
+    - nvvideoconvert
+    - nvv4l2h264enc
+    - rtph264pay
+    - capsfilter
+    - webrtcbin
+
+  pipeline_mp4_rtmp:
+    - filesrc location=material/talk.mp4 
+    - decodebin 
+    - videoconvert 
+    - identity drop-allocation=1 
+    - x264enc speed-preset=5 tune=4 byte-stream=true threads=1 key-int-max=15 intra-refresh=true
+    - flvmux streamable=true
+    - rtmpsink location="rtmp://192.168.104.214:1935/live/waltertest"
+
+  pipeline_rtp_sender:
+    - v4l2src device=/dev/video1
+    - decodebin
+    - videoconvert 
+    - omxh264enc video/x-h264,stream-format=byte-stream
+    - rtph264pay 
+    - udpsink host=192.168.104.214 port=5000
+
+  pipeline_rtp_receiver:
+    - udpsrc  port=5000 caps=application/x-rtp
+    - rtph264depay
+    - avdec_h264
+    - autovideosink
+
+  pipeline_test:
+    - videotestsrc video/x-raw, format=BGR
+    - autovideoconvert video/x-raw, width=640, height=480, framerate=1/2
+    - ximagesink
+
+  pipeline_test_rtmp:
+    - videotestsrc 
+    - clockoverlay 
+    - queue 
+    - videoconvert 
+    - x264enc speed-preset=5 tune=4
+    - flvmux streamable=true 
+    - rtmpsink location='rtmp://192.168.0.104:1935/live/waltertest'

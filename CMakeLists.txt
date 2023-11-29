@@ -3,11 +3,7 @@ project(gstreamer_cookbook)
 
 set(CMAKE_CXX_STANDARD 20)
 
-#include(FindPkgConfig)# equals `pkg-config --cflags --libs gstreamer-1.0`
-#pkg_check_modules(GST   REQUIRED gstreamer-1.0)
-#pkg_check_modules(GSTAPP REQUIRED gstreamer-app-1.0)
 find_package(PkgConfig REQUIRED)
-
 
 if (APPLE)
     set(GST_INCLUDE_DIRS /Library/Frameworks/GStreamer.framework/Headers)
@@ -20,6 +16,19 @@ elseif(UNIX)
     include_directories(${GST_INCLUDE_DIRS})
     link_directories(${GST_LIBRARY_DIRS})
 endif()
+
+
+find_package(fmt CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+find_package(yaml-cpp CONFIG REQUIRED)
+    
+if(NOT spdlog_FOUND)
+    message(WARNING "spdlog not found!")
+else()
+    message(STATUS "Found spdlog on: " ${spdlog_DIR})
+endif(NOT spdlog_FOUND)
+
+include_directories(${CMAKE_SOURCE_DIR}/util)
 
 set(GST_LIBRARIES -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0)
 set(GST_RTC_LIBS -lgstwebrtc-1.0 -lgstsdp-1.0 -lgstrtp-1.0 -lsoup-2.4 -ljson-glib-1.0)

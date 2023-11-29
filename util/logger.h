@@ -46,7 +46,7 @@ private:
     std::map<std::string, std::shared_ptr<spdlog::logger>> loggers_;
 };
 
-#define DEBUG_TRACE(...) SPDLOG_LOGGER_DEBUG(Logger::get_instance().get_logger(), __VA_ARGS__)
-#define INFO_TRACE(...) SPDLOG_LOGGER_INFO(Logger::get_instance().get_logger(), __VA_ARGS__)
-#define WARN_TRACE(...) SPDLOG_LOGGER_WARN(Logger::get_instance().get_logger(), __VA_ARGS__)
-#define ERROR_TRACE(...) SPDLOG_LOGGER_ERROR(Logger::get_instance().get_logger(), __VA_ARGS__)
+#define DEBUG_LOG(...) SPDLOG_LOGGER_DEBUG(Logger::get_instance().get_logger(), __VA_ARGS__)
+#define INFO_LOG(...) SPDLOG_LOGGER_INFO(Logger::get_instance().get_logger(), __VA_ARGS__)
+#define WARN_LOG(...) SPDLOG_LOGGER_WARN(Logger::get_instance().get_logger(), __VA_ARGS__)
+#define ERROR_LOG(...) SPDLOG_LOGGER_ERROR(Logger::get_instance().get_logger(), __VA_ARGS__)

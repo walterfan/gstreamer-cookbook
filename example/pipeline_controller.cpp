@@ -11,55 +11,14 @@
 #include <glib.h>
 #include <filesystem>
 #include "time_util.h"
+#include "gst_util.h"
 #include "pipeline_controller.h"
 
 namespace fs = std::filesystem;
 
-#define PAD_NAME "video"
-#define TIME_FMT "%Y%m%d%H%M%S"
-#define DEBUG_TRACE(msg) std::cout << "[" \
-    << time(NULL) <<","<< __FILE_NAME__ << "," << __LINE__ << "]\t"<< msg << std::endl
-
-
 static const GstPadProbeType pad_probe_type = GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM;
 
 static uint32_t deleted_fragments = 0;
-
-bool has_option(
-    const std::vector<std::string_view>& args, 
-    const std::string_view& option_name) {
-    for (auto it = args.begin(), end = args.end(); it != end; ++it) {
-        if (*it == option_name)
-            return true;
-    }
-    
-    return false;
-}
-
-std::string_view get_option(
-    const std::vector<std::string_view>& args, 
-    const std::string_view& option_name) {
-    for (auto it = args.begin(), end = args.end(); it != end; ++it) {
-        if (*it == option_name)
-            if (it + 1 != end)
-                return *(it + 1);
-    }
-    
-    return "";
-}
-
-static void check_pads(GstElement *element) {
-    GstIterator *iter = gst_element_iterate_pads(element);
-    GValue *elem;
-    
-    while (gst_iterator_next(iter, elem) == GST_ITERATOR_OK) {
-        gchar * strVal = g_strdup_value_contents (elem);
-        DEBUG_TRACE("pad: " << strVal);
-        free (strVal);
-    }
-    gst_iterator_free(iter);
-}
-
 
 static gboolean delete_fragment_callback(GstElement *element, const gchar *uri, gpointer user_data) {
     // Your custom logic for handling fragment deletion here.
@@ -141,7 +100,7 @@ int PipelineController::pause() {
     DEBUG_TRACE("pause playing...");
     m_probe_id = 0;
     // Get the source pad of hlssink
-    GstPad *hlssink_pad = gst_element_get_static_pad(m_target_element, PAD_NAME);
+    GstPad *hlssink_pad = gst_element_get_static_pad(m_target_element, VIDEO_PAD_NAME);
     if(hlssink_pad) {
         DEBUG_TRACE("to block stream");
         m_probe_id = gst_pad_add_probe(hlssink_pad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM, block_downstream_probe, NULL, NULL);
@@ -156,7 +115,7 @@ int PipelineController::resume() {
         DEBUG_TRACE("have not paused");
         return -1;
     }
-    GstPad *hlssink_pad = gst_element_get_static_pad(m_target_element, PAD_NAME);
+    GstPad *hlssink_pad = gst_element_get_static_pad(m_target_element, VIDEO_PAD_NAME);
     if(hlssink_pad) {
         DEBUG_TRACE("to unblock stream");
         gst_pad_remove_probe(hlssink_pad, m_probe_id);
