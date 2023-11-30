@@ -44,4 +44,4 @@ pipelines:
     - videoconvert 
     - x264enc speed-preset=5 tune=4
     - flvmux streamable=true 
-    - rtmpsink location='rtmp://192.168.0.104:1935/live/waltertest'
+    - rtmpsink location=rtmp://192.168.0.106:1935/live/waltertest

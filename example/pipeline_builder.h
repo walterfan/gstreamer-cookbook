@@ -57,6 +57,15 @@ private:
     bool link_elements();
     bool unlink_elements();
 
+    static gboolean on_bus_msg(GstBus* bus, GstMessage* msg, gpointer data);
+    static void on_pad_added(GstElement* element, GstPad* pad, gpointer data);
+
+    void on_bus_msg_eos();
+    void on_bus_msg_error(GstMessage* msg);
+    void on_bus_msg_warning(GstMessage* msg);
+    void on_state_changed(GstMessage* msg);
+    void on_stream_started(GstMessage* msg);
+
     std::map<std::string, GstElement*> m_elements;
     GstBus* m_bus;
     GMainLoop* m_loop;

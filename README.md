@@ -33,6 +33,29 @@ gstreamer1.0-plugins-base-apps
 
 ```
 
+## Example
+* start SRS by docker
+```
+export CANDIDATE="192.168.0.106"
+sudo docker run --rm --env CANDIDATE=$CANDIDATE \
+  -p 1935:1935 -p 8080:8080 -p 1985:1985 -p 8000:8000/udp \
+  registry.cn-hangzhou.aliyuncs.com/ossrs/srs:5 \
+  objs/srs -c conf/rtmp2rtc.conf
+```
+
+* push local video stream from mp4 to rtmp
+
+```
+gst-launch-1.0 -vv filesrc location=material/talk.mp4 ! decodebin ! videoconvert ! identity drop-allocation=1 ! x264enc tune=zerolatency ! flvmux streamable=true ! rtmpsink location='rtmp://192.168.0.106:1935/live/waltertest'
+```
+
+* or run the C++ program
+
+```
+./build-with-vcpkg.sh
+./build/example/gst-pipeline-verify -f ./example/etc/pipeline.yaml -p pipeline_test_rtmp
+```
+
 ### use vcpkg
 
 * if you have not install vcpkg, please install it first

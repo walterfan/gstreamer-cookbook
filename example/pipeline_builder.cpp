@@ -7,7 +7,6 @@ using namespace std;
 
 static const std::string DELIMITER = " ";
 
-
 ElementConfig::ElementConfig(const std::string& desc) {
     parse_desc(desc);
 }
@@ -96,9 +95,11 @@ int PipelineBuilder::init(int argc, char *argv[]) {
 
     m_pipeline = gst_pipeline_new(m_pipeline_name.c_str());
     m_bus = gst_element_get_bus(m_pipeline);
-    
+    gst_bus_add_watch(m_bus, on_bus_msg, this);
+    //use the global-default main context, and not running
+    m_loop = g_main_loop_new(NULL, FALSE);
+
     m_pipelie_config = std::make_shared<PipelineConfig>(it->first, it->second);
-    
     DEBUG_TRACE("PipelineBuilder init success for pipeline " << m_pipeline_name);
     return 0;
 }
@@ -134,6 +135,7 @@ int PipelineBuilder::start() {
 
     DEBUG_TRACE("start playing...");
     gst_element_set_state(m_pipeline, GST_STATE_PLAYING);
+    g_main_loop_run(m_loop);
     return 0;
 }
 
@@ -230,10 +232,16 @@ bool PipelineBuilder::link_elements() {
 
     while( it != elements_configs.end()) {
         GstElement* e1 = get_element((*it)->m_name);
+        //for decodebin, cannot link directly
+        if ((*it)->m_factory == "decodebin") {
+            g_signal_connect(e1, "pad-added", G_CALLBACK(on_pad_added), this);
+        }
+
         ++it;
         if (it == elements_configs.end()) {
             break;
         }
+        
         GstElement* e2 = get_element((*it)->m_name);
         if (e1 != nullptr && e2 != nullptr) {      
             gchar* e1n = gst_element_get_name(e1);
@@ -276,4 +284,82 @@ bool PipelineBuilder::unlink_elements() {
     }
 
     return false;
+}
+
+
+gboolean PipelineBuilder::on_bus_msg(GstBus* bus, GstMessage* msg, gpointer data) {
+    
+    DEBUG_TRACE("on_bus_msg: type=" << GST_MESSAGE_TYPE(msg)
+        << ", type name=" << GST_MESSAGE_TYPE_NAME(msg)
+        << ", source="  << GST_OBJECT_NAME(msg->src));
+
+    PipelineBuilder* builder = (PipelineBuilder*)data;
+
+    switch(GST_MESSAGE_TYPE(msg)) {
+        case GST_MESSAGE_EOS:
+            builder->on_bus_msg_eos();
+            break;
+        case GST_MESSAGE_ERROR:
+            builder->on_bus_msg_error(msg);
+            break;
+        case GST_MESSAGE_WARNING:
+            builder->on_bus_msg_warning(msg);
+            break;
+        case GST_MESSAGE_STATE_CHANGED:
+            builder->on_state_changed(msg);
+            break;
+        case GST_MESSAGE_STREAM_START:
+            builder->on_stream_started(msg);
+            break;
+        default:
+            break;
+    }
+    return TRUE;
+}
+
+
+void PipelineBuilder::on_pad_added(GstElement* element, GstPad* pad, gpointer data) {
+    DEBUG_TRACE("on_pad_added:");
+}
+
+void PipelineBuilder::on_bus_msg_eos() {
+    ERROR_TRACE("on_bus_msg_eos:");
+    g_main_loop_quit(m_loop);
+}
+
+void PipelineBuilder::on_bus_msg_error(GstMessage* msg) {
+    ERROR_TRACE("on_bus_msg_error:");
+    gchar* debug = nullptr;
+    GError* error = nullptr;
+    gst_message_parse_error(msg, &error, &debug);
+    DEBUG_TRACE("there is error " << error->message 
+        << " for " << GST_OBJECT_NAME(msg->src));
+    if (debug) {
+        ERROR_TRACE("error details: " << debug);
+    }
+
+    g_free(debug);
+    g_error_free(error);
+ 
+    g_main_loop_quit(m_loop);
+}
+
+void PipelineBuilder::on_bus_msg_warning(GstMessage* msg) {
+    ERROR_TRACE("on_bus_msg_warning:");
+}
+
+void PipelineBuilder::on_state_changed(GstMessage* msg) {
+
+    GstState old_state, new_state, pending_state;
+    gst_message_parse_state_changed (msg, &old_state, &new_state, &pending_state);
+
+    DEBUG_TRACE("--> state changed from " 
+                << gst_element_state_get_name (old_state)
+                << " to " << gst_element_state_get_name(new_state)
+                << " for " << GST_OBJECT_NAME(msg->src));
+ 
+}
+
+void PipelineBuilder::on_stream_started(GstMessage* msg) {
+    DEBUG_TRACE("on_stream_started:");
 }

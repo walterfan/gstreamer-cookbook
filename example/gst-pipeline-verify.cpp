@@ -7,8 +7,8 @@ int main(int argc, char *argv[]) {
     auto verifier = std::make_unique<PipelineBuilder>();
     int ret = verifier->init(argc, argv);
     if (ret < 0) {
-        DEBUG_TRACE("initialize failed " << ret 
-            << "e.g.  ./build/example/gst-pipeline-verify -f ./example/etc/pipeline.yaml -p pipeline_test_rtmp" );
+        DEBUG_TRACE("initialize failed:" << ret 
+            << "\ne.g.  ./build/example/gst-pipeline-verify -f ./example/etc/pipeline.yaml -p pipeline_test_rtmp" );
         return ret;
     }
     verifier->build();
