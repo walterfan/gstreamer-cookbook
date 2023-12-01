@@ -46,7 +46,11 @@ sudo docker run --rm --env CANDIDATE=$CANDIDATE \
 * push local video stream from mp4 to rtmp
 
 ```
-gst-launch-1.0 -vv filesrc location=material/talk.mp4 ! decodebin ! videoconvert ! identity drop-allocation=1 ! x264enc tune=zerolatency ! flvmux streamable=true ! rtmpsink location='rtmp://192.168.0.106:1935/live/waltertest'
+gst-launch-1.0 -vv filesrc location=material/talk.mp4 \
+! decodebin \
+! videoconvert ! identity drop-allocation=1 \
+! x264enc tune=zerolatency ! flvmux streamable=true \
+! rtmpsink location='rtmp://192.168.0.106:1935/live/waltertest'
 ```
 
 * or run the C++ program
@@ -73,24 +77,25 @@ cd vcpkg
 * build with dependencies by vcpkg
 
 ```
-export VCPKG_HOME=~/workspace/cpp/vcpkg 
-mkdir -p build
-cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_HOME/scripts/buildsystems/vcpkg.cmake
-make
+./build-with-vcpkg.sh
 ```
 
 ### use conan
 
 * if you have not install conan, please install it first
-
 ```
-mkdir -p build
-conan install . --output-folder=build --build=missing
-cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE=build/build/Release/generators/conan_toolchain.cmake
-make
+python3 -m venv venv
+source venv/bin/activate
+pip install conan
+conan profile detect --force
+```
 
+* create [conanfile.txt](conanfile.txt)
+  
+* then run the following script to build
+  
+```
+./build-with-conan.sh
 
 ```
 
