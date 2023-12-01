@@ -2,7 +2,7 @@
 
 A cookbook for gstreamer developer - [GStreamer cookbook](https://walterfan.github.io/gstreamer-cookbook/)
 
-# Quick test
+## Quick test
 
 ```
 
@@ -11,9 +11,7 @@ gst-launch-1.0 -v -e filesrc location=material/talk.mp4 \
 
 ```
 
-## build
-
-### Environment
+## Environment
 
 You can build a docker image by `build-docker.sh`
 and start it by `start-docker.sh`
@@ -60,6 +58,7 @@ gst-launch-1.0 -vv filesrc location=material/talk.mp4 \
 ./build/example/gst-pipeline-verify -f ./example/etc/pipeline.yaml -p pipeline_test_rtmp
 ```
 
+## build source code
 ### use vcpkg
 
 * if you have not install vcpkg, please install it first
@@ -90,7 +89,7 @@ pip install conan
 conan profile detect --force
 ```
 
-* create [conanfile.txt](conanfile.txt)
+* create or update [conanfile.txt](conanfile.txt) for dependencies
   
 * then run the following script to build
   
