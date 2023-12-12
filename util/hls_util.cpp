@@ -37,6 +37,17 @@ uint32_t HlsSegment::get_sequence() {
     return 0;
 }
 
+int HlsSegment::update_uri(uint32_t seq) {
+    size_t end_pos = m_uri.rfind('_');
+    
+    if (end_pos !=std::string::npos) {
+        std::string seqnum =  "00000" + std::to_string(seq);
+        m_uri = m_uri.substr(0, end_pos + 1) + seqnum.substr(seqnum.size() - 5) + ".ts"; 
+        return 0;  
+    }
+    return -1;
+}
+
 HlsPlaylist::HlsPlaylist(const std::string& filename)
 : m_filename(filename)
 , m_media_sequence(0)
@@ -269,8 +280,8 @@ int PlaylistComposer::find_begin_pos() {
             return i -  1;
         }
     }
-
-    return i;
+    //return the pos of last element
+    return i-1;
 }
 
 int PlaylistComposer::find_end_pos() {
@@ -361,8 +372,22 @@ int PlaylistComposer::build_playlist() {
     std::string filename = get_format_time(m_begin_time, "playlist_{}.m3u8");
     m_snapshot_playlist = std::make_shared<HlsPlaylist>(filename);
     
-    copy_and_sort_segments();
+    int ret = copy_and_sort_segments();
+    if (ret < 0) {
+        std::cerr << "copy_and_sort_segments error" << std::endl;
+        return ret;
+    }
+    
+    ret = update_playlist_info();
+    if (ret < 0) {
+        std::cerr << "update_playlist_info error" << std::endl;
+        return ret;
+    }
+    return 0;
+}
 
+int PlaylistComposer::update_playlist_info()
+{
     m_snapshot_playlist->set_target_duration(10);
     //set media sequence as the fist segment name
     if (m_snapshot_playlist->get_segments().empty()) {
@@ -372,16 +397,56 @@ int PlaylistComposer::build_playlist() {
     auto& firstSegment = m_snapshot_playlist->get_segments()[0];
     m_snapshot_playlist->set_media_sequence(firstSegment.get_sequence());
 
-    
-    //std::cout << "m_begin_time=" << get_time_str(m_begin_time)
-    //    << ", 1st segment time" << get_time_str(firstSegment.m_start_time) << std::endl;
-
     //set timeoffset if m_begin_time > 1st segment_time
     if (m_begin_time > firstSegment.m_start_time) {
         auto diff = m_begin_time - firstSegment.m_start_time;
         auto diff_ms = std::chrono::duration_cast<std::chrono::milliseconds>(diff);
         m_snapshot_playlist->set_time_offset(diff_ms.count());
     }
-
     return 0;
+}
+
+int PlaylistComposer::fake_playlist() {
+    if (m_src_playlists.empty()) {
+        return -1;
+    }
+
+    std::string filename = get_format_time(m_begin_time, "playlist_{}.m3u8");
+    m_snapshot_playlist = std::make_shared<HlsPlaylist>(filename);
+
+    auto last_playlist = m_src_playlists[m_src_playlists.size() - 1];
+    auto& segments = last_playlist->get_segments();
+    auto& last_segment = segments[segments.size() - 1];
+    //find the last segment of last playlist
+    TimePoint latestStartTime = last_segment.m_start_time;
+    TimePoint latestEndTime = last_segment.m_start_time 
+        + std::chrono::milliseconds(static_cast<uint32_t>(last_segment.m_duration * 1000));
+    //TimePoint beginTime;
+    uint32_t begin_seq = 0;
+    int32_t  end_seq = 0;
+
+    auto seq = last_segment.get_sequence();
+    auto uri = last_segment.m_uri;
+    auto duration = m_begin_time - latestEndTime;
+    //auto duration = beginTime - latestTime;
+    auto segment_time = latestStartTime;
+    while(segment_time <= m_end_time) {
+        segment_time += std::chrono::seconds(10);
+        if (begin_seq == 0 && segment_time > m_begin_time) {
+            begin_seq = seq;
+        }
+        if (segment_time > m_end_time) {
+            end_seq = seq;
+        }
+        seq++;
+    }
+    
+    std::cout << "begin_seq="<< begin_seq << ", end_seq=" << end_seq << std::endl;
+    for(int i=begin_seq; i < end_seq; ++i) {
+        auto fake_segment = HlsSegment(10, uri);
+        fake_segment.update_uri(i);
+        m_snapshot_playlist->append_segment(fake_segment);
+    }
+    
+    return update_playlist_info();
 }

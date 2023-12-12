@@ -12,12 +12,12 @@ std::string get_current_time(const std::string& format = ISO_8601_TIME_FMT);
 
 std::string get_time_str(
     const std::chrono::system_clock::time_point& timePoint,
-    const std::string& timeFormat = DEFAUT_TIME_FMT);
+    const std::string& timeFormat = ISO_8601_TIME_FMT);
 
-inline std::string get_time_str(
+inline std::string get_time_t_str(
     const std::time_t timestamp,
-    const std::string& timeFormat = DEFAUT_TIME_FMT) {
-    return get_time_str(std::chrono::system_clock::from_time_t(timestamp));
+    const std::string& timeFormat = ISO_8601_TIME_FMT) {
+    return get_time_str(std::chrono::system_clock::from_time_t(timestamp), timeFormat);
 };
 
 std::string get_format_time(

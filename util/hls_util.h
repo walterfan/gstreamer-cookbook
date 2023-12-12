@@ -26,6 +26,8 @@ struct HlsSegment {
 
     uint32_t get_sequence();
 
+    int update_uri(uint32_t seq);
+
     float m_duration;
     float m_total_duration;
     TimePoint m_start_time;
@@ -125,13 +127,14 @@ public:
     int find_playlists();
     int filter_playlists();
     int build_playlist();
-
+    int fake_playlist();
     std::chrono::milliseconds last_scan_dir_duration();
 
 private:
     int find_begin_pos();
     int find_end_pos();
     int copy_and_sort_segments();
+    int update_playlist_info();
     
     std::string m_folder;
     TimePoint m_begin_time;

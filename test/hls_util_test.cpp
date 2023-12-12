@@ -115,10 +115,17 @@ TEST_F(HlsUtilTest, write_m3u8_file) {
 }
 
 
-TEST_F(HlsUtilTest, get_sequence) {
+TEST_F(HlsUtilTest, update_uri) {
     std::string ts_name = "record_20231023170112_00043.ts";
     HlsSegment hlsSegment(10, ts_name);
     uint32_t seq = hlsSegment.get_sequence();
     ASSERT_EQ(seq, 43);
+
+
+    int ret = hlsSegment.update_uri(++seq);
+    std::cout << "uri=" << hlsSegment.m_uri << std::endl;
+
+    ret = hlsSegment.update_uri(3);
+    std::cout << "uri=" << hlsSegment.m_uri  << std::endl;
 }
 

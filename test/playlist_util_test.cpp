@@ -60,9 +60,9 @@ TEST_F(PlaylistUtilTest, PlaylistComposerFind) {
     PlaylistComposer composer(m_test_folder.string(), m_begin_time, m_end_time);
     auto playlist_count = composer.find_playlists();
     cout << "found playlist count=" << playlist_count << endl;
-    //for(int i=0; i< playlist_count; ++i) {
-    //    cout << i <<" . playlist:" << *composer.m_src_playlists[i] << endl;
-    //}
+    for(int i=0; i< playlist_count; ++i) {
+        cout << i <<" . playlist:" << *composer.m_src_playlists[i] << endl;
+    }
     int playlist_cnt = composer.filter_playlists();
     cout << "filter playlist count=" << playlist_cnt 
     << " from " << get_time_str(m_begin_time) 
@@ -71,4 +71,50 @@ TEST_F(PlaylistUtilTest, PlaylistComposerFind) {
     cout << "selected playlist: " << *(composer.m_selected_playlists[0]) << endl;
     int ret = composer.build_playlist();
     cout << "composed playlist: " << *(composer.m_snapshot_playlist) << endl;
+}
+
+TEST_F(PlaylistUtilTest, PlaylistComposerFindOne) {
+    m_begin_time = get_timepoint("20231019224805");
+    m_end_time   = get_timepoint("20231019224812");
+
+    PlaylistComposer composer(m_test_folder.string(), m_begin_time, m_end_time);
+    auto playlist_count = composer.find_playlists();
+    cout << "found playlist count=" << playlist_count << endl;
+    for(int i=0; i< playlist_count; ++i) {
+        cout << i <<" . playlist:" << *composer.m_src_playlists[i] << endl;
+    }
+    int playlist_cnt = composer.filter_playlists();
+    cout << "filter playlist count=" << playlist_cnt 
+    << " from " << get_time_str(m_begin_time) 
+    << " to " << get_time_str(m_end_time) << endl;
+    ASSERT_EQ(playlist_cnt, 1);
+    cout << "selected playlist: " << *(composer.m_selected_playlists[0]) << endl;
+    int ret = composer.build_playlist();
+    cout << "composed playlist: " << *(composer.m_snapshot_playlist) << endl;
+}
+
+TEST_F(PlaylistUtilTest, PlaylistComposerFindNothing) {
+    m_begin_time = get_timepoint("20231019224845");
+    m_end_time   = get_timepoint("20231019224852");
+
+    PlaylistComposer composer(m_test_folder.string(), m_begin_time, m_end_time);
+    auto playlist_count = composer.find_playlists();
+    cout << "found playlist count=" << playlist_count << endl;
+    for(int i=0; i< playlist_count; ++i) {
+        cout << i <<" . playlist:" << *composer.m_src_playlists[i] << endl;
+    }
+    int playlist_cnt = composer.filter_playlists();
+    cout << "filter playlist count=" << playlist_cnt 
+    << " from " << get_time_str(m_begin_time) 
+    << " to " << get_time_str(m_end_time) << endl;
+    ASSERT_EQ(playlist_cnt, 1);
+    cout << "selected playlist: " << *(composer.m_selected_playlists[0]) << endl;
+    int ret = composer.build_playlist();
+    ASSERT_EQ(ret, -2);
+    cout <<"ret=" << ret<< ", last playlist: " 
+        << *(composer.m_src_playlists[playlist_count - 1]) << endl;
+    ret = composer.fake_playlist();
+    ASSERT_EQ(ret, 0);
+    cout << "\nfake_playlist: " << *(composer.m_snapshot_playlist) << endl;
+    
 }

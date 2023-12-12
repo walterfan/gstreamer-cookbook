@@ -7,7 +7,7 @@
 #include <iostream>
 #include <fmt/core.h>
 
-
+//UTC time
 std::string get_current_time(const std::string& format) {
     auto now = std::chrono::system_clock::now();
     std::time_t currentTime = std::chrono::system_clock::to_time_t(now);

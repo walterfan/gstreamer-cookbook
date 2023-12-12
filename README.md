@@ -2,6 +2,49 @@
 
 A cookbook for gstreamer developer - [GStreamer cookbook](https://walterfan.github.io/gstreamer-cookbook/)
 
+
+## 新手 Primer
+* [GStreamer 快速入门](doc/source/1.basic/basic.md)
+* [GStreamer 基本概念](doc/source/1.basic/concept.md)
+* [GStreamer 设计原则](doc/source/1.basic/design.md)
+* [GStreamer Element]
+* [GStreamer Bin]
+* [GStreamer Bus]
+* [GStreamer Pad]
+* [GStreamer Caps]
+* [GStreamer Pad]
+* [GStreamer Buffer]
+* [GStreamer Event]
+* [GStreamer State]
+* [GStreamer pipeline]
+
+## 进阶者 Advanced User
+
+* [GStreamer tools]
+* [GStreamer plugins]
+* [GStreamer Probe]
+* [GStreamer dynamic pads]
+* [GStreamer scheduling modes]
+* [GStreamer Caps Negotiation]
+* [GStreamer Interfaces]
+* [GStreamer metadata and stream info]
+
+## 老兵 Veteran
+
+> 老兵永远不死，只会慢慢凋零 Old soldiers never die, they just fade away
+
+* [GStreamer memory allocation]
+* [GStreamer media types and properties]
+* [GStreamer event seeking]
+* [GStreamer clocking]
+* [GStreamer QoS]
+* [GStreamer Dynamic parameters]
+
+* [GStreamer plugin - structure]
+* [GStreamer plugin - chain function]
+* [GStreamer plugin - event function]
+* [GStreamer plugin - query function]
+
 ## Quick test
 
 ```
@@ -36,7 +79,7 @@ gstreamer1.0-plugins-base-apps
 ```
 export CANDIDATE="192.168.0.106"
 sudo docker run --rm --env CANDIDATE=$CANDIDATE \
-  -p 1935:1935 -p 8080:8080 -p 1985:1985 -p 8000:8000/udp \
+  -p 1935:1935 -p 1975:8080 -p 1985:1985 -p 1995:8000/udp \
   registry.cn-hangzhou.aliyuncs.com/ossrs/srs:5 \
   objs/srs -c conf/rtmp2rtc.conf
 ```
@@ -55,9 +98,24 @@ gst-launch-1.0 -vv filesrc location=material/talk.mp4 \
 
 ```
 ./build-with-vcpkg.sh
-./build/example/gst-pipeline-verify -f ./example/etc/pipeline.yaml -p pipeline_test_rtmp
+./bin/gst-pipeline-verify -f ./example/etc/pipeline.yaml -p pipeline_test_rtmp
 ```
 
+* send/receive video stream over udp
+
+```
+# send video
+
+gst-launch-1.0 -v v4l2src device=/dev/video1 ! decodebin \
+! videoconvert ! omxh264enc ! video/x-h264,stream-format=byte-stream \
+! rtph264pay ! udpsink host=192.168.104.214 port=5000
+
+# receive video
+
+gst-launch-1.0 -v udpsrc  port=5000 caps=application/x-rtp \
+! rtph264depay ! avdec_h264 ! autovideosink
+
+```
 ## build source code
 ### use vcpkg
 

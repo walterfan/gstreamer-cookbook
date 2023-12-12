@@ -10,6 +10,7 @@ add_executable(unit_test
     hls_util_test.cpp
     playlist_util_test.cpp
     string_util_test.cpp
+    time_util_test.cpp
 	gobject_test.cpp
     yaml_test.cpp
 )
