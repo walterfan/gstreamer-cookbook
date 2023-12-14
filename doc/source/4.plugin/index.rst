@@ -10,7 +10,9 @@
    
    1.plugin-boilerplate
    2.plugin-pads
+   8.plugin-test
 
+   
    decodebin
    filesink
    frequent-plugin

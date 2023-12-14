@@ -5,7 +5,7 @@
 * 播放一段测试语音
 
 ```
-gst-launch-1.0 audiotestsrc wave=9 volume=0.3 ! audioconvert ! autoaudiosink
+gst-launch-1.0 audiotestsrc wave=5 volume=0.3 ! audioconvert ! autoaudiosink
 ```
 
 the wave parameters can be:
