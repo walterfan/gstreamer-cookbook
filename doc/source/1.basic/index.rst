@@ -17,7 +17,7 @@
    glib
    gobject
 
-   gstelement
-   gstpad
-   gstbus
-   gstpromise
+   gst-element
+   gst-pad
+   gst-bus
+   gst-promise

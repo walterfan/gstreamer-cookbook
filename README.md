@@ -7,21 +7,28 @@ A cookbook for gstreamer developer - [GStreamer cookbook](https://walterfan.gith
 * [GStreamer 快速入门](doc/source/1.basic/basic.md)
 * [GStreamer 基本概念](doc/source/1.basic/concept.md)
 * [GStreamer 设计原则](doc/source/1.basic/design.md)
-* [GStreamer Element]
-* [GStreamer Bin]
-* [GStreamer Bus]
-* [GStreamer Pad]
+* [GStreamer Element](doc/source/1.basic/gst-element.md)
+* [GStreamer Bin](doc/source/1.basic/gst-bin.md)
+* [GStreamer Bus](doc/source/1.basic/gst-bus.md)
+* [GStreamer Pad](doc/source/1.basic/gst-pad.md)
 * [GStreamer Caps]
-* [GStreamer Pad]
+* [GStreamer Pad](doc/source/1.basic/gst-pad.md)
 * [GStreamer Buffer]
 * [GStreamer Event]
-* [GStreamer State]
+* [GStreamer State](doc/source/1.basic/gst-state.md)
 * [GStreamer pipeline]
 
 ## 进阶者 Advanced User
 
-* [GStreamer tools]
+* [GStreamer plugin - boilerplate](doc/source/4.plugin/1.plugin-boilerplate.md)
+* [GStreamer plugin - pads](doc/source/4.plugin/2.plugin-pads.md)
+* [GStreamer plugin - chain function]
+* [GStreamer plugin - event function]
+* [GStreamer plugin - query function]
+* [GStreamer plugin - signal](doc/source/4.plugin/7.plugin-signal.md)
 * [GStreamer plugins]
+* [GStreamer tools]
+
 * [GStreamer Probe]
 * [GStreamer dynamic pads]
 * [GStreamer scheduling modes]
@@ -40,10 +47,8 @@ A cookbook for gstreamer developer - [GStreamer cookbook](https://walterfan.gith
 * [GStreamer QoS]
 * [GStreamer Dynamic parameters]
 
-* [GStreamer plugin - structure]
-* [GStreamer plugin - chain function]
-* [GStreamer plugin - event function]
-* [GStreamer plugin - query function]
+* [DeepStream get started](doc/source/3.application/deepstream.md)
+
 
 ## Quick test
 

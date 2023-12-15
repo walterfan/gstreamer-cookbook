@@ -67,7 +67,7 @@ gst-launch-1.0 filesrc location="audio.raw" ! capsfilter caps = "audio/x-raw,for
 * decode mp3 and write to disk:
 
 ```
-  gst-launch-1.0 filesrc location = shake.mp3 ! decodebin ! audioconvert ! capsfilter caps = "audio/x-raw,format=F32BE,channels=1,rate=44100" ! filesink location = "audio.raw"
+gst-launch-1.0 filesrc location = 16k16bit.mp3 ! decodebin ! audioconvert ! capsfilter caps = "audio/x-raw,format=S16LE,channels=1,rate=16000" ! filesink location = "audio.raw"
 ```
 
 
@@ -141,4 +141,25 @@ gst-launch-1.0 filesrc location=file.wav ! wavparse ! audioresample ! audioconve
 gst-launch-1.0 -v filesrc location=material/16k16bit.mp3 ! mpegaudioparse ! mpg123audiodec ! audioconvert ! avenc_aac ! hlssink2 max-files=5
 
 gst-launch-1.0 -v filesrc location=material/16k16bit.mp3 ! mpegaudioparse ! mpg123audiodec ! audioconvert ! alawenc ! hlssink2 max-files=5
+```
+
+* display audio visualisation
+
+```sh
+gst-launch-1.0 audiotestsrc wave=9 ! audioconvert ! spacescope ! glimagesink
+
+gst-launch-1.0 audiotestsrc ! audioconvert ! wavescope ! glimagesink
+```
+
+* Convert WAV to PCM
+
+```sh
+gst-launch-1.0 filesrc location=file.wav ! wavparse ! audioresample ! audioconvert ! audio/x-raw,format=S16LE,channels=1,rate=8000 ! filesink location=file.pcm
+```
+
+
+* Play PCM
+
+```sh
+gst-launch-1.0 filesrc location=/tmp/test.pcm ! audio/x-raw,format=S16LE,channels=1,rate=16000 ! audioconvert ! audioresample ! autoaudiosink
 ```
