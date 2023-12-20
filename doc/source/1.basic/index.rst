@@ -12,12 +12,17 @@
    preliminary
    basic
    concept
-   state
 
    glib
    gobject
 
    gst-element
    gst-pad
+   gst-bin
    gst-bus
+   gst-buffer
    gst-promise
+   gst-caps
+   gst-state
+
+   sink-element

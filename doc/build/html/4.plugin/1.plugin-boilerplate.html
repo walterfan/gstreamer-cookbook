@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Constructing the Boilerplate &mdash; gstreamer_tutorial 1 documentation</title>
+  <title>构造样板代码 &mdash; gstreamer_tutorial 1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -60,15 +60,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 插件</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer的插件机制</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Constructing the Boilerplate</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#git-template">1. 检出 git-template 的样板代码</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">2. 设置项目的印章</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">自动生成基础代码</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">设置元素的基本信息</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gststaticpadtemplate">GstStaticPadTemplate</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">构造样板代码</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gst-template">1. 检出 gst-template 的样板代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gst-plugin">2. 生成 gst plugin 的样板代码</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">新的样板生成工具</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3. 查看自动生成的基础代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4. 设置元素的基本信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gststaticpadtemplate">5. 设置 GstStaticPadTemplate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">6. 插件构造器函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">7. 插件初始化函数</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="2.plugin-pads.html">Specifying the pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="7.plugin-signal.html">Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="8.plugin-test.html">测试你的插件</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decodebin.html">decodebin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filesink.html">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filesink.html#example">Example</a></li>
@@ -104,7 +111,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">3. GStreamer 插件</a></li>
-      <li class="breadcrumb-item active">Constructing the Boilerplate</li>
+      <li class="breadcrumb-item active">构造样板代码</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/4.plugin/1.plugin-boilerplate.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -114,16 +121,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="constructing-the-boilerplate">
-<h1>Constructing the Boilerplate<a class="headerlink" href="#constructing-the-boilerplate" title="Link to this heading"></a></h1>
-<section id="git-template">
-<h2>1. 检出 git-template 的样板代码<a class="headerlink" href="#git-template" title="Link to this heading"></a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">gitlab</span><span class="o">.</span><span class="n">freedesktop</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">gstreamer</span><span class="o">/</span><span class="n">gst</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">git</span>
+  <section id="id1">
+<h1>构造样板代码<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="gst-template">
+<h2>1. 检出 gst-template 的样板代码<a class="headerlink" href="#gst-template" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://gitlab.freedesktop.org/gstreamer/gst-template.git
+</pre></div>
+</div>
+<p>安装 meson</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>apt<span class="w"> </span>install<span class="w"> </span>meson
 </pre></div>
 </div>
 </section>
-<section id="id1">
-<h2>2. 设置项目的印章<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="gst-plugin">
+<h2>2. 生成 gst plugin 的样板代码<a class="headerlink" href="#gst-plugin" title="Link to this heading"></a></h2>
 <p>创建新元素时要做的第一件事是指定它的一些基本细节：它的名字是什么，谁编写的，它的版本号是什么等等。我们还需要定义一个对象来表示元素并存储 元素需要的数据。 这些细节统称为样板 (boilerplate)。</p>
 <p>定义样板文件的标准方法就是编写一些代码，并填充一些结构。 如上一节所述，最简单的方法是复制模板并根据您的需要添加功能。 为了帮助您做到这一点，./gst-plugin/tools/ 目录中有一个工具。 这个工具 make_element 是一个命令行实用程序，可以为您创建样板代码。</p>
 <p>要使用 make_element，首先打开一个终端窗口。 切换到 gst-template/gst-plugin/src 目录，然后运行 make_element 命令。 make_element 的参数是：</p>
@@ -131,15 +142,84 @@
 <li><p>插件的名称</p></li>
 <li><p>该工具将使用的源文件。 默认情况下，使用 gstplugin。</p></li>
 </ol>
-<p>例如，以下命令根据插件模板创建 MyFilter 插件，并将输出文件放在 gst-template/gst-plugin/src 目录中：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd gst-template/gst-plugin/src
-$ ../tools/make_element MyFilter
+<p>例如，以下命令根据插件模板创建 MyFilter 插件，并将输出文件放在 gst-template/gst-plugin/src 目录中：
+假设我们的 plugin 为 hfasr</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>gst-template/gst-plugin/src
+../tools/make_element<span class="w"> </span>hfasr
+meson<span class="w"> </span>build
+ninja<span class="w"> </span>-C<span class="w"> </span>build
+</pre></div>
+</div>
+<p>有时候我们所使用的 gstreamer 版本比较低，例如我使用的就是 <code class="docutils literal notranslate"><span class="pre">1.14.5</span></code> , 这时候以上的编译步骤会出错
+这时候需要修改生成的 meson.build, 将 <code class="docutils literal notranslate"><span class="pre">&gt;=1.19</span></code> 改成 <code class="docutils literal notranslate"><span class="pre">&gt;=1.14</span></code></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/&gt;=1.19/&gt;=1.14/g&#39;</span><span class="w"> </span>meson.build
+</pre></div>
+</div>
+<p>继续运行编译 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">-C</span> <span class="pre">build</span></code> 还是继续报错，原因还是在于 1.14 的宏定义 GST_ELEMENT_REGISTER_DEFINE 与高版本的不一致
+将 GST_ELEMENT_REGISTER_DEFINE 这句代码注释掉，换成 gst_element_register 语句，例如</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//grep -n GST_ELEMENT_REGISTER gst-plugin/src/*.c </span>
 
+<span class="cm">/*</span>
+<span class="cm">GST_ELEMENT_REGISTER_DEFINE (audiofiltertemplate, &quot;audiofiltertemplate&quot;, GST_RANK_NONE, GST_TYPE_AUDIO_FILTER_TEMPLATE);</span>
+<span class="cm">/*</span>
+
+<span class="cm">return gst_element_register(plugin, &quot;audiofiltertemplate&quot;, GST_RANK_NONE, GST_TYPE_AUDIO_FILTER_TEMPLATE);</span>
+</pre></div>
+</div>
+<section id="id2">
+<h3>新的样板生成工具<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>在 gst-plugins-bad 中的一个更加易用的工具</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git
+<span class="c1"># If you are building for a specific version, switch to it now. Otherwise, you can remain in the &#39;master&#39;</span>
+git<span class="w"> </span>checkout<span class="w"> </span><span class="nv">$BRANCH</span>
+
+<span class="c1"># I recommend saving a copy of the indent script somewhere in your PATH</span>
+<span class="nb">cd</span><span class="w"> </span>gst-plugins-bad
+<span class="nv">NOCONFIGURE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>./autogen.sh
+sudo<span class="w"> </span>cp<span class="w"> </span>common/gst-indent<span class="w"> </span>/usr/local/bin/
+</pre></div>
+</div>
+<p>再安装以下依赖库</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libgstreamer1.0-dev<span class="w"> </span>libgstreamer-plugins-base1.0-dev<span class="w"> </span>libgstreamer-plugins-good1.0-dev<span class="w"> </span>libgstreamer-plugins-bad1.0-dev<span class="w"> </span>indent
+</pre></div>
+</div>
+<p>这样就可以使用以下命令来生成我们的 plugin 的样板代码</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>gst-plugins-bad/tools
+./gst-project-maker<span class="w"> </span>my_project
+<span class="nb">cd</span><span class="w"> </span>gst-my_project
+./autogen.sh
+make
+</pre></div>
+</div>
+<p>使用  gst-element-maker 可以生成一个 GstElement 的样板代码</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>gst-plugins-bad/tools
+
+./gst-element-maker<span class="w"> </span>my_element<span class="w"> </span>audiosink
+</pre></div>
+</div>
+<p>常用的基类 BASE_CLASS 有:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">audiodecoder</span>
+<span class="n">audioencoder</span>
+<span class="n">audiofilter</span>
+<span class="n">audiosink</span>
+<span class="n">audiosrc</span>
+<span class="n">baseparse</span>
+<span class="n">basesink</span>
+<span class="n">basesrc</span>
+<span class="n">basetransform</span>
+<span class="n">element</span>
+<span class="n">videodecoder</span>
+<span class="n">videoencoder</span>
+<span class="n">videofilter</span>
+<span class="n">videosink</span>
 </pre></div>
 </div>
 </section>
-<section id="id2">
-<h2>自动生成基础代码<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+</section>
+<section id="id3">
+<h2>3. 查看自动生成的基础代码<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <p>这个新插件的代码可以通过 meson 和 ninja 来构建</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">meson</span> <span class="n">build</span>
 <span class="n">ninja</span> <span class="o">-</span><span class="n">C</span> <span class="n">build</span>
@@ -151,13 +231,66 @@ $ ../tools/make_element MyFilter
 <li><p>生成 生成 gstmyfilter.c 和 gstmyfilter.h</p></li>
 <li><p>注册 my-filter 这个 element</p></li>
 </ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;gst/gst.h&gt;</span>
+
+<span class="cm">/* Definition of structure storing data for this element. */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_GstMyFilter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">GstElement</span><span class="w"> </span><span class="n">element</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">GstPad</span><span class="w"> </span><span class="o">*</span><span class="n">sinkpad</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">srcpad</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">gboolean</span><span class="w"> </span><span class="n">silent</span><span class="p">;</span>
+
+
+
+<span class="p">}</span><span class="w"> </span><span class="n">GstMyFilter</span><span class="p">;</span>
+
+<span class="cm">/* Standard definition defining a class for this element. */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_GstMyFilterClass</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">GstElementClass</span><span class="w"> </span><span class="n">parent_class</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">GstMyFilterClass</span><span class="p">;</span>
+
+<span class="cm">/* Standard macros for defining types for this element.  */</span>
+<span class="cp">#define GST_TYPE_MY_FILTER (gst_my_filter_get_type())</span>
+<span class="cp">#define GST_MY_FILTER(obj) \</span>
+<span class="cp">  (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_MY_FILTER,GstMyFilter))</span>
+<span class="cp">#define GST_MY_FILTER_CLASS(klass) \</span>
+<span class="cp">  (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_MY_FILTER,GstMyFilterClass))</span>
+<span class="cp">#define GST_IS_MY_FILTER(obj) \</span>
+<span class="cp">  (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_MY_FILTER))</span>
+<span class="cp">#define GST_IS_MY_FILTER_CLASS(klass) \</span>
+<span class="cp">  (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_MY_FILTER))</span>
+
+<span class="cm">/* Standard function returning type information. */</span>
+<span class="n">GType</span><span class="w"> </span><span class="nf">gst_my_filter_get_type</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="n">GST_ELEMENT_REGISTER_DECLARE</span><span class="p">(</span><span class="n">my_filter</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
-<section id="id3">
-<h2>设置元素的基本信息<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="id4">
+<h2>4. 设置元素的基本信息<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <p>设置此元素的基本信息，例如 element name, type, description and author 信息</p>
+<p>The Element metadata provides extra element information. It is configured with <code class="docutils literal notranslate"><span class="pre">gst_element_class_set_metadata</span></code> or <code class="docutils literal notranslate"><span class="pre">gst_element_class_set_static_metadata</span></code> which takes the following parameters:</p>
+<p>元素的元数据可提供额外的元素信息。 可以通过 <code class="docutils literal notranslate"><span class="pre">gst_element_class_set_metadata</span></code> 或 <code class="docutils literal notranslate"><span class="pre">gst_element_class_set_static_metadata</span></code> 进行设置，
+它有以下参数：</p>
+<ul class="simple">
+<li><p>元素的长英文名称。</p></li>
+<li><p>元素的类型，请参阅 GStreamer 核心源代码树中的 docs/additional/design/draft-klass.txt 文档以获取详细信息和示例。</p></li>
+<li><p>元素用途的简要描述。</p></li>
+<li><p>元素作者的姓名，可以选择后跟尖括号中的联系电子邮件地址。</p></li>
+</ul>
+<p>例如:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gst_element_class_set_static_metadata</span><span class="w"> </span><span class="p">(</span><span class="n">klass</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;An example plugin&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Example/FirstExample&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Shows the basic structure of a plugin&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;your name &lt;your.name@your.isp&gt;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
 </section>
 <section id="gststaticpadtemplate">
-<h2>GstStaticPadTemplate<a class="headerlink" href="#gststaticpadtemplate" title="Link to this heading"></a></h2>
+<h2>5. 设置 GstStaticPadTemplate<a class="headerlink" href="#gststaticpadtemplate" title="Link to this heading"></a></h2>
 <p>通过 GstStaticPadTemplate 来描述这个 element 将要创建和使用的 pad</p>
 <ul class="simple">
 <li><p>pad 的简短名称</p></li>
@@ -166,24 +299,68 @@ $ ../tools/make_element MyFilter
 <li><p>这个 element 所支持的类型(capabilities)</p></li>
 </ul>
 <p>例如</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">the</span> <span class="n">capabilities</span> <span class="n">of</span> <span class="n">the</span> <span class="n">inputs</span> <span class="ow">and</span> <span class="n">outputs</span><span class="o">.</span>
- <span class="o">*</span>
- <span class="o">*</span> <span class="n">describe</span> <span class="n">the</span> <span class="n">real</span> <span class="n">formats</span> <span class="n">here</span><span class="o">.</span>
- <span class="o">*/</span>
-<span class="n">static</span> <span class="n">GstStaticPadTemplate</span> <span class="n">sink_factory</span> <span class="o">=</span> <span class="n">GST_STATIC_PAD_TEMPLATE</span> <span class="p">(</span><span class="s2">&quot;sink&quot;</span><span class="p">,</span>
-    <span class="n">GST_PAD_SINK</span><span class="p">,</span>
-    <span class="n">GST_PAD_ALWAYS</span><span class="p">,</span>
-    <span class="n">GST_STATIC_CAPS</span> <span class="p">(</span><span class="s2">&quot;ANY&quot;</span><span class="p">)</span>
-    <span class="p">);</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/* the capabilities of the inputs and outputs.</span>
+<span class="cm"> *</span>
+<span class="cm"> * describe the real formats here.</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="n">GstStaticPadTemplate</span><span class="w"> </span><span class="n">sink_factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GST_STATIC_PAD_TEMPLATE</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;sink&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GST_PAD_SINK</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GST_PAD_ALWAYS</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GST_STATIC_CAPS</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;ANY&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
 
-<span class="n">static</span> <span class="n">GstStaticPadTemplate</span> <span class="n">src_factory</span> <span class="o">=</span> <span class="n">GST_STATIC_PAD_TEMPLATE</span> <span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span>
-    <span class="n">GST_PAD_SRC</span><span class="p">,</span>
-    <span class="n">GST_PAD_ALWAYS</span><span class="p">,</span>
-    <span class="n">GST_STATIC_CAPS</span> <span class="p">(</span><span class="s2">&quot;ANY&quot;</span><span class="p">)</span>
-    <span class="p">);</span>
+<span class="k">static</span><span class="w"> </span><span class="n">GstStaticPadTemplate</span><span class="w"> </span><span class="n">src_factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GST_STATIC_PAD_TEMPLATE</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GST_PAD_SRC</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GST_PAD_ALWAYS</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GST_STATIC_CAPS</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;ANY&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
 </pre></div>
 </div>
 <p>这些 pad templates 在 <code class="docutils literal notranslate"><span class="pre">_class_init()</span></code> 函数被注册</p>
+</section>
+<section id="id5">
+<h2>6. 插件构造器函数<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>Each element has two functions which are used for construction of an element.</p>
+<ul class="simple">
+<li><p>The _class_init() function, which is used to initialise the class only once (specifying what signals, arguments and virtual functions the class has and setting up global state);</p></li>
+</ul>
+<p>静态初始化函数，它用来一次性地初始化这个 class， 包括指定 signa, properties, argument 和这个类所拥有的虚函数，以及设置全局状态</p>
+<ul class="simple">
+<li><p>the _init() function, which is used to initialise a specific instance of this type.</p></li>
+</ul>
+<p>实例初始化函数，用来初始化这个类型的一个特定实例, 类似于 C++ 的构造函数</p>
+</section>
+<section id="id6">
+<h2>7. 插件初始化函数<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<p>Once we have written code defining all the parts of the plugin, we need to write the <code class="docutils literal notranslate"><span class="pre">plugin_init()</span></code> function.</p>
+<p>This is a special function, which is called as soon as the plugin is loaded, and should return TRUE or FALSE depending on whether it loaded initialized any dependencies correctly.</p>
+<p>Also, in this function, any supported element type in the plugin should be registered.</p>
+<p>例如</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+<span class="k">static</span><span class="w"> </span><span class="n">gboolean</span>
+<span class="nf">plugin_init</span><span class="w"> </span><span class="p">(</span><span class="n">GstPlugin</span><span class="w"> </span><span class="o">*</span><span class="n">plugin</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">GST_ELEMENT_REGISTER</span><span class="w"> </span><span class="p">(</span><span class="n">my_filter</span><span class="p">,</span><span class="w"> </span><span class="n">plugin</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">GST_PLUGIN_DEFINE</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">GST_VERSION_MAJOR</span><span class="p">,</span>
+<span class="w">  </span><span class="n">GST_VERSION_MINOR</span><span class="p">,</span>
+<span class="w">  </span><span class="n">my_filter</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;My filter plugin&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">plugin_init</span><span class="p">,</span>
+<span class="w">  </span><span class="n">VERSION</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;LGPL&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;GStreamer&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;http://gstreamer.net/&quot;</span>
+<span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Note that the information returned by the plugin_init() function will be cached in a central registry.</p>
+<p>For this reason, it is important that the same information is always returned by the function:</p>
+<p>for example, it must not make element factories available based on runtime conditions.</p>
+<p>If an element can only work in certain conditions (for example, if the soundcard is not being used by some other process) this must be reflected by the element being unable to enter the READY state if unavailable, rather than the plugin attempting to deny existence of the plugin.</p>
 </section>
 </section>
 

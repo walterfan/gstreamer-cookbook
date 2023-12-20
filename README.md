@@ -11,8 +11,7 @@ A cookbook for gstreamer developer - [GStreamer cookbook](https://walterfan.gith
 * [GStreamer Bin](doc/source/1.basic/gst-bin.md)
 * [GStreamer Bus](doc/source/1.basic/gst-bus.md)
 * [GStreamer Pad](doc/source/1.basic/gst-pad.md)
-* [GStreamer Caps]
-* [GStreamer Pad](doc/source/1.basic/gst-pad.md)
+* [GStreamer Caps](doc/source/1.basic/gst-caps.md)
 * [GStreamer Buffer]
 * [GStreamer Event]
 * [GStreamer State](doc/source/1.basic/gst-state.md)

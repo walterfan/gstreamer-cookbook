@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signal &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="测试你的插件" href="8.plugin-test.html" />
+    <link rel="prev" title="Specifying the pads" href="2.plugin-pads.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 插件</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer的插件机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.plugin-boilerplate.html">构造样板代码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.plugin-pads.html">Specifying the pads</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#g-signal-emit-by-name">g_signal_emit_by_name</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#g-signal-connect">g_signal_connect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signal-definition">signal definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="8.plugin-test.html">测试你的插件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decodebin.html">decodebin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filesink.html#hierarchy">Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="frequent-plugin.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hlssink2.html">hlssink2 plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mp4mux.html">mp4mux plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nvdsosd.html">nvdsosd plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="queue.html">queue plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="splitmuxsink.html">splitmuxsink plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tee.html">tee plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v4l2src.html">v4l2src plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v4l2sink.html">v4l2sink plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webrtcbin.html">webrtcbin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webrtc_flow.html">webrtcbin flow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 插件</a></li>
+      <li class="breadcrumb-item active">Signal</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/4.plugin/7.plugin-signal.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="signal">
+<h1>Signal<a class="headerlink" href="#signal" title="Link to this heading"></a></h1>
+<p>GObject signal 可用于通知应用程序该对象的特定事件。
+但请注意，应用程序需要了解信号及其含义，因此，如果您正在寻找应用程序元素交互的通用方法，那么信号可能不是您想要的。</p>
+<p>信号系统的基本概念是信号的发射 (emission)。 信号按类型引入并通过字符串进行识别。
+为父类型引入的信号在派生类型中也可用，因此基本上它们继承的是每一个类型中的基本设施。</p>
+<p>信号发射主要涉及以精确定义的方式调用一组特定的回调。 此类回调主要有两类：每个对象的回调和用户提供的回调。
+（虽然信号可以处理任何类型的可实例化类型，但我在下面将这些类型称为“对象类型”，只是因为这是大多数用户会遇到信号的上下文。）</p>
+<p>每个对象的回调最常见 称为“对象方法处理程序”或“默认（信号）处理程序”，而用户提供的回调通常简称为“信号处理程序”。</p>
+<p>对象方法处理程序是在信号创建时提供的（这最常发生在对象类创建结束时），而用户提供的处理程序经常与某些对象实例上的某个信号连接和断开。</p>
+<section id="g-signal-emit-by-name">
+<h2>g_signal_emit_by_name<a class="headerlink" href="#g-signal-emit-by-name" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span>
+<span class="n">g_signal_emit_by_name</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">GObject</span><span class="o">*</span><span class="w"> </span><span class="n">instance</span><span class="p">,</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">gchar</span><span class="o">*</span><span class="w"> </span><span class="n">detailed_signal</span><span class="p">,</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<section id="description">
+<h3>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
+<p>Emits a signal. Signal emission is done synchronously. The method will only return control after all handlers are called or signal emission was stopped.</p>
+<p>Note that g_signal_emit_by_name() resets the return value to the default if no handlers are connected, in contrast to g_signal_emitv().</p>
+</section>
+</section>
+<section id="g-signal-connect">
+<h2>g_signal_connect<a class="headerlink" href="#g-signal-connect" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define g_signal_connect (</span>
+<span class="w">  </span><span class="n">instance</span><span class="p">,</span>
+<span class="w">  </span><span class="n">detailed_signal</span><span class="p">,</span>
+<span class="w">  </span><span class="n">c_handler</span><span class="p">,</span>
+<span class="w">  </span><span class="n">data</span>
+<span class="p">)</span>
+
+</pre></div>
+</div>
+<section id="id1">
+<h3>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Connects a GCallback function to a signal for a particular object.</p>
+<p>The handler will be called synchronously, before the default handler of the signal. g_signal_emit() will not return control until all handlers are called.</p>
+<p>See [memory management of signal handlers][signal-memory-management] for details on how to handle the return value and memory management of data.</p>
+</section>
+</section>
+<section id="signal-definition">
+<h2>signal definition<a class="headerlink" href="#signal-definition" title="Link to this heading"></a></h2>
+<p>例如我们想要定义一些信号，在一些特定事件发生时回调给应用， 假设我们的插件名称为 <code class="docutils literal notranslate"><span class="pre">hfasr</span></code></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">SIGNAL_ASR_STATE</span><span class="p">,</span><span class="w">    </span>
+<span class="w">    </span><span class="n">SIGNAL_ASR_INFO</span><span class="p">,</span><span class="w">              </span>
+<span class="w">    </span><span class="cm">/* FILL ME */</span>
+<span class="w">    </span><span class="n">LAST_SIGNAL</span>
+<span class="p">};</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">guint</span><span class="w"> </span><span class="n">hfasr_signals</span><span class="p">[</span><span class="n">LAST_SIGNAL</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">signal_demo_default_handler</span><span class="p">(</span><span class="n">gpointer</span><span class="w"> </span><span class="n">instance</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">gchar</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">gpointer</span><span class="w"> </span><span class="n">userdata</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// g_printf(&quot;work state is -&gt; %s\n&quot;, buffer);</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">gst_hfasr_class_init</span><span class="p">(</span><span class="n">GsthfasrClass</span><span class="w"> </span><span class="o">*</span><span class="n">klass</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="cm">/*  omit some code */</span>
+
+<span class="cm">/*  创建一个 signal */</span>
+<span class="n">klass</span><span class="o">-&gt;</span><span class="n">asr_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">signal_demo_default_handler</span><span class="p">;</span>
+<span class="n">hfasr_signals</span><span class="p">[</span><span class="n">SIGNAL_ASR_STATE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g_signal_new</span><span class="p">(</span><span class="s">&quot;asr-state&quot;</span><span class="p">,</span>
+<span class="w">                                    </span><span class="n">G_TYPE_FROM_CLASS</span><span class="p">(</span><span class="n">klass</span><span class="p">),</span>
+<span class="w">                                    </span><span class="n">G_SIGNAL_RUN_FIRST</span><span class="p">,</span>
+<span class="w">                                    </span><span class="n">G_STRUCT_OFFSET</span><span class="p">(</span><span class="n">GsthfasrClass</span><span class="p">,</span><span class="w"> </span><span class="n">asr_state</span><span class="p">),</span>
+<span class="w">                                    </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">                                    </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">                                    </span><span class="n">g_cclosure_marshal_VOID__STRING</span><span class="p">,</span>
+<span class="w">                                    </span><span class="n">G_TYPE_NONE</span><span class="p">,</span>
+<span class="w">                                    </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                                    </span><span class="n">G_TYPE_STRING</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="cm">/* 发送这个信号 */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">send_asr_state_signal</span><span class="p">(</span><span class="n">Gsthasr</span><span class="w"> </span><span class="o">*</span><span class="n">sink</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">gchar</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">g_signal_emit_by_name</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;asr-state&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">G_TYPE_NONE</span><span class="p">);</span>
+<span class="p">}</span>
+
+</pre></div>
+</div>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>https://www.manpagez.com/html/gobject/gobject-2.56.0/gobject-Signals.php</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="2.plugin-pads.html" class="btn btn-neutral float-left" title="Specifying the pads" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="8.plugin-test.html" class="btn btn-neutral float-right" title="测试你的插件" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

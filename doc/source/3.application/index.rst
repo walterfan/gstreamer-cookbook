@@ -10,6 +10,10 @@
    overview
    caps_negotiation
    pipeline_manipulation
+
+   audio_pipeline
+   video_pipeline
+
    deepstream
    faq
    debug

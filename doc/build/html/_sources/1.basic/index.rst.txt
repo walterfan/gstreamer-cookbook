@@ -8,16 +8,21 @@
    :caption: Contents:
 
    overview
-   design_principles
+   design
    preliminary
    basic
    concept
-   state
 
    glib
    gobject
 
-   gstelement
-   gstpad
-   gstbus
-   gstpromise
+   gst-element
+   gst-pad
+   gst-bin
+   gst-bus
+   gst-buffer
+   gst-promise
+   gst-caps
+   gst-state
+
+   sink-element
