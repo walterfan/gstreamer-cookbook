@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Pipeline &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DeepStream" href="deepstream.html" />
+    <link rel="prev" title="Audio Pipeline" href="audio_pipeline.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_manipulation.html">pipeline manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_pipeline.html">Audio Pipeline</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Video Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#samples">samples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#display-test-video">display test video</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#record-to-file">record to file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#record-and-display-at-the-same-time-queue">record and display at the same time(queue)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#record-webcam-to-mp4-jetson-nano">record webcam to <code class="docutils literal notranslate"><span class="pre">*.mp4</span></code>(jetson nano)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fps-test">fps test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
+      <li class="breadcrumb-item active">Video Pipeline</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/3.application/video_pipeline.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="video-pipeline">
+<h1>Video Pipeline<a class="headerlink" href="#video-pipeline" title="Link to this heading"></a></h1>
+<section id="samples">
+<h2>samples<a class="headerlink" href="#samples" title="Link to this heading"></a></h2>
+<section id="display-test-video">
+<h3>display test video<a class="headerlink" href="#display-test-video" title="Link to this heading"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-vvv<span class="w"> </span>videotestsrc<span class="w"> </span>!<span class="w"> </span>autovideosink
+gst-launch-1.0<span class="w"> </span>-vvv<span class="w"> </span>videotestsrc<span class="w"> </span>!<span class="w"> </span><span class="s1">&#39;video/x-raw,width=1280,height=720,format=RGB,framerate=60/1&#39;</span><span class="w"> </span>!<span class="w"> </span>fpsdisplaysink
+gst-launch-1.0<span class="w"> </span>-vvv<span class="w"> </span>videotestsrc<span class="w"> </span>!<span class="w"> </span>videoconvert<span class="w"> </span>!<span class="w"> </span>fpsdisplaysink<span class="w"> </span>text-overlay<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</section>
+<section id="record-to-file">
+<h3>record to file<a class="headerlink" href="#record-to-file" title="Link to this heading"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># record video to flv</span>
+gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>-e<span class="w"> </span>videotestsrc<span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span>!<span class="w"> </span>flvmux<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>xyz.flv
+
+<span class="c1"># record vidoe to mp4</span>
+gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>-e<span class="w"> </span>videotestsrc<span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span>!<span class="w"> </span>qtmux<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>xyz.mp4
+
+<span class="c1"># record video to m3u8 and ts</span>
+gst-launch-1.0<span class="w"> </span>videotestsrc<span class="w"> </span>is-live<span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span>!<span class="w"> </span>h264parse<span class="w"> </span>!<span class="w"> </span>hlssink2<span class="w"> </span>max-files<span class="o">=</span><span class="m">5</span>
+</pre></div>
+</div>
+</section>
+<section id="record-and-display-at-the-same-time-queue">
+<h3>record and display at the same time(queue)<a class="headerlink" href="#record-and-display-at-the-same-time-queue" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://stackoverflow.com/questions/37444615/gstreamer-recording-and-viewing-stream-simultaneously">GStreamer Recording and Viewing Stream Simultaneously</a></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-vvv<span class="w"> </span>videotestsrc<span class="w"> </span><span class="se">\</span>
+!<span class="w"> </span>tee<span class="w"> </span><span class="nv">name</span><span class="o">=</span>t<span class="w"> </span><span class="se">\</span>
+t.<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span>!<span class="w"> </span>mp4mux<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>xyz.mp4<span class="w"> </span>-e<span class="w"> </span><span class="se">\</span>
+t.<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span><span class="nv">leaky</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>!<span class="w"> </span>autovideosink<span class="w"> </span><span class="nv">sync</span><span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+<p><strong>tips:</strong></p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-e</span> <span class="pre">(EOS</span> <span class="pre">signal)</span></code>: Pipelines for file saving require a reliable EOS(End of Stream) signal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span> <span class="pre">leaky=1</span> <span class="pre">!</span> <span class="pre">autovideosink</span> <span class="pre">sync=false</span></code>: prevent blocking</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">drop=true</span></code>: drop frame if cannot read quickly enough</p></li>
+</ol>
+</section>
+<section id="record-webcam-to-mp4-jetson-nano">
+<h3>record webcam to <code class="docutils literal notranslate"><span class="pre">*.mp4</span></code>(jetson nano)<a class="headerlink" href="#record-webcam-to-mp4-jetson-nano" title="Link to this heading"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>nvarguscamerasrc<span class="w"> </span>!<span class="w"> </span>fakesink
+
+gst-launch-1.0<span class="w"> </span>nvarguscamerasrc<span class="w"> </span>num-buffers<span class="o">=</span><span class="m">2000</span><span class="w"> </span>!<span class="w"> </span><span class="s1">&#39;video/x-raw(memory:NVMM),width=1920, height=1080, framerate=30/1, format=NV12&#39;</span><span class="w"> </span>!<span class="w"> </span>omxh264enc<span class="w"> </span>!<span class="w"> </span>qtmux<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>test.mp4<span class="w"> </span>-e
+
+gst-launch-1.0<span class="w"> </span>nvarguscamerasrc<span class="w"> </span>num-buffers<span class="o">=</span><span class="m">2000</span><span class="w"> </span>!<span class="w"> </span><span class="s1">&#39;video/x-raw(memory:NVMM),width=1920, height=1080, framerate=30/1, format=NV12&#39;</span><span class="w"> </span>!<span class="w"> </span>nvvidconv<span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span>!<span class="w"> </span>qtmux<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>test.mp4<span class="w"> </span>-e
+</pre></div>
+</div>
+</section>
+<section id="fps-test">
+<h3>fps test<a class="headerlink" href="#fps-test" title="Link to this heading"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>videotestsrc<span class="w"> </span>!<span class="w"> </span>videorate<span class="w"> </span>!<span class="w"> </span>video/x-raw,framerate<span class="o">=</span><span class="m">30</span>/1<span class="w"> </span>!<span class="w"> </span>videoconvert<span class="w"> </span>!<span class="w"> </span>autovideosink
+
+gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>videotestsrc<span class="w"> </span>!<span class="w"> </span>videorate<span class="w"> </span>!<span class="w"> </span>video/x-raw,framerate<span class="o">=</span><span class="m">30</span>/1<span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span><span class="nv">tune</span><span class="o">=</span>zerolatency<span class="w"> </span><span class="nv">bitrate</span><span class="o">=</span><span class="m">16000000</span><span class="w"> </span>speed-preset<span class="o">=</span>superfast<span class="w"> </span>!<span class="w"> </span>rtph264pay<span class="w"> </span>!<span class="w"> </span>udpsink<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">5000</span><span class="w"> </span><span class="nv">host</span><span class="o">=</span><span class="nv">$HOST</span>
+
+gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>videotestsrc<span class="w"> </span>!<span class="w"> </span>videorate<span class="w"> </span>!<span class="w"> </span>video/x-raw,framerate<span class="o">=</span><span class="m">60</span>/1<span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span><span class="nv">tune</span><span class="o">=</span>zerolatency<span class="w"> </span><span class="nv">bitrate</span><span class="o">=</span><span class="m">16000000</span><span class="w"> </span>speed-preset<span class="o">=</span>superfast<span class="w"> </span>!<span class="w"> </span>h264parse<span class="w"> </span>!<span class="w"> </span>rtph264pay<span class="w"> </span>!<span class="w"> </span>udpsink<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">5000</span><span class="w"> </span><span class="nv">host</span><span class="o">=</span><span class="nv">$HOST</span>
+
+gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>videotestsrc<span class="w"> </span>!<span class="w"> </span>video/x-raw,framerate<span class="o">=</span><span class="m">30</span>/1<span class="w"> </span>!<span class="w"> </span>videorate<span class="w"> </span>!<span class="w"> </span>video/x-raw,framerate<span class="o">=</span><span class="m">60</span>/1<span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span><span class="nv">tune</span><span class="o">=</span>zerolatency<span class="w"> </span><span class="nv">bitrate</span><span class="o">=</span><span class="m">16000000</span><span class="w"> </span>speed-preset<span class="o">=</span>superfast<span class="w"> </span>!<span class="w"> </span>rtph264pay<span class="w"> </span>!<span class="w"> </span>udpsink<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">5000</span><span class="w"> </span><span class="nv">host</span><span class="o">=</span><span class="nv">$HOST</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="audio_pipeline.html" class="btn btn-neutral float-left" title="Audio Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepstream.html" class="btn btn-neutral float-right" title="DeepStream" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

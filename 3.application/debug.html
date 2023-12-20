@@ -61,6 +61,8 @@
 <li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pipeline_manipulation.html">pipeline manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_pipeline.html">Audio Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
@@ -106,6 +108,13 @@
 <h1>Gstreamer Debug<a class="headerlink" href="#gstreamer-debug" title="Link to this heading"></a></h1>
 <p>To enable debug output, set the GST_DEBUG environment variable to the desired debug level. All levels below that will also be shown (i.e., if you set <code class="docutils literal notranslate"><span class="pre">GST_DEBUG=2</span></code>, you will get both ERROR and WARNING messages).</p>
 <p>Furthermore, each plugin or part of the GStreamer defines its own category, so you can specify a debug level for each individual category. For example, <code class="docutils literal notranslate"><span class="pre">GST_DEBUG=2,audiotestsrc:6</span></code>, will use Debug Level 6 for the audiotestsrc element, and 2 for all the others.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">GST_DEBUG</span><span class="o">=</span>&lt;some<span class="w"> </span>element<span class="w"> </span>name&gt;:&lt;<span class="m">1</span>-6?&gt;,&lt;some<span class="w"> </span>otherelement&gt;:&lt;<span class="m">1</span>-6&gt;
+</pre></div>
+</div>
+<p>如果不太清楚问题出在哪儿，就用</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">GST_DEBUG</span><span class="o">=</span>*:3<span class="w"> </span>
+</pre></div>
+</div>
 <section id="debug-level">
 <h2>Debug Level<a class="headerlink" href="#debug-level" title="Link to this heading"></a></h2>
 <table class="docutils align-default">

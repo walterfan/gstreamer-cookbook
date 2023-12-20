@@ -160,8 +160,7 @@ gst-launch-1.0 -v -m autoaudiosrc ! audioconvert ! wavescope style=3 shader=2 ! 
 -   播放 mp4 文件
 
 ``` 
-gst-launch-1.0 playbin uri=file:///opt/webrtc_primer/material/obama_talk.mp4
-gst-launch-1.0 -v playbin uri=file:///`pwd`/obama_talk.mp4
+gst-launch-1.0 -v playbin uri=file:///`pwd`/material/talk.mp4
 ```
 
 -   UDP 媒体流传输

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio Pipeline &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Video Pipeline" href="video_pipeline.html" />
+    <link rel="prev" title="pipeline manipulation" href="pipeline_manipulation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_manipulation.html">pipeline manipulation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Audio Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#samples">samples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
+      <li class="breadcrumb-item active">Audio Pipeline</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/3.application/audio_pipeline.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="audio-pipeline">
+<h1>Audio Pipeline<a class="headerlink" href="#audio-pipeline" title="Link to this heading"></a></h1>
+<section id="samples">
+<h2>samples<a class="headerlink" href="#samples" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>播放一段测试语音</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 audiotestsrc wave=5 volume=0.3 ! audioconvert ! autoaudiosink
+</pre></div>
+</div>
+<p>the wave parameters can be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+ <span class="n">wave</span>                <span class="p">:</span> <span class="n">Oscillator</span> <span class="n">waveform</span>
+    <span class="n">flags</span><span class="p">:</span> <span class="n">readable</span><span class="p">,</span> <span class="n">writable</span><span class="p">,</span> <span class="n">controllable</span>
+    <span class="n">Enum</span> <span class="s2">&quot;GstAudioTestSrcWave&quot;</span> <span class="n">Default</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;sine&quot;</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="n">sine</span>             <span class="o">-</span> <span class="n">Sine</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="n">square</span>           <span class="o">-</span> <span class="n">Square</span>
+        <span class="p">(</span><span class="mi">2</span><span class="p">):</span> <span class="n">saw</span>              <span class="o">-</span> <span class="n">Saw</span>
+        <span class="p">(</span><span class="mi">3</span><span class="p">):</span> <span class="n">triangle</span>         <span class="o">-</span> <span class="n">Triangle</span>
+        <span class="p">(</span><span class="mi">4</span><span class="p">):</span> <span class="n">silence</span>          <span class="o">-</span> <span class="n">Silence</span>
+        <span class="p">(</span><span class="mi">5</span><span class="p">):</span> <span class="n">white</span><span class="o">-</span><span class="n">noise</span>      <span class="o">-</span> <span class="n">White</span> <span class="n">uniform</span> <span class="n">noise</span>
+        <span class="p">(</span><span class="mi">6</span><span class="p">):</span> <span class="n">pink</span><span class="o">-</span><span class="n">noise</span>       <span class="o">-</span> <span class="n">Pink</span> <span class="n">noise</span>
+        <span class="p">(</span><span class="mi">7</span><span class="p">):</span> <span class="n">sine</span><span class="o">-</span><span class="n">table</span>       <span class="o">-</span> <span class="n">Sine</span> <span class="n">table</span>
+        <span class="p">(</span><span class="mi">8</span><span class="p">):</span> <span class="n">ticks</span>            <span class="o">-</span> <span class="n">Periodic</span> <span class="n">Ticks</span>
+        <span class="p">(</span><span class="mi">9</span><span class="p">):</span> <span class="n">gaussian</span><span class="o">-</span><span class="n">noise</span>   <span class="o">-</span> <span class="n">White</span> <span class="n">Gaussian</span> <span class="n">noise</span>
+        <span class="p">(</span><span class="mi">10</span><span class="p">):</span> <span class="n">red</span><span class="o">-</span><span class="n">noise</span>        <span class="o">-</span> <span class="n">Red</span> <span class="p">(</span><span class="n">brownian</span><span class="p">)</span> <span class="n">noise</span>
+        <span class="p">(</span><span class="mi">11</span><span class="p">):</span> <span class="n">blue</span><span class="o">-</span><span class="n">noise</span>       <span class="o">-</span> <span class="n">Blue</span> <span class="n">noise</span>
+        <span class="p">(</span><span class="mi">12</span><span class="p">):</span> <span class="n">violet</span><span class="o">-</span><span class="n">noise</span>     <span class="o">-</span> <span class="n">Violet</span> <span class="n">noise</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>播放来自麦克风的声音</p></li>
+</ul>
+<p>MIC_DEVICE_ID can be got by <code class="docutils literal notranslate"><span class="pre">gst-device-monitor-1.0</span> <span class="pre">Audio/Source</span> <span class="pre">&quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot;</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! &quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot; ! autoaudiosink
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>将收到的语音进行 AGC(自动增益), AEC(回声消除) and ANS(噪声抑制) 处理</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! &quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot; ! webrtcdsp ! webrtcechoprobe ! autoaudiosink
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>转换语音包为 g.711 编码</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! &quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot; ! alawenc
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>write out audio file to disk (using same tone):</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+gst-launch-1.0 audiotestsrc ! audioconvert ! capsfilter caps = &quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot; ! filesink location = &quot;audio.raw&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>read audio file from disk (should play the same tone):</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 filesrc location=&quot;audio.raw&quot; ! capsfilter caps = &quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot; ! audioconvert ! audoaudiosink
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>decode mp3 and write to disk:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 filesrc location = 16k16bit.mp3 ! decodebin ! audioconvert ! capsfilter caps = &quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot; ! filesink location = &quot;audio.raw&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>将 macos 上来自麦克风的音频录制成 wave file</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>osxaudiosrc<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>audio.wav
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>将 linux 上来自麦克风的音频录制成 wave file</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>xxx<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>test.wav
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>将语音录制为 hls 文件</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>xxx<span class="w"> </span>!<span class="w"> </span>avenc_aac<span class="w"> </span>!<span class="w"> </span>hlssink2<span class="w"> </span>max-files<span class="o">=</span><span class="m">5</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>将语音录制为 hls 文件以及 wave file</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span><span class="nv">$MIC_DEVICE_ID</span><span class="w"> </span>!<span class="w"> </span><span class="s2">&quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot;</span><span class="w"> </span>!<span class="w"> </span>webrtcdsp<span class="w"> </span>!<span class="w"> </span>webrtcechoprobe<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>tee<span class="w"> </span><span class="nv">name</span><span class="o">=</span>t<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>avenc_aac<span class="w"> </span>!<span class="w"> </span>hlssink2<span class="w"> </span>max-files<span class="o">=</span><span class="m">5</span><span class="w"> </span>playlist-location<span class="o">=</span>waltertest.m3u8<span class="w"> </span><span class="nv">location</span><span class="o">=</span>waltertest_%05d.ts<span class="w"> </span>t.<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>waltertest.wav
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>transmit audio</p></li>
+</ul>
+<p>gst-launch-1.0 -v wasapisrc loopback=true ! audioconvert ! udpsink host=239.0.0.2 port=9998</p>
+<ul class="simple">
+<li><p>receive audio</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>udpsrc<span class="w"> </span><span class="nv">address</span><span class="o">=</span><span class="m">239</span>.0.0.2<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9998</span><span class="w"> </span>multicast-group<span class="o">=</span><span class="m">239</span>.0.0.1<span class="w"> </span><span class="nv">caps</span><span class="o">=</span><span class="s2">&quot;audio/x-raw,format=F32LE,rate=48000,channels=2&quot;</span><span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>autoaudiosink
+<span class="c1"># or </span>
+gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>udpsrc<span class="w"> </span><span class="nv">address</span><span class="o">=</span><span class="m">239</span>.0.0.2<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9998</span><span class="w"> </span>multicast-group<span class="o">=</span><span class="m">239</span>.0.0.1<span class="w"> </span><span class="nv">caps</span><span class="o">=</span><span class="s2">&quot;audio/x-raw,format=S16LE,rate=48000,channels=2&quot;</span><span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>autoaudiosink
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>play pcm file</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>iat_pcm_16k.pcm<span class="w"> </span>!<span class="w"> </span>audio/x-raw,<span class="w"> </span><span class="nv">format</span><span class="o">=</span>S16LE,<span class="w"> </span><span class="nv">channels</span><span class="o">=</span><span class="m">1</span>,<span class="w"> </span><span class="nv">layout</span><span class="o">=</span>interleaved,<span class="w"> </span><span class="nv">rate</span><span class="o">=</span><span class="m">16000</span><span class="w"> </span>!<span class="w"> </span>autoaudiosink
+<span class="w"> </span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>send mp3 audio to remote over udp</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>/tmp/musicfile.mp3<span class="w"> </span>!<span class="w"> </span>mpegaudioparse<span class="w"> </span>!<span class="w"> </span>mpg123audiodec<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>audio/x-raw,<span class="w"> </span><span class="nv">rate</span><span class="o">=</span><span class="m">16000</span>,<span class="w"> </span><span class="nv">channels</span><span class="o">=</span><span class="m">1</span>,<span class="w"> </span><span class="nv">format</span><span class="o">=</span>S16LE<span class="w"> </span>!<span class="w"> </span>audiomixer<span class="w"> </span><span class="nv">blocksize</span><span class="o">=</span><span class="m">320</span><span class="w"> </span>!<span class="w"> </span>udpsink<span class="w"> </span><span class="nv">host</span><span class="o">=</span><span class="m">192</span>.168.1.10<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">10000</span>
+
+
+gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>udpsrc<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">10000</span><span class="w"> </span>!<span class="w"> </span>rawaudioparse<span class="w"> </span>use-sink-caps<span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="nv">format</span><span class="o">=</span>pcm<span class="w"> </span>pcm-format<span class="o">=</span>s16le<span class="w"> </span>sample-rate<span class="o">=</span><span class="m">16000</span><span class="w"> </span>num-channels<span class="o">=</span><span class="m">1</span><span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>autoaudiosink
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>convert wav to pcm</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>input.wav<span class="w"> </span>!<span class="w"> </span>wavparse<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span><span class="se">\</span>
+!<span class="w"> </span>audio/x-raw-int,<span class="w"> </span><span class="nv">rate</span><span class="o">=</span><span class="m">8000</span>,<span class="w"> </span><span class="nv">channels</span><span class="o">=</span><span class="m">1</span>,<span class="w"> </span><span class="nv">endianness</span><span class="o">=</span><span class="m">4321</span>,<span class="w"> </span><span class="nv">width</span><span class="o">=</span><span class="m">16</span>,<span class="w"> </span><span class="nv">depth</span><span class="o">=</span><span class="m">16</span>,<span class="w"> </span><span class="nv">signed</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>output.pcm<span class="w"> </span>
+
+gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>file.wav<span class="w"> </span>!<span class="w"> </span>wavparse<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span><span class="se">\</span>
+!<span class="w"> </span>audio/x-raw,format<span class="o">=</span>S16BE,channels<span class="o">=</span><span class="m">1</span>,rate<span class="o">=</span><span class="m">8000</span><span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>file.pcm
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>convert mp3 to hls(m3u8 + ts)</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>material/16k16bit.mp3<span class="w"> </span>!<span class="w"> </span>mpegaudioparse<span class="w"> </span>!<span class="w"> </span>mpg123audiodec<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>avenc_aac<span class="w"> </span>!<span class="w"> </span>hlssink2<span class="w"> </span>max-files<span class="o">=</span><span class="m">5</span>
+
+gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>material/16k16bit.mp3<span class="w"> </span>!<span class="w"> </span>mpegaudioparse<span class="w"> </span>!<span class="w"> </span>mpg123audiodec<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>alawenc<span class="w"> </span>!<span class="w"> </span>hlssink2<span class="w"> </span>max-files<span class="o">=</span><span class="m">5</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>display audio visualisation</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>audiotestsrc<span class="w"> </span><span class="nv">wave</span><span class="o">=</span><span class="m">9</span><span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>spacescope<span class="w"> </span>!<span class="w"> </span>glimagesink
+
+gst-launch-1.0<span class="w"> </span>audiotestsrc<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>wavescope<span class="w"> </span>!<span class="w"> </span>glimagesink
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Convert WAV to PCM</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>file.wav<span class="w"> </span>!<span class="w"> </span>wavparse<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audio/x-raw,format<span class="o">=</span>S16LE,channels<span class="o">=</span><span class="m">1</span>,rate<span class="o">=</span><span class="m">8000</span><span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>file.pcm
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Play PCM</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>/tmp/test.pcm<span class="w"> </span>!<span class="w"> </span>audio/x-raw,format<span class="o">=</span>S16LE,channels<span class="o">=</span><span class="m">1</span>,rate<span class="o">=</span><span class="m">16000</span><span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>autoaudiosink
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pipeline_manipulation.html" class="btn btn-neutral float-left" title="pipeline manipulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="video_pipeline.html" class="btn btn-neutral float-right" title="Video Pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

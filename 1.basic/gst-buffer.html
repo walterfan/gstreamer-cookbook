@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GstBus overview &mdash; gstreamer_tutorial 1 documentation</title>
+  <title>GstBuffer &mdash; gstreamer_tutorial 1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -30,8 +30,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="GstPromise" href="gstpromise.html" />
-    <link rel="prev" title="GstPad Overview" href="gstpad.html" /> 
+    <link rel="next" title="GstPromise" href="gst-promise.html" />
+    <link rel="prev" title="GstBus overview" href="gst-bus.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,17 +57,25 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 概论</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design_principles.html">GStreamer 设计原则</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">GStreamer 设计原则</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preliminary.html">GStreamer 预备知识</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic.html">GStreamer 基础知识</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concept.html">GStreamer 基本概念</a></li>
-<li class="toctree-l2"><a class="reference internal" href="state.html">GStreamer State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="glib.html">glib Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gstelement.html">gst element overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gstpad.html">GstPad Overview</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">GstBus overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gstpromise.html">GstPromise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-element.html">gst element overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-pad.html">GstPad Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bin.html">gst bin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bus.html">GstBus overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GstBuffer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gst-promise.html">GstPromise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-caps.html">GStreamer Capabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-state.html">GStreamer State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink-element.html">Sink elements</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
@@ -91,9 +99,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">1. GStreamer 基础</a></li>
-      <li class="breadcrumb-item active">GstBus overview</li>
+      <li class="breadcrumb-item active">GstBuffer</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/1.basic/gstbus.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/1.basic/gst-buffer.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -101,32 +109,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="gstbus-overview">
-<h1>GstBus overview<a class="headerlink" href="#gstbus-overview" title="Link to this heading"></a></h1>
-<p>The GstBus is an object responsible for delivering GstMessage packets in a first-in first-out way from the streaming threads (see GstTask) to the application.</p>
-<blockquote>
-<div><p>GstBus 是一个对象，从 streaming 线程以 first-in first-out 的方式负责交付 GstMessage 包到应用程序</p>
-</div></blockquote>
-<p>Since the application typically only wants to deal with delivery of these messages from one thread, the GstBus will marshall the messages between different threads. This is important since the actual streaming of media is done in another thread than the application.</p>
-<blockquote>
-<div><p>因为应用程序一般只想从一个线程来应对这些交付的消息， GstBus 会在不同的线程间安置消息
-这挺重要，因为实际的流媒体是在另外一个线程中搞定的，而非应用程序线程。</p>
-</div></blockquote>
-<p>The GstBus provides support for GSource based notifications. This makes it possible to handle the delivery in the glib GMainLoop.</p>
-<p>The GSource callback function gst_bus_async_signal_func can be used to convert all bus messages into signal emissions.</p>
-<p>A message is posted on the bus with the gst_bus_post method. With the gst_bus_peek and gst_bus_pop methods one can look at or retrieve a previously posted message.</p>
-<p>The bus can be polled with the gst_bus_poll method. This methods blocks up to the specified timeout value until one of the specified messages types is posted on the bus. The application can then gst_bus_pop the messages from the bus to handle them. Alternatively the application can register an asynchronous bus function using gst_bus_add_watch_full or gst_bus_add_watch. This function will install a GSource in the default glib main loop and will deliver messages a short while after they have been posted. Note that the main loop should be running for the asynchronous callbacks.</p>
-<p>It is also possible to get messages from the bus without any thread marshalling with the gst_bus_set_sync_handler method. This makes it possible to react to a message in the same thread that posted the message on the bus. This should only be used if the application is able to deal with messages from different threads.</p>
-<p>Every GstPipeline has one bus.</p>
-<p>Note that a GstPipeline will set its bus into flushing state when changing from READY to NULL state.</p>
+  <section id="gstbuffer">
+<h1>GstBuffer<a class="headerlink" href="#gstbuffer" title="Link to this heading"></a></h1>
+<p>A GstBuffer is the object that is passed from an upstream element to a downstream element and contains memory and metadata information.</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>It must be fast</p>
+<ul>
+<li><p>allocation, free, low fragmentation</p></li>
+</ul>
+</li>
+<li><p>Must be able to attach multiple memory blocks to the buffer</p></li>
+<li><p>Must be able to attach arbitrary metadata to buffers</p></li>
+<li><p>efficient handling of subbuffer, copy, span, trim</p></li>
+</ul>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>https://gstreamer.freedesktop.org/documentation/additional/design/buffer.html?gi-language=c</p></li>
+</ul>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="gstpad.html" class="btn btn-neutral float-left" title="GstPad Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="gstpromise.html" class="btn btn-neutral float-right" title="GstPromise" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gst-bus.html" class="btn btn-neutral float-left" title="GstBus overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gst-promise.html" class="btn btn-neutral float-right" title="GstPromise" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GStreamer Capabilities &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="GStreamer State" href="gst-state.html" />
+    <link rel="prev" title="GstPromise" href="gst-promise.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 概论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">GStreamer 设计原则</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html">GStreamer 预备知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html">GStreamer 基础知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept.html">GStreamer 基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glib.html">glib Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-element.html">gst element overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-pad.html">GstPad Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bin.html">gst bin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bus.html">GstBus overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-buffer.html">GstBuffer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-promise.html">GstPromise</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GStreamer Capabilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#operations">Operations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fixating">Fixating 固定</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#subset">Subset 子集</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#equality">Equality 相等</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#intersection">Intersection 交集</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#union">Union 合集</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#subtraction">Subtraction 相减</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-rules">Basic Rules 基本规则</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#semantics-of-caps-and-their-usage">Semantics of caps and their usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compatibility-of-caps">Compatibility of caps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gst-state.html">GStreamer State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink-element.html">Sink elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">1. GStreamer 基础</a></li>
+      <li class="breadcrumb-item active">GStreamer Capabilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/1.basic/gst-caps.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gstreamer-capabilities">
+<h1>GStreamer Capabilities<a class="headerlink" href="#gstreamer-capabilities" title="Link to this heading"></a></h1>
+<p>Caps are lightweight refcounted objects describing media types.</p>
+<p>Caps 用来描述媒体类型，基于引用计数的轻量型对象</p>
+<p>They are composed of an array of <code class="docutils literal notranslate"><span class="pre">GstStructure</span></code> plus, optionally, a <code class="docutils literal notranslate"><span class="pre">GstCapsFeatures</span></code> set for the GstStructure.</p>
+<p>Caps are exposed on <code class="docutils literal notranslate"><span class="pre">GstPadTemplates</span></code> to describe all possible types a given pad can handle. They are also stored in the registry along with a description of the element.</p>
+<p>Caps are exposed on the element pads via <code class="docutils literal notranslate"><span class="pre">CAPS</span></code> and <code class="docutils literal notranslate"><span class="pre">ACCEPT_CAPS</span></code> queries.</p>
+<p>This function describes the possible types that the pad can handle or produce (negotiation).</p>
+<p>Various methods exist to work with the media types such as subtracting or intersecting.</p>
+<section id="operations">
+<h2>Operations<a class="headerlink" href="#operations" title="Link to this heading"></a></h2>
+<section id="fixating">
+<h3>Fixating 固定<a class="headerlink" href="#fixating" title="Link to this heading"></a></h3>
+<p>Caps are fixed if they only contain a single structure and this structure is fixed. A structure is fixed if none of its fields is of an unfixed type, for example a range, list or array.</p>
+<p>For fixating caps only the first structure is kept, as the order in which they appear is meant to express their precedence. Afterwards, each unfixed field of this structure is set to the value that makes most sense for the media format by the element or pad implementation and then every remaining unfixed field is set to an arbitrary value that is a subset of the unfixed field’s values.</p>
+<p>EMPTY caps are fixed caps and ANY caps are not. Caps with ANY caps features are not fixed.</p>
+</section>
+<section id="subset">
+<h3>Subset 子集<a class="headerlink" href="#subset" title="Link to this heading"></a></h3>
+<p>One caps “A” is a subset of another caps “B” if for each structure in “A” there exists a structure in “B” that is a superset of the structure in “A”.</p>
+<p>A structure “a” is the subset of a structure “b” if it has the same structure name, the same caps features and each field in “b” either does not exist in “a”, or the value of the field in “a” is a subset of the value of the field in “b”. “a” must not have additional fields that are not in “b”. Fields that are in “b” but not in “a” (aka, an empty field) are always a subset. This is different to the intuitive mathematical definition as an empty field is defined to contain all possible values. This means that the empty field is always a superset of any other field.</p>
+<p>EMPTY caps are a subset of every other caps. Every caps are a subset of ANY caps.</p>
+</section>
+<section id="equality">
+<h3>Equality 相等<a class="headerlink" href="#equality" title="Link to this heading"></a></h3>
+<p>Caps “A” and “B” are equal if “A” is a subset of “B” and “B” is a subset of “A”. This means that both caps are expressing the same possibilities but their structures can still be different if they contain unfixed fields.</p>
+</section>
+<section id="intersection">
+<h3>Intersection 交集<a class="headerlink" href="#intersection" title="Link to this heading"></a></h3>
+<p>The intersection of caps “A” and caps “B” are the caps that contain the intersection of all their structures with each other.</p>
+<p>The intersection of structure “a” and structure “b” is empty if their structure name or their caps features are not equal, or if “a” and “b” contain the same field but the intersection of both field values is empty. If one structure contains a field that is not existing in the other structure it will be copied over to the intersection with the same value.</p>
+<p>The intersection with ANY caps is always the other caps and the intersection with EMPTY caps is always EMPTY.</p>
+</section>
+<section id="union">
+<h3>Union 合集<a class="headerlink" href="#union" title="Link to this heading"></a></h3>
+<p>The union of caps “A” and caps “B” are the caps that contain the union of all their structures with each other.</p>
+<p>The union of structure “a” and structure “b” are the two structures “a” and “b” if the structure names or caps features are not equal. Otherwise, the union is the structure that contains the union of each fields value. If a field is only in one of the two structures it is not contained in the union.</p>
+<p>The union with ANY caps is always ANY and the union with EMPTY caps is always the other caps.</p>
+</section>
+<section id="subtraction">
+<h3>Subtraction 相减<a class="headerlink" href="#subtraction" title="Link to this heading"></a></h3>
+<p>The subtraction of caps “A” from caps “B” is the most generic subset of “B” that has an empty intersection with “A” but only contains structures with names and caps features that are existing in “B”.</p>
+</section>
+</section>
+<section id="basic-rules">
+<h2>Basic Rules 基本规则<a class="headerlink" href="#basic-rules" title="Link to this heading"></a></h2>
+<section id="semantics-of-caps-and-their-usage">
+<h3>Semantics of caps and their usage<a class="headerlink" href="#semantics-of-caps-and-their-usage" title="Link to this heading"></a></h3>
+<p>A caps can contain multiple structures, in which case any of the structures would be acceptable. The structures are in the preferred order of the creator of the caps, with the preferred structure being first and during negotiation of caps this order should be considered to select the most optimal structure.</p>
+<p>Each of these structures has a name that specifies the media type, e.g. “video/x-theora” to specify Theora video. Additional fields in the structure add additional constraints and/or information about the media type, like the width and height of a video frame, or the codec profile that is used. These fields can be non-fixed (e.g. ranges) for non-fixed caps but must be fixated to a fixed value during negotiation. If a field is included in the caps returned by a pad via the CAPS query, it imposes an additional constraint during negotiation. The caps in the end must have this field with a value that is a subset of the non-fixed value. Additional fields that are added in the negotiated caps give additional information about the media but are treated as optional. Information that can change for every buffer and is not relevant during negotiation must not be stored inside the caps.</p>
+<p>For each of the structures in caps it is possible to store caps features. The caps features are expressing additional requirements for a specific structure, and only structures with the same name and equal caps features are considered compatible. Caps features can be used to require a specific memory representation or a specific meta to be set on buffers, for example a pad could require for a specific structure that it is passed EGLImage memory or buffers with the video meta. If no caps features are provided for a structure, it is assumed that system memory is required unless later negotiation steps (e.g. the ALLOCATION query) detect that something else can be used. The special ANY caps features can be used to specify that any caps feature would be accepted, for example if the buffer memory is not touched at all.</p>
+</section>
+<section id="compatibility-of-caps">
+<h3>Compatibility of caps<a class="headerlink" href="#compatibility-of-caps" title="Link to this heading"></a></h3>
+<p>Pads can be linked when the caps of both pads are compatible. This is the case when their intersection is not empty.</p>
+<p>For checking if a pad actually supports a fixed caps an intersection is not enough. Instead the fixed caps must be at least a subset of the pad’s caps but pads can introduce additional constraints which would be checked in the ACCEPT_CAPS query handler.</p>
+<p>Data flow can only happen after pads have decided on common fixed caps. These caps are distributed to both pads with the CAPS event.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gst-promise.html" class="btn btn-neutral float-left" title="GstPromise" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gst-state.html" class="btn btn-neutral float-right" title="GStreamer State" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

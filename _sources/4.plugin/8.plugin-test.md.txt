@@ -1,0 +1,11 @@
+# 测试你的插件
+
+假设我们的插件名称为 hfocr, 编译 plugin 代码后会生成一个 build/gst-plugin/libgsthfocr.so
+
+可以用如下命令来检查这个 plugin 的基本信息
+
+```sh
+gst-inspect-1.0 --gst-plugin-path=/home/walter/gst-hfocr/build/gst-plugin hfocr
+```
+
+

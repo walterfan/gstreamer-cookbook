@@ -1,13 +1,18 @@
-# Constructing the Boilerplate
+# 构造样板代码
 
-## 1. 检出 git-template 的样板代码
+## 1. 检出 gst-template 的样板代码
 
-```
+```sh
 git clone https://gitlab.freedesktop.org/gstreamer/gst-template.git
 ```
 
+安装 meson
 
-## 2. 设置项目的印章
+```sh
+apt install meson
+```
+
+## 2. 生成 gst plugin 的样板代码
 
 创建新元素时要做的第一件事是指定它的一些基本细节：它的名字是什么，谁编写的，它的版本号是什么等等。我们还需要定义一个对象来表示元素并存储 元素需要的数据。 这些细节统称为样板 (boilerplate)。
 
@@ -19,14 +24,97 @@ git clone https://gitlab.freedesktop.org/gstreamer/gst-template.git
 2. 该工具将使用的源文件。 默认情况下，使用 gstplugin。
 
 例如，以下命令根据插件模板创建 MyFilter 插件，并将输出文件放在 gst-template/gst-plugin/src 目录中：
+假设我们的 plugin 为 hfasr
+
+```sh
+cd gst-template/gst-plugin/src
+../tools/make_element hfasr
+meson build
+ninja -C build
 
 ```
-$ cd gst-template/gst-plugin/src
-$ ../tools/make_element MyFilter
+
+有时候我们所使用的 gstreamer 版本比较低，例如我使用的就是 `1.14.5` , 这时候以上的编译步骤会出错
+这时候需要修改生成的 meson.build, 将 `>=1.19` 改成 `>=1.14`
+
+```sh
+sed -i 's/>=1.19/>=1.14/g' meson.build
 
 ```
 
-## 自动生成基础代码
+继续运行编译 `ninja -C build` 还是继续报错，原因还是在于 1.14 的宏定义 GST_ELEMENT_REGISTER_DEFINE 与高版本的不一致
+将 GST_ELEMENT_REGISTER_DEFINE 这句代码注释掉，换成 gst_element_register 语句，例如
+
+```cpp
+//grep -n GST_ELEMENT_REGISTER gst-plugin/src/*.c 
+
+/*
+GST_ELEMENT_REGISTER_DEFINE (audiofiltertemplate, "audiofiltertemplate", GST_RANK_NONE, GST_TYPE_AUDIO_FILTER_TEMPLATE);
+/*
+
+return gst_element_register(plugin, "audiofiltertemplate", GST_RANK_NONE, GST_TYPE_AUDIO_FILTER_TEMPLATE);
+
+```
+
+
+
+### 新的样板生成工具
+* 在 gst-plugins-bad 中的一个更加易用的工具
+
+```sh
+git clone https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git
+# If you are building for a specific version, switch to it now. Otherwise, you can remain in the 'master'
+git checkout $BRANCH
+
+# I recommend saving a copy of the indent script somewhere in your PATH
+cd gst-plugins-bad
+NOCONFIGURE=1 ./autogen.sh
+sudo cp common/gst-indent /usr/local/bin/
+```
+再安装以下依赖库
+
+```sh
+sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev indent
+```
+
+这样就可以使用以下命令来生成我们的 plugin 的样板代码
+
+```sh
+cd gst-plugins-bad/tools
+./gst-project-maker my_project
+cd gst-my_project
+./autogen.sh
+make
+```
+
+使用  gst-element-maker 可以生成一个 GstElement 的样板代码
+
+```sh
+cd gst-plugins-bad/tools
+
+./gst-element-maker my_element audiosink
+```
+
+常用的基类 BASE_CLASS 有:
+
+```
+audiodecoder
+audioencoder
+audiofilter
+audiosink
+audiosrc
+baseparse
+basesink
+basesrc
+basetransform
+element
+videodecoder
+videoencoder
+videofilter
+videosink
+```
+
+## 3. 查看自动生成的基础代码
 
 这个新插件的代码可以通过 meson 和 ninja 来构建
 
@@ -41,11 +129,71 @@ ninja -C build
 1. 生成 生成 gstmyfilter.c 和 gstmyfilter.h
 2. 注册 my-filter 这个 element
 
-## 设置元素的基本信息
+```cpp
+
+#include <gst/gst.h>
+
+/* Definition of structure storing data for this element. */
+typedef struct _GstMyFilter {
+  GstElement element;
+
+  GstPad *sinkpad, *srcpad;
+
+  gboolean silent;
+
+
+
+} GstMyFilter;
+
+/* Standard definition defining a class for this element. */
+typedef struct _GstMyFilterClass {
+  GstElementClass parent_class;
+} GstMyFilterClass;
+
+/* Standard macros for defining types for this element.  */
+#define GST_TYPE_MY_FILTER (gst_my_filter_get_type())
+#define GST_MY_FILTER(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_MY_FILTER,GstMyFilter))
+#define GST_MY_FILTER_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_MY_FILTER,GstMyFilterClass))
+#define GST_IS_MY_FILTER(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_MY_FILTER))
+#define GST_IS_MY_FILTER_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_MY_FILTER))
+
+/* Standard function returning type information. */
+GType gst_my_filter_get_type (void);
+
+GST_ELEMENT_REGISTER_DECLARE(my_filter)
+
+```
+
+
+## 4. 设置元素的基本信息
 
 设置此元素的基本信息，例如 element name, type, description and author 信息
 
-## GstStaticPadTemplate
+The Element metadata provides extra element information. It is configured with `gst_element_class_set_metadata` or `gst_element_class_set_static_metadata` which takes the following parameters:
+
+元素的元数据可提供额外的元素信息。 可以通过 `gst_element_class_set_metadata` 或 `gst_element_class_set_static_metadata` 进行设置，
+它有以下参数：
+
+* 元素的长英文名称。
+* 元素的类型，请参阅 GStreamer 核心源代码树中的 docs/additional/design/draft-klass.txt 文档以获取详细信息和示例。
+* 元素用途的简要描述。
+* 元素作者的姓名，可以选择后跟尖括号中的联系电子邮件地址。
+
+例如:
+
+```c
+gst_element_class_set_static_metadata (klass,
+  "An example plugin",
+  "Example/FirstExample",
+  "Shows the basic structure of a plugin",
+  "your name <your.name@your.isp>");
+```
+
+## 5. 设置 GstStaticPadTemplate
 通过 GstStaticPadTemplate 来描述这个 element 将要创建和使用的 pad
 
 * pad 的简短名称
@@ -55,7 +203,7 @@ ninja -C build
 
 例如
 
-```
+```cpp
 /* the capabilities of the inputs and outputs.
  *
  * describe the real formats here.
@@ -74,3 +222,55 @@ static GstStaticPadTemplate src_factory = GST_STATIC_PAD_TEMPLATE ("src",
 ```
 
 这些 pad templates 在 `_class_init()` 函数被注册
+
+## 6. 插件构造器函数
+
+Each element has two functions which are used for construction of an element. 
+
+* The _class_init() function, which is used to initialise the class only once (specifying what signals, arguments and virtual functions the class has and setting up global state); 
+
+静态初始化函数，它用来一次性地初始化这个 class， 包括指定 signa, properties, argument 和这个类所拥有的虚函数，以及设置全局状态
+
+* the _init() function, which is used to initialise a specific instance of this type.
+
+实例初始化函数，用来初始化这个类型的一个特定实例, 类似于 C++ 的构造函数
+
+## 7. 插件初始化函数
+
+Once we have written code defining all the parts of the plugin, we need to write the `plugin_init()` function. 
+
+This is a special function, which is called as soon as the plugin is loaded, and should return TRUE or FALSE depending on whether it loaded initialized any dependencies correctly. 
+
+Also, in this function, any supported element type in the plugin should be registered.
+
+例如
+
+```c
+
+static gboolean
+plugin_init (GstPlugin *plugin)
+{
+  return GST_ELEMENT_REGISTER (my_filter, plugin);
+}
+
+GST_PLUGIN_DEFINE (
+  GST_VERSION_MAJOR,
+  GST_VERSION_MINOR,
+  my_filter,
+  "My filter plugin",
+  plugin_init,
+  VERSION,
+  "LGPL",
+  "GStreamer",
+  "http://gstreamer.net/"
+)
+
+```
+
+Note that the information returned by the plugin_init() function will be cached in a central registry. 
+
+For this reason, it is important that the same information is always returned by the function: 
+
+for example, it must not make element factories available based on runtime conditions. 
+
+If an element can only work in certain conditions (for example, if the soundcard is not being used by some other process) this must be reflected by the element being unable to enter the READY state if unavailable, rather than the plugin attempting to deny existence of the plugin.

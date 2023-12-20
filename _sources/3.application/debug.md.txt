@@ -5,6 +5,15 @@ To enable debug output, set the GST_DEBUG environment variable to the desired de
 
 Furthermore, each plugin or part of the GStreamer defines its own category, so you can specify a debug level for each individual category. For example, `GST_DEBUG=2,audiotestsrc:6`, will use Debug Level 6 for the audiotestsrc element, and 2 for all the others.
 
+```sh
+export GST_DEBUG=<some element name>:<1-6?>,<some otherelement>:<1-6>
+```
+
+如果不太清楚问题出在哪儿，就用 
+
+```sh
+export GST_DEBUG=*:3 
+```
 
 ## Debug Level
 

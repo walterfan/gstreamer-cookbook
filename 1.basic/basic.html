@@ -57,7 +57,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 概论</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design_principles.html">GStreamer 设计原则</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">GStreamer 设计原则</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preliminary.html">GStreamer 预备知识</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">GStreamer 基础知识</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">概述</a><ul>
@@ -80,13 +80,17 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="concept.html">GStreamer 基本概念</a></li>
-<li class="toctree-l2"><a class="reference internal" href="state.html">GStreamer State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="glib.html">glib Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gstelement.html">gst element overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gstpad.html">GstPad Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gstbus.html">GstBus overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gstpromise.html">GstPromise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-element.html">gst element overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-pad.html">GstPad Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bin.html">gst bin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bus.html">GstBus overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-buffer.html">GstBuffer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-promise.html">GstPromise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-caps.html">GStreamer Capabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-state.html">GStreamer State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink-element.html">Sink elements</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
@@ -289,8 +293,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/Library/Frameworks/GStreamer.framework/
 <ul class="simple">
 <li><p>播放 mp4 文件</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 playbin uri=file:///opt/webrtc_primer/material/obama_talk.mp4
-gst-launch-1.0 -v playbin uri=file:///`pwd`/obama_talk.mp4
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 -v playbin uri=file:///`pwd`/material/talk.mp4
 </pre></div>
 </div>
 <ul class="simple">
