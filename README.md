@@ -107,7 +107,7 @@ gst-launch-1.0 -vv filesrc location=material/talk.mp4 \
 
 * send/receive video stream over udp
 
-```
+```sh
 # send video
 
 gst-launch-1.0 -v v4l2src device=/dev/video1 ! decodebin \
@@ -121,6 +121,18 @@ gst-launch-1.0 -v udpsrc  port=5000 caps=application/x-rtp \
 
 ```
 ## build source code
+
+```sh
+sudo apt install libfmt-dev
+sudo apt install libspdlog-dev
+sudo apt install libyaml-cpp-dev
+sudo apt install libgtest-dev
+mkdir -p build
+cd build
+cmake ..
+make
+```
+
 ### use vcpkg
 
 * if you have not install vcpkg, please install it first
