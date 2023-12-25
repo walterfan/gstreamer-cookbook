@@ -1,5 +1,4 @@
 #include "gtest/gtest.h"
-#include <fmt/core.h>
 #include "time_util.h"
 #include "time.h"
 #include <stdint.h>
