@@ -98,14 +98,14 @@ int find_closed_bigger_value(std::vector<std::string>& numbers, const std::strin
 
 std::string str_tolower(std::string s)
 {
-    std::transform(s.begin(), s.end(), s.begin(), 
-                   [](unsigned char c){ return std::tolower(c); } 
-                  );
+    for(char &c : s)
+        c = tolower(c);
     return s;
 }
 
 bool is_number(const std::string& s)
 {
-    return !s.empty() && std::find_if(s.begin(), 
-        s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
+    std::string::const_iterator it = s.begin();
+    while (it != s.end() && std::isdigit(*it)) ++it;
+    return !s.empty() && it == s.end();
 }
