@@ -1,5 +1,4 @@
 #include "gst_util.h"
-#include "logger.h"
 
 GstCaps* get_default_caps() 
 {
@@ -43,7 +42,7 @@ gboolean print_field (GQuark field, const GValue * value, gpointer pfx)
 {
   gchar *str = gst_value_serialize (value);
 
-  INFO_LOG("{}  {}: {}\n", (gchar *) pfx, g_quark_to_string (field), str);
+  gst_println("%s  %s: %s\n", (gchar *) pfx, g_quark_to_string (field), str);
   g_free (str);
   return TRUE;
 }
@@ -55,18 +54,18 @@ void print_caps (const GstCaps * caps, const gchar * pfx)
   g_return_if_fail (caps != NULL);
 
   if (gst_caps_is_any (caps)) {
-    INFO_LOG("{}ANY\n", pfx);
+    gst_println("%sANY\n", pfx);
     return;
   }
   if (gst_caps_is_empty (caps)) {
-    INFO_LOG("{}EMPTY\n", pfx);
+    gst_println("%sEMPTY\n", pfx);
     return;
   }
 
   for (i = 0; i < gst_caps_get_size (caps); i++) {
     GstStructure *structure = gst_caps_get_structure (caps, i);
 
-    INFO_LOG("{}{}\n", pfx, gst_structure_get_name (structure));
+    gst_println("%s %s\n", pfx, gst_structure_get_name (structure));
     gst_structure_foreach (structure, print_field, (gpointer) pfx);
   }
 }
@@ -82,7 +81,7 @@ void print_pad_capabilities (GstPad *pad, gchar *pad_name)
     caps = gst_pad_query_caps (pad, NULL);
 
   /* Print and free */
-  INFO_LOG("Caps for the {} pad:\n", pad_name);
+  gst_println("Caps for the %s pad:\n", pad_name);
   print_caps (caps, "      ");
   gst_caps_unref (caps);
 
@@ -117,7 +116,7 @@ void check_pads(GstElement *element) {
     
     while (gst_iterator_next(iter, elem) == GST_ITERATOR_OK) {
         gchar * strVal = g_strdup_value_contents (elem);
-        DEBUG_LOG("pad: {}", strVal);
+        gst_println("pad: %s", strVal);
         free (strVal);
     }
     gst_iterator_free(iter);
