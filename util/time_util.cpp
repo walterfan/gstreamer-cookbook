@@ -39,7 +39,7 @@ std::string get_format_time(
     std::stringstream ss;
     ss << std::put_time(std::localtime(&in_time_t), timeFormat.c_str());
     char buffer[1024] = {0};
-    sprintf(buffer, strPattern.c_str(), ss.str().c_str());
+    snprintf(buffer, 1024, strPattern.c_str(), ss.str().c_str());
     return buffer;
 
 }

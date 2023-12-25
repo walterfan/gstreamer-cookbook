@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     int ret = verifier->init(argc, argv);
     if (ret < 0) {
         DEBUG_TRACE("initialize failed:" << ret 
-            << "\ne.g.  ./build/example/gst-pipeline-verify -f ./example/etc/pipeline.yaml -p pipeline_test_rtmp" );
+            << "\ne.g.  ./bin/gst-pipeline-verify -f ./example/etc/pipeline.yaml -p pipeline_test_rtmp" );
         return ret;
     }
     verifier->build();

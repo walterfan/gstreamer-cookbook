@@ -179,7 +179,19 @@ bool PipelineBuilder::add_element(const std::string& name) {
         if (ele_cfg_ptr) {
             for(auto& kv: ele_cfg_ptr->m_props) {
                 DEBUG_TRACE("set element prop: " << kv.first << " = " << kv.second);
-                if(is_number(kv.second)) {
+
+                if(kv.first == "caps") {
+                    //GstCaps* caps = gst_caps_from_string(kv.second.c_str());
+                    
+                    GstCaps *caps = gst_caps_new_simple ("audio/x-raw",
+                    "format", G_TYPE_STRING, "S16LE",
+                    "rate", G_TYPE_INT, 16000,
+                    "channels", G_TYPE_INT, 1,
+                    "layout", G_TYPE_STRING, "interleaved",
+                    NULL);
+                    
+                    g_object_set(G_OBJECT(it->second), kv.first.c_str(), caps, nullptr);
+                } else if(is_number(kv.second)) {
                     g_object_set(it->second, kv.first.c_str(), str_to_num<int32_t>(kv.second), NULL);    
                 } else {
                     std::string lower_value = str_tolower(kv.second);

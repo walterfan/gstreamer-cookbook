@@ -45,3 +45,10 @@ pipelines:
     - x264enc speed-preset=5 tune=4
     - flvmux streamable=true 
     - rtmpsink location=rtmp://192.168.0.106:1935/live/waltertest
+
+  pipeline_test_pcm:
+    - filesrc location=material/16k16bit.pcm
+    - capsfilter caps="audio/x-raw,format=S16LE,channels=1,rate=16000,layout=interleaved"
+    - audioconvert 
+    - audioresample 
+    - autoaudiosink

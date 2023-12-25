@@ -35,13 +35,13 @@ public:
         
         for(auto num: m_numbers) {
             char buffer[64] = {0};
-            sprintf(buffer, "playlist_%d.m3u8", num);
+            snprintf(buffer, 64, "playlist_%llu.m3u8", num);
             std::string m3u8_file = buffer;
        
             HlsPlaylist playlist((m_test_folder/m3u8_file).string());
             for(int i=0; i<3; ++i) {
                 char buffer[128] = {0};
-                sprintf(buffer, "record_%d_0000%d.ts", num, i);
+                snprintf(buffer, 128, "record_%llu_0000%d.ts", num, i);
                 std::string ts_file = buffer;
                 playlist.append_segment(HlsSegment(10, ts_file));
             }
