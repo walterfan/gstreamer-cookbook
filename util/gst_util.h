@@ -44,3 +44,8 @@ std::string_view get_option(
     const std::string_view& option_name) ;
 
 void check_pads(GstElement *element) ;
+
+void log_handler(const gchar *log_domain,
+                 GLogLevelFlags log_level,
+                 const gchar *message,
+                 gpointer user_data);

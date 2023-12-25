@@ -66,3 +66,4 @@ int load_yaml(const std::string& path,
     }
     return 0;
 }
+

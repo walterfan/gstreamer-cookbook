@@ -4,7 +4,6 @@
 #include <sstream> // stringstream
 #include <iomanip> // put_time
 #include <string>  // string
-#include <fmt/core.h>
 #include <chrono>
 #include <thread>
 #include <gst/gst.h>

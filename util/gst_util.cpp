@@ -121,3 +121,39 @@ void check_pads(GstElement *element) {
     }
     gst_iterator_free(iter);
 }
+
+
+void log_handler(const gchar *log_domain,
+                 GLogLevelFlags log_level,
+                 const gchar *message,
+                 gpointer user_data)
+{
+    FILE *logfile = fopen ("/tmp/debug.log", "a");
+    if (logfile == NULL)
+    {
+        /*  Fall  back  to  console  output  if  unable  to  open  file  */
+        printf ("Rerouted to console: %s", message);
+        return;
+    }
+
+    fprintf (logfile, "%s", message);
+    fclose (logfile);
+}
+
+/* usage:
+uint handlerid = g_log_set_handler(NULL,
+    G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+    log_handler,
+    NULL);
+
+if (!g_main_loop_is_running())
+{
+    g_log(G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, "g_main_loop_is_running() returned 0\n");
+}
+
+if (handlerid != 0)
+{
+    g_log_remove_handler(NULL, handlerid);
+    handlerid = 0;
+}
+*/

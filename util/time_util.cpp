@@ -5,7 +5,7 @@
 #include <sstream> // stringstream
 #include <iomanip> // put_time
 #include <iostream>
-#include <fmt/core.h>
+
 
 //UTC time
 std::string get_current_time(const std::string& format) {
