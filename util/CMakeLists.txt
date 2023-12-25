@@ -4,7 +4,6 @@ set(common_utils_SRCS
     gst_util.cpp
     string_util.cpp
     file_util.cpp
-    logger.cpp
 )
 
 add_library(common_utils STATIC ${common_utils_SRCS})
