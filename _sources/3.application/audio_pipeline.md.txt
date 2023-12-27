@@ -162,5 +162,5 @@ gst-launch-1.0 filesrc location=file.wav ! wavparse ! audioresample ! audioconve
 * Play PCM
 
 ```sh
-gst-launch-1.0 filesrc location=/tmp/test.pcm ! audio/x-raw,format=S16LE,channels=1,rate=16000 ! audioconvert ! audioresample ! autoaudiosink
+gst-launch-1.0 filesrc location=/tmp/test.pcm ! capsfilter caps="audio/x-raw,format=S16LE,channels=1,rate=16000" ! audioconvert ! audioresample ! autoaudiosink
 ```
