@@ -24,5 +24,6 @@
    gst-promise
    gst-caps
    gst-state
+   gst-event
 
    sink-element

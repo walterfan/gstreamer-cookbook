@@ -12,10 +12,14 @@ A cookbook for gstreamer developer - [GStreamer cookbook](https://walterfan.gith
 * [GStreamer Bus](doc/source/1.basic/gst-bus.md)
 * [GStreamer Pad](doc/source/1.basic/gst-pad.md)
 * [GStreamer Caps](doc/source/1.basic/gst-caps.md)
-* [GStreamer Buffer]
-* [GStreamer Event]
+* [GStreamer Buffer](doc/source/1.basic/gst-buffer.md)
+* [GStreamer Event](doc/source/1.basic/gst-event.md)
 * [GStreamer State](doc/source/1.basic/gst-state.md)
-* [GStreamer pipeline]
+* [GStreamer pipeline](doc/source/3.application/pipeline_manipulation.md)
+* [Audio pipeline](doc/source/3.application/audio_pipeline.md)
+* [Video pipeline](doc/source/3.application/video_pipeline.md)
+* [GStreamer FAQ](doc/source/3.application/faq.md)
+* [GStreamer Debug](doc/source/3.application/debug.md)
 
 ## 进阶者 Advanced User
 
@@ -25,8 +29,8 @@ A cookbook for gstreamer developer - [GStreamer cookbook](https://walterfan.gith
 * [GStreamer plugin - event function]
 * [GStreamer plugin - query function]
 * [GStreamer plugin - signal](doc/source/4.plugin/7.plugin-signal.md)
-* [GStreamer plugins]
-* [GStreamer tools]
+* [GStreamer plugins](doc/source/4.plugin/index.rst)
+* [GStreamer tools](doc/source/5.tool/index.rst)
 
 * [GStreamer Probe]
 * [GStreamer dynamic pads]

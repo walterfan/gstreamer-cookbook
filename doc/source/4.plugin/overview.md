@@ -2,6 +2,13 @@
 
 GStreamer 是一个极其强大且多功能的框架，用于创建流媒体应用程序。 GStreamer 框架的许多优点都来自于其模块化：GStreamer 可以无缝合并新的插件模块。 但由于模块化和强大功能通常会以更高的复杂性为代价，因此编写新应用程序并不总是那么容易。
 
+GStreamer是可扩展的，因此GstElement实例可以在运行时加载。插件系统可以提供一个或多个基本的GStreamer GstPluginFeature子类。
+
+插件应导出一个名为gst_plugin_desc的符号，它是GstPluginDesc类型的结构体。插件加载器将检查插件链接的核心库的版本，并创建一个新的GstPlugin。然后，它将调用在gst_plugin_desc中提供的GstPluginInitFunc函数。
+
+一旦你获得了对GstPlugin的句柄（例如来自GstRegistry），你可以添加任何继承自GstPluginFeature的对象。
+
+通常情况下，插件总是自动加载的，因此你不需要显式调用gst_plugin_load将其加载到内存中。有选项可以将插件静态链接到应用程序，甚至在没有插件存储库的情况下使用GStreamer，这时可能需要调用gst_plugin_load将插件加载到内存中。
 
 ## Elements and Plugins
 

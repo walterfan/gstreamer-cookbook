@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GstEvent &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">GstEvent</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/1.basic/gst-event.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gstevent">
+<h1>GstEvent<a class="headerlink" href="#gstevent" title="Link to this heading"></a></h1>
+<p>The event class provides factory methods to construct events for sending and functions to query (parse) received events.</p>
+<p>Events are usually created with <code class="docutils literal notranslate"><span class="pre">gst_event_new_*()</span></code> which takes event-type specific parameters as arguments.</p>
+<p>To send an event application will usually use <code class="docutils literal notranslate"><span class="pre">gst_element_send_event</span></code> and elements will use <code class="docutils literal notranslate"><span class="pre">gst_pad_send_event</span></code> or <code class="docutils literal notranslate"><span class="pre">gst_pad_push_event</span></code>. The event should be unreffed with gst_event_unref if it has not been sent.</p>
+<p>Events that have been received can be parsed with their respective <code class="docutils literal notranslate"><span class="pre">gst_event_parse_*()</span></code> functions. It is valid to pass NULL for unwanted details.</p>
+<p>Events are passed between elements in parallel to the data stream. Some events are serialized with buffers, others are not. Some events only travel downstream, others only upstream. Some events can travel both upstream and downstream.</p>
+<p>The events are used to signal special conditions in the datastream such as EOS (end of stream) or the start of a new stream-segment. Events are also used to flush the pipeline of any pending data.</p>
+<p>Most of the event API is used inside plugins. Applications usually only construct and use seek events. To do that <code class="docutils literal notranslate"><span class="pre">gst_event_new_seek</span></code> is used to create a seek event. It takes the needed parameters to specify seeking time and mode</p>
+<section id="example">
+<h2>example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+<span class="w">   </span><span class="n">GstEvent</span><span class="w"> </span><span class="o">*</span><span class="n">event</span><span class="p">;</span>
+<span class="w">   </span><span class="n">gboolean</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">   </span><span class="p">...</span>
+<span class="w">   </span><span class="c1">// construct a seek event to play the media from second 2 to 5, flush</span>
+<span class="w">   </span><span class="c1">// the pipeline to decrease latency.</span>
+<span class="w">   </span><span class="n">event</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_event_new_seek</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">      </span><span class="n">GST_FORMAT_TIME</span><span class="p">,</span>
+<span class="w">      </span><span class="n">GST_SEEK_FLAG_FLUSH</span><span class="p">,</span>
+<span class="w">      </span><span class="n">GST_SEEK_TYPE_SET</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">GST_SECOND</span><span class="p">,</span>
+<span class="w">      </span><span class="n">GST_SEEK_TYPE_SET</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">GST_SECOND</span><span class="p">);</span>
+<span class="w">   </span><span class="p">...</span>
+<span class="w">   </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_element_send_event</span><span class="w"> </span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">)</span>
+<span class="w">     </span><span class="n">g_warning</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;seek failed&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="p">...</span>
+<span class="w">   </span>
+</pre></div>
+</div>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>https://gstreamer.freedesktop.org/documentation/gstreamer/gstevent.html?gi-language=c</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

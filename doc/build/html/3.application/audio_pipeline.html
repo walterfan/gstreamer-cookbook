@@ -259,7 +259,7 @@ gst-launch-1.0<span class="w"> </span>audiotestsrc<span class="w"> </span>!<span
 <ul class="simple">
 <li><p>Play PCM</p></li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>/tmp/test.pcm<span class="w"> </span>!<span class="w"> </span>audio/x-raw,format<span class="o">=</span>S16LE,channels<span class="o">=</span><span class="m">1</span>,rate<span class="o">=</span><span class="m">16000</span><span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>autoaudiosink
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>/tmp/test.pcm<span class="w"> </span>!<span class="w"> </span>capsfilter<span class="w"> </span><span class="nv">caps</span><span class="o">=</span><span class="s2">&quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot;</span><span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>autoaudiosink
 </pre></div>
 </div>
 </section>
