@@ -22,7 +22,7 @@ gst-launch-1.0 -v -e videotestsrc ! x264enc ! qtmux ! filesink location=xyz.mp4
 gst-launch-1.0 videotestsrc is-live=true ! x264enc ! h264parse ! hlssink2 max-files=5
 ```
 
-### record and display at the same time(queue)
+### record and display at the same t e(queue)
 
 [GStreamer Recording and Viewing Stream Simultaneously](https://stackoverflow.com/questions/37444615/gstreamer-recording-and-viewing-stream-simultaneously)
 

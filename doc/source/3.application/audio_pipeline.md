@@ -4,13 +4,13 @@
 ## samples
 * 播放一段测试语音
 
-```
+```sh
 gst-launch-1.0 audiotestsrc wave=5 volume=0.3 ! audioconvert ! autoaudiosink
 ```
 
 the wave parameters can be:
-```
 
+```
  wave                : Oscillator waveform
     flags: readable, writable, controllable
     Enum "GstAudioTestSrcWave" Default: 0, "sine"
@@ -32,11 +32,12 @@ the wave parameters can be:
 
 * 播放来自麦克风的声音
 
-MIC_DEVICE_ID can be got by `gst-device-monitor-1.0 Audio/Source "audio/x-raw,format=S16LE,rates=16000,channels=1"`
 
+
+```sh
+gst-launch-1.0 pulsesrc device=$MIC_DEV_ID ! "audio/x-raw,format=S16LE,rates=16000,channels=1" ! autoaudiosink
 ```
-gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! "audio/x-raw,format=S16LE,rates=16000,channels=1" ! autoaudiosink
-```
+  - MIC_DEVICE_ID can be got by `gst-device-monitor-1.0 Audio/Source "audio/x-raw,format=S16LE,rates=16000,channels=1"`
 
 * 将收到的语音进行 AGC(自动增益), AEC(回声消除) and ANS(噪声抑制) 处理
 
@@ -46,27 +47,27 @@ gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! "audio/x-raw,format=S16LE,rates=
 
 * 转换语音包为 g.711 编码
 
-```
+```sh
 gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! "audio/x-raw,format=S16LE,rates=16000,channels=1" ! alawenc
 ```
 
 * write out audio file to disk (using same tone):
 
-```
+```sh
 
 gst-launch-1.0 audiotestsrc ! audioconvert ! capsfilter caps = "audio/x-raw,format=S16LE,channels=1,rate=16000" ! filesink location = "audio.raw"
 ```
 
 * read audio file from disk (should play the same tone):
 
-```
+```sh
 gst-launch-1.0 filesrc location="audio.raw" ! capsfilter caps = "audio/x-raw,format=S16LE,channels=1,rate=16000" ! audioconvert ! audoaudiosink
 ```
 
 
 * decode mp3 and write to disk:
 
-```
+```sh
 gst-launch-1.0 filesrc location = 16k16bit.mp3 ! decodebin ! audioconvert ! capsfilter caps = "audio/x-raw,format=S16LE,channels=1,rate=16000" ! filesink location = "audio.raw"
 ```
 
@@ -163,4 +164,10 @@ gst-launch-1.0 filesrc location=file.wav ! wavparse ! audioresample ! audioconve
 
 ```sh
 gst-launch-1.0 filesrc location=/tmp/test.pcm ! capsfilter caps="audio/x-raw,format=S16LE,channels=1,rate=16000" ! audioconvert ! audioresample ! autoaudiosink
+```
+
+* split mp3 to multiple wav files
+
+```ah
+gst-launch-1.0 filesrc location=audio/audio.mp3 ! decodebin ! audioconvert ! splitmuxsink location=/tmp/out_%d.wav muxer=wavenc max-size-time=10000000000
 ```

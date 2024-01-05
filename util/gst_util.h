@@ -9,7 +9,7 @@
 #include <gst/rtp/rtp.h>
 
 #define VIDEO_PAD_NAME "video"
-#define AUDIO_PAD_NAME "video"
+#define AUDIO_PAD_NAME "audio"
 #define SRC_PAD_NAME   "src"
 #define SINK_PAD_NAME  "sink"
 
