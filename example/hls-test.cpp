@@ -8,6 +8,7 @@
 #include <thread>
 #include <gst/gst.h>
 #include <glib.h>
+#include <vector>
 
 #define PAD_NAME "video"
 #define TIME_FMT "%Y%m%d%H%M%S"

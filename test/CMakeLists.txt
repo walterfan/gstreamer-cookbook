@@ -1,5 +1,8 @@
 enable_testing()
 find_package(GTest REQUIRED)
+if(NOT GTEST_LIBRARY)
+    message("GTest not found!")
+endif()
 
 add_executable(waltertest
     waltertest.cpp
@@ -14,9 +17,10 @@ add_executable(unit_test
 	gobject_test.cpp
     yaml_test.cpp
 )
+
 target_include_directories(waltertest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(unit_test common_utils 
-    GTest::gtest 
+    gtest
     yaml-cpp
     ${GST_LIBRARIES})
 target_link_libraries(waltertest common_utils ${GST_LIBRARIES})

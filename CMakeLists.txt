@@ -22,7 +22,7 @@ endif()
 find_package(fmt CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(yaml-cpp CONFIG REQUIRED)
-    
+
 if(NOT spdlog_FOUND)
     message(WARNING "spdlog not found!")
 else()
