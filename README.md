@@ -83,7 +83,7 @@ libfmt-dev \
 libspdlog-dev \
 yaml-cpp \
 libyaml-cpp-dev
-googletest
+libgtest-dev
 ```
 
 ## Example
