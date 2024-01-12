@@ -9,7 +9,7 @@ int get_playlist_files(const std::string& path,
     const std::string& suffix,
     std::vector<std::string>& fileNames);
 
-int load_yaml(const std::string& path, 
+int yaml_to_str_vec_map(const std::string& path, const std::string& root, 
     std::map<std::string, std::vector<std::string>>& config);
 
 

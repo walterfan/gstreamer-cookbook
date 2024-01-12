@@ -81,7 +81,7 @@ int PipelineBuilder::init(int argc, char *argv[]) {
         m_pipeline_name = "pipeline_mp4_rtmp";
     }
     std::map<std::string, std::vector<std::string>> pipelines;
-    int ret = load_yaml(std::string(pipeline_config_file), pipelines);
+    int ret = yaml_to_str_vec_map(std::string(pipeline_config_file), "pipelines", pipelines);
     if (ret < 0 || pipelines.empty()) {
         DEBUG_TRACE("PipelineBuilder init not found pipeline yaml: " << pipeline_config_file);
         return -1;

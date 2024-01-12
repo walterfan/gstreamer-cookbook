@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iomanip>
 
-static std::string bytesToHex(uint8_t* bytes, size_t len) {
+static std::string bytes_to_hex(uint8_t* bytes, size_t len) {
     std::stringstream ss;
 
     // Ensure the output is in uppercase and has two characters for each byte
@@ -41,14 +41,19 @@ GstPadProbeReturn cb_have_data(GstPad *pad, GstPadProbeInfo *info,
     GstBuffer *buf = (GstBuffer *) info->data;
     GstMapInfo in_map_info;
     memset (&in_map_info, 0, sizeof (in_map_info));
+    static uint32_t data_count = 0;
 
     if (buf) {
-      g_print("cb_hava_data: offet=%llu from %s\n", buf->offset,
+      g_print("cb_hava_data: offet=%lu from %s\n", buf->offset,
               (char *)user_data);
       if (gst_buffer_map (buf, &in_map_info, GST_MAP_READWRITE))
       {
-        std::string hexstr = bytesToHex(in_map_info.data, in_map_info.size);
-        std::cout << "cb_hava_data, size=" << in_map_info.size << ": " << hexstr << std::endl;
+        std::string hexstr = bytes_to_hex(in_map_info.data, in_map_info.size);
+        std::cout << "cb_hava_data, count=" <<(++data_count) << ", size=" << in_map_info.size;
+        if (data_count % 5 == 0) {
+          std::cout << "receive data=" << hexstr << std::endl;
+        }
+        
       }
     }
     return GST_PAD_PROBE_OK;
