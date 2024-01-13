@@ -61,3 +61,10 @@ gst-launch-1.0 -v videotestsrc ! videorate ! video/x-raw,framerate=60/1 ! x264en
 
 gst-launch-1.0 -v videotestsrc ! video/x-raw,framerate=30/1 ! videorate ! video/x-raw,framerate=60/1 ! x264enc tune=zerolatency bitrate=16000000 speed-preset=superfast ! rtph264pay ! udpsink port=5000 host=$HOST
 ```
+
+### capture screen and display the video
+
+```sh
+gst-launch-1.0 ximagesrc startx=160 endx=1080 use-damage=0 ! video/x-raw,framerate=30/1 ! videoscale method=0 ! video/x-raw,width=640,height=480  ! ximagesink
+
+```

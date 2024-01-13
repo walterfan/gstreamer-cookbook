@@ -1,5 +1,13 @@
 # SRS
 
+## 快速开始
+
+
+1935 RTMP的常用端口
+1985 API接口端口
+8080 默认控制台访问端口
+
+
 ## 构建
 
 ```
@@ -46,7 +54,7 @@ vhost __defaultVhost__ {
 ```
 export CANDIDATE="192.168.0.104"
 docker run --rm --env CANDIDATE=$CANDIDATE \
-  -p 1935:1935 -p 8080:8080 -p 1985:1985 -p 8000:8000/udp \
+  -p 1935:1935 -p 1975:8080 -p 1985:1985 -p 8000:8000/udp \
   registry.cn-hangzhou.aliyuncs.com/ossrs/srs:5 \
   objs/srs -c conf/rtmp2rtc.conf
 ```

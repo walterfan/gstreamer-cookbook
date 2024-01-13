@@ -28,18 +28,21 @@ protected:
 
 TEST_F(YamlParserTest, parse) {
     std::map<std::string, std::vector<std::string>> config;
-    YAML::Node node = YAML::LoadFile("./example/etc/pipeline.yaml");
+    YAML::Node node = YAML::LoadFile("../example/etc/pipeline.yaml");
     if (node["pipelines"]) {
         YAML::Node pipelines = node["pipelines"]; 
         YAML::const_iterator it=pipelines.begin();     
         for (; it!=pipelines.end(); ++it) {
             std::string key = it->first.as<std::string>();
-            std::cout << key << ":\n";
-            std::vector<std::string> vals = it->second.as<std::vector<std::string>>();
+        
+            YAML::Node elements = it->second;
+            std::cout << key << "[elements]:\n";
+            std::vector<std::string> vals = elements["elements"].as<std::vector<std::string>>();
             for(auto& val: vals) {
                 std::cout << "\t" << val << "\n";
             }
             config.emplace(std::make_pair(key, vals));
+
         }
     }
 }

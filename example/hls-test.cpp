@@ -9,8 +9,8 @@
 #include <gst/gst.h>
 #include <glib.h>
 
-#define PAD_NAME "video"
-#define TIME_FMT "%Y%m%d%H%M%S"
+#include "gst_util.h"
+
 #define DEBUG_TRACE(msg) std::cout << "[" \
     << time(NULL) <<","<< __FILE__ << "," << __LINE__ << "]\t"<< msg << std::endl
 
@@ -19,7 +19,7 @@ static const GstPadProbeType pad_probe_type = GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREA
 
 static uint32_t deleted_fragments = 0;
 
-std::string get_time_str(
+static std::string get_time_str(
     const std::chrono::system_clock::time_point& timePoint, 
     const std::string& strPrefix, const std::string& strSuffix)
 {
@@ -30,17 +30,6 @@ std::string get_time_str(
     return strPrefix + ss.str() + strSuffix;
 }
 
-static void check_pads(GstElement *element) {
-    GstIterator *iter = gst_element_iterate_pads(element);
-    GValue *elem;
-    
-    while (gst_iterator_next(iter, elem) == GST_ITERATOR_OK) {
-        gchar * strVal = g_strdup_value_contents (elem);
-        DEBUG_TRACE("pad: " << strVal);
-        free (strVal);
-    }
-    gst_iterator_free(iter);
-}
 
 
 static gboolean delete_fragment_callback(GstElement *element, const gchar *uri, gpointer user_data) {
@@ -59,7 +48,7 @@ static GstPadProbeReturn block_downstream_probe(GstPad *pad, GstPadProbeInfo *in
 gulong start_record(GstElement* hlssink, gulong probe_id) {
     DEBUG_TRACE("to start_record"); 
 
-    GstPad *hlssink_pad = gst_element_get_static_pad(hlssink, PAD_NAME);
+    GstPad *hlssink_pad = gst_element_get_static_pad(hlssink, VIDEO_PAD_NAME);
     if(hlssink_pad) {
         DEBUG_TRACE("to unblock stream");
         gst_pad_remove_probe(hlssink_pad, probe_id);
@@ -72,7 +61,7 @@ gulong stop_record(GstElement* hlssink) {
     DEBUG_TRACE("to stop_record"); 
     gulong ret = 0;
     // Get the source pad of hlssink
-    GstPad *hlssink_pad = gst_element_get_static_pad(hlssink, PAD_NAME);
+    GstPad *hlssink_pad = gst_element_get_static_pad(hlssink, VIDEO_PAD_NAME);
     if(hlssink_pad) {
         DEBUG_TRACE("to block stream");
         ret = gst_pad_add_probe(hlssink_pad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM, block_downstream_probe, NULL, NULL);
@@ -81,28 +70,6 @@ gulong stop_record(GstElement* hlssink) {
     return ret;
 }
 
-bool has_option(
-    const std::vector<std::string_view>& args, 
-    const std::string_view& option_name) {
-    for (auto it = args.begin(), end = args.end(); it != end; ++it) {
-        if (*it == option_name)
-            return true;
-    }
-    
-    return false;
-}
-
-std::string_view get_option(
-    const std::vector<std::string_view>& args, 
-    const std::string_view& option_name) {
-    for (auto it = args.begin(), end = args.end(); it != end; ++it) {
-        if (*it == option_name)
-            if (it + 1 != end)
-                return *(it + 1);
-    }
-    
-    return "";
-}
 
 void set_element_prop(GstElement* hlssink) {
     auto now = std::chrono::system_clock::now();

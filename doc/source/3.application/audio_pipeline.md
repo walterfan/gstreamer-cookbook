@@ -35,20 +35,20 @@ the wave parameters can be:
 
 
 ```sh
-gst-launch-1.0 pulsesrc device=$MIC_DEV_ID ! "audio/x-raw,format=S16LE,rates=16000,channels=1" ! autoaudiosink
+gst-launch-1.0 pulsesrc device=$MIC_DEV_ID ! "audio/x-raw,format=S16LE,rate=16000,channels=1" ! autoaudiosink
 ```
-  - MIC_DEVICE_ID can be got by `gst-device-monitor-1.0 Audio/Source "audio/x-raw,format=S16LE,rates=16000,channels=1"`
+  - MIC_DEVICE_ID can be got by `gst-device-monitor-1.0 Audio/Source "audio/x-raw,format=S16LE,rate=16000,channels=1"`
 
 * 将收到的语音进行 AGC(自动增益), AEC(回声消除) and ANS(噪声抑制) 处理
 
 ```
-gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! "audio/x-raw,format=S16LE,rates=16000,channels=1" ! webrtcdsp ! webrtcechoprobe ! autoaudiosink
+gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! "audio/x-raw,format=S16LE,rate=16000,channels=1" ! webrtcdsp ! webrtcechoprobe ! autoaudiosink
 ```
 
 * 转换语音包为 g.711 编码
 
 ```sh
-gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! "audio/x-raw,format=S16LE,rates=16000,channels=1" ! alawenc
+gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! "audio/x-raw,format=S16LE,rate=16000,channels=1" ! alawenc
 ```
 
 * write out audio file to disk (using same tone):
@@ -85,14 +85,17 @@ gst-launch-1.0 pulsesrc device=xxx ! wavenc ! filesink location=test.wav
 ```
 
 * 将语音录制为 hls 文件
+
 ```sh
 gst-launch-1.0 pulsesrc device=xxx ! avenc_aac ! hlssink2 max-files=5
+
+gst-launch-1.0 osxaudiosrc device=xxx ! avenc_aac ! hlssink2 max-files=5
 ```
 
 * 将语音录制为 hls 文件以及 wave file
 ```sh
 
-gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! "audio/x-raw,format=S16LE,rates=16000,channels=1" ! webrtcdsp ! webrtcechoprobe ! audioconvert ! tee name=t ! queue ! avenc_aac ! hlssink2 max-files=5 playlist-location=waltertest.m3u8 location=waltertest_%05d.ts t. ! queue ! wavenc ! filesink location=waltertest.wav
+gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! "audio/x-raw,format=S16LE,rate=16000,channels=1" ! webrtcdsp ! webrtcechoprobe ! audioconvert ! tee name=t ! queue ! avenc_aac ! hlssink2 max-files=5 playlist-location=waltertest.m3u8 location=waltertest_%05d.ts t. ! queue ! wavenc ! filesink location=waltertest.wav
 
 ```
 
@@ -145,12 +148,15 @@ gst-launch-1.0 -v filesrc location=material/16k16bit.mp3 ! mpegaudioparse ! mpg1
 gst-launch-1.0 -v filesrc location=material/16k16bit.mp3 ! mpegaudioparse ! mpg123audiodec ! audioconvert ! alawenc ! hlssink2 max-files=5
 ```
 
-* display audio visualisation
+* display audio visualisation 音频可视化
 
 ```sh
 gst-launch-1.0 audiotestsrc wave=9 ! audioconvert ! spacescope ! glimagesink
 
 gst-launch-1.0 audiotestsrc ! audioconvert ! wavescope ! glimagesink
+
+# on ubuntu, the device id can be got by arecord -l
+gst-launch-1.0 alsasrc device=hw:3,0 ! audioconvert ! wavescope ! videoconvert ! ximagesink
 ```
 
 * Convert WAV to PCM
@@ -168,6 +174,15 @@ gst-launch-1.0 filesrc location=/tmp/test.pcm ! capsfilter caps="audio/x-raw,for
 
 * split mp3 to multiple wav files
 
-```ah
+```sh
 gst-launch-1.0 filesrc location=audio/audio.mp3 ! decodebin ! audioconvert ! splitmuxsink location=/tmp/out_%d.wav muxer=wavenc max-size-time=10000000000
+```
+
+
+* encodes a test audio and video stream and muxes both into an FLV file.
+
+```sh
+gst-launch-1.0 -v flvmux name=mux ! filesink location=test.flv  \
+audiotestsrc samplesperbuffer=44100 num-buffers=10 ! faac ! mux.  \
+videotestsrc num-buffers=250 ! video/x-raw,framerate=25/1 ! x264enc ! mux.
 ```

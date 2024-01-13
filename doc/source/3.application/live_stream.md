@@ -1,0 +1,28 @@
+# Live Stream
+
+1) 启动 SRS 5
+
+```sh
+export CANDIDATE="192.168.104.249"
+sudo docker run --rm -itd --env CANDIDATE=$CANDIDATE \
+  -p 1935:1935 -p 1980:8080 -p 1985:1985 -p 8000:8000/udp \
+  registry.cn-hangzhou.aliyuncs.com/ossrs/srs:5 \
+  objs/srs -c conf/rtmp2rtc.conf
+```
+
+2) 推送视频流到 SRS 上
+
+```sh
+gst-launch-1.0 -vv filesrc location=digits.mp4 ! decodebin ! nvvideoconvert ! identity drop-allocation=1 ! x264enc tune=zerolatency ! flvmux streamable=true ! rtmpsink location='rtmp://192.168.104.249:1935/live/hebin
+```
+
+3) 通过 SRS 来播放视频流
+
+
+```
+- http://192.168.104.249:8080/console/  flv.js
+```    
+
+
+## Reference
+* https://github.com/matthew1000/gstreamer-cheat-sheet/blob/master/rtmp.md

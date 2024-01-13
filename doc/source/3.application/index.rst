@@ -13,6 +13,8 @@
 
    audio_pipeline
    video_pipeline
+   
+   live_stream
 
    deepstream
    faq

@@ -29,6 +29,6 @@ TEST(StringUtilTest, substr_no_prefix)
     std::cout << "ts_timestamp: " << std::chrono::system_clock::to_time_t(ts_timestamp) << std::endl;
     std::cout << "m3u8_timestamp: " << std::chrono::system_clock::to_time_t(m3u8_timestamp) << std::endl;
 
-    ASSERT_EQ(ts_time, get_time_str(ts_timestamp));
-    ASSERT_EQ(m3u8_time, get_time_str(m3u8_timestamp));
+    ASSERT_EQ(ts_time, get_time_str(ts_timestamp, DEFAUT_TIME_FMT));
+    ASSERT_EQ(m3u8_time, get_time_str(m3u8_timestamp, DEFAUT_TIME_FMT));
 }

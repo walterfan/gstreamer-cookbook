@@ -17,6 +17,7 @@ struct ElementConfig {
     std::map<std::string, std::string> m_props;
 };
 
+
 struct PipelineConfig {
     PipelineConfig(std::string name, std::vector<std::string> elements);
     

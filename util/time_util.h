@@ -4,6 +4,7 @@
 
 constexpr auto ISO_8601_TIME_FMT = "%Y-%m-%dT%H:%M:%SZ";
 constexpr auto DEFAUT_TIME_FMT = "%Y%m%d%H%M%S";
+constexpr auto SHORT_TIME_FMT = "%y%m%d%H%M%S";
 
 using TimePoint = std::chrono::time_point<std::chrono::system_clock>;
 

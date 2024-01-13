@@ -129,3 +129,17 @@ TEST_F(HlsUtilTest, update_uri) {
     std::cout << "uri=" << hlsSegment.m_uri  << std::endl;
 }
 
+
+TEST_F(HlsUtilTest, read_m3u8_file) {
+    
+    std::string m3u8_file0 = "../test/playlist_20240111141043.m3u8";
+    HlsPlaylist playlist0(m3u8_file0);
+    playlist0.read_m3u8_file();
+    std::cout << playlist0 << std::endl;
+    
+    std::string m3u8_file1 = "../test/playlist_20240111145046.m3u8";
+    HlsPlaylist playlist1(m3u8_file1);
+    playlist1.read_m3u8_file();
+    std::cout << playlist1 << std::endl;
+}
+
