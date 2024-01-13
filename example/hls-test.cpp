@@ -8,6 +8,7 @@
 #include <thread>
 #include <gst/gst.h>
 #include <glib.h>
+#include <vector>
 
 #include "gst_util.h"
 

@@ -47,14 +47,14 @@ int get_playlist_files(const std::string& path,
     return fileNames.size();
 }   
 
-int load_yaml(const std::string& path, 
+int yaml_to_str_vec_map(const std::string& path, const std::string& key,
     std::map<std::string, std::vector<std::string>>& config) {
     
-    YAML::Node node = YAML::LoadFile(path);
-    if (node["pipelines"]) {
-        YAML::Node pipelines = node["pipelines"]; 
-        YAML::const_iterator it=pipelines.begin();     
-        for (; it!=pipelines.end(); ++it) {
+    YAML::Node rootNode = YAML::LoadFile(path);
+    if (rootNode[key]) {
+        YAML::Node nodes = rootNode[key]; 
+        YAML::const_iterator it=nodes.begin();     
+        for (; it!=nodes.end(); ++it) {
             std::string key = it->first.as<std::string>();
             //std::cout << key << ":\n";
             std::vector<std::string> vals = it->second.as<std::vector<std::string>>();
@@ -65,5 +65,10 @@ int load_yaml(const std::string& path,
         }
     }
     return 0;
+}
+
+YAML::Node load_yaml(const std::string& path, const std::string& key) {
+    YAML::Node rootNode = YAML::LoadFile(path);
+    return rootNode[key];
 }
 

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites tests="1" failures="0" disabled="0" errors="0" time="0.003" timestamp="2024-01-11T15:56:41.046" name="AllTests">
-  <testsuite name="HlsUtilTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0.003" timestamp="2024-01-11T15:56:41.046">
-    <testcase name="read_m3u8_file" file="/Users/walter/workspace/webrtc/gstreamer-cookbook/test/hls_util_test.cpp" line="133" status="run" result="completed" time="0.003" timestamp="2024-01-11T15:56:41.046" classname="HlsUtilTest" />
-  </testsuite>
-</testsuites>
