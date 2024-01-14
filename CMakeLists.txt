@@ -9,9 +9,14 @@ find_package(PkgConfig REQUIRED)
 if (APPLE)
     set(GST_INCLUDE_DIRS /Library/Frameworks/GStreamer.framework/Headers)
     set(GST_LIBRARY_DIRS /Library/Frameworks/GStreamer.framework/Versions/Current/lib)
-    
+
     include_directories(${GST_INCLUDE_DIRS})
     link_directories(${GST_LIBRARY_DIRS})
+
+    set(GTEST_INCLUDE_DIRS /opt/homebrew/Cellar/googletest/1.14.0/include)
+    set(GTEST_LIBRARY_DIRS /opt/homebrew/Cellar/googletest/1.14.0/lib)
+    include_directories(${GTEST_INCLUDE_DIRS})
+    link_directories(${GTEST_LIBRARY_DIRS})
 elseif(UNIX)
     pkg_search_module(GST REQUIRED gstreamer-1.0)
     include_directories(${GST_INCLUDE_DIRS})

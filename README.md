@@ -86,6 +86,16 @@ libyaml-cpp-dev
 libgtest-dev
 ```
 
+for MACOS, run similar commands by brew, but suggest downloading package from gstream site
+
+```sh
+brew install gstreamer
+...
+...
+brew install googletest
+```
+
+
 ## Example
 * start SRS by docker
 ```

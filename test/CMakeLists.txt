@@ -1,8 +1,10 @@
-enable_testing()
 find_package(GTest REQUIRED)
 if(NOT GTEST_LIBRARY)
     message("GTest not found!")
 endif()
+
+enable_testing()
+include_directories(${GTEST_INCLUDE_DIRS})
 
 add_executable(waltertest
     waltertest.cpp

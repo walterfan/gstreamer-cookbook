@@ -81,7 +81,7 @@ public:
     int start();
 
 protected:
-    int define_elements();
+
     int make_elements();
     int add_elements();
     int link_elements();
