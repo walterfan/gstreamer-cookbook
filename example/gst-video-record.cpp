@@ -161,6 +161,7 @@ protected:
     int make_elements();
     int add_elements();
     int link_elements();
+    int add_probe();
 
 private:
     std::string m_video_src_factory = VIDEO_TEST_SRC;
@@ -173,8 +174,10 @@ private:
 
 
     GstElement *m_source = nullptr;
+    GstElement *m_clock_overlay = nullptr;
     GstElement *m_video_encode = nullptr;
     GstElement *m_video_parse = nullptr;
+    //GstElement *m_clock_overlay2 = nullptr;
     GstElement *m_sink = nullptr;
 
     std::vector<ElementDesc> m_elements_desc;
@@ -195,9 +198,11 @@ void GstVideoRecorder::set_option(const std::string& option_name, const std::str
 
 
 int GstVideoRecorder::define_elements() {
-    m_elements_desc.emplace_back(ElementDesc("videotestsrc", "videotestsrc", "is-live=true num-buffers=100", m_source));
+    m_elements_desc.emplace_back(ElementDesc("videotestsrc", "videotestsrc", "is-live=true num-buffers=500", m_source));
+    m_elements_desc.emplace_back(ElementDesc("clockoverlay", "clockoverlay", "halignment=0 valignment=2", m_clock_overlay));
     m_elements_desc.emplace_back(ElementDesc("x264enc", "x264enc", "", m_video_encode));
     m_elements_desc.emplace_back(ElementDesc("h264parse", "h264parse", "", m_video_parse));
+    //m_elements_desc.emplace_back(ElementDesc("clockoverlay2", "clockoverlay", "halignment=2 valignment=2", m_clock_overlay2));
     m_elements_desc.emplace_back(ElementDesc("hlssink2", "hlssink2", "max-files=10 location=/tmp/w_record_%05d.ts playlist-location=/tmp/w_playlist.m3u8", m_sink));
     return 0;
 }
@@ -237,7 +242,12 @@ int GstVideoRecorder::add_elements() {
 }
 
 int GstVideoRecorder::link_elements() {
-    bool ret = gst_element_link_many(m_source, m_video_encode, m_video_parse, m_sink, NULL);
+    bool ret = gst_element_link_many(m_source, 
+        m_clock_overlay, 
+        m_video_encode, 
+        m_video_parse, 
+        //m_clock_overlay2,
+        m_sink, NULL);
 
     if (!ret) {
         std::cerr << "link elements failed" << std::endl;
@@ -245,6 +255,57 @@ int GstVideoRecorder::link_elements() {
     }
     std::cout << "link_elements succeed" << std::endl;
 
+    return 0;
+}
+
+
+static GstPadProbeReturn cb_have_event(GstPad *pad, GstPadProbeInfo *info,
+                                    gpointer user_data)
+{
+
+    GstEvent *event = gst_pad_probe_info_get_event(info);
+    if (event)
+      g_print("cb_hava_event: event type=%s from %s\n", GST_EVENT_TYPE_NAME(event),
+              (char *)user_data);
+
+    return GST_PAD_PROBE_OK;
+}
+
+static GstPadProbeReturn cb_have_query(GstPad *pad, GstPadProbeInfo *info,
+                                gpointer user_data)
+{
+
+    GstQuery *query = gst_pad_probe_info_get_query(info);
+
+    g_print("cb_hava_query: query type=%s from %s\n", GST_QUERY_TYPE_NAME(query),
+          (char *)user_data);
+
+    return GST_PAD_PROBE_OK;
+}
+
+static void add_pad_probe(GstPad *pad_to_probe, const char *evt_pad_name)
+{
+
+
+    // GST_PAD_PROBE_TYPE_EVENT_BOTH
+    gulong probe_id_2 = gst_pad_add_probe(pad_to_probe,
+                                          GST_PAD_PROBE_TYPE_EVENT_BOTH, cb_have_event,
+                                          (gpointer)evt_pad_name, NULL);
+
+    // GST_PAD_PROBE_TYPE_QUERY_BOTH
+    gulong probe_id_3 = gst_pad_add_probe(pad_to_probe,
+                                          GST_PAD_PROBE_TYPE_QUERY_BOTH, cb_have_query,
+                                          (gpointer)evt_pad_name, NULL);
+
+}
+
+int GstVideoRecorder::add_probe() {
+    GstPad* sink_pad = gst_element_get_static_pad(m_sink, "video");
+    if (!sink_pad) {
+        std::cerr << "gst_element_get_static_pad failed." << std::endl;
+        return -1;
+    }
+    add_pad_probe(sink_pad, "video_sink");
     return 0;
 }
 
@@ -269,6 +330,8 @@ int GstVideoRecorder::init() {
 
     ret = link_elements();
     if (ret !=0 ) std::cerr << "link_elements failed." << std::endl;  
+
+    add_probe();
 
     return ret;
 }
