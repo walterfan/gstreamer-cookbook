@@ -2,7 +2,21 @@
 
 
 ## samples
-* 播放一段测试语音
+### 录制语音
+
+```sh
+gst-launch-1.0 -vv alsasrc device=hw:2,0 ! audioconvert ! audioresample ! capsfilter caps="audio/x-raw,format=S16LE,channels=1,rate=16000" ! wavenc ! filesink location="test.wav"
+```
+
+### 回放语音
+
+```sh
+
+gst-launch-1.0 -vv alsasrc device=hw:2,0 ! audioconvert ! audioresample ! capsfilter caps="audio/x-raw,format=S16LE,channels=1,rate=16000" ! autoaudiosink
+```
+
+
+### 播放一段测试语音
 
 ```sh
 gst-launch-1.0 audiotestsrc wave=5 volume=0.3 ! audioconvert ! autoaudiosink
@@ -32,12 +46,13 @@ the wave parameters can be:
 
 * 播放来自麦克风的声音
 
-
-
 ```sh
 gst-launch-1.0 pulsesrc device=$MIC_DEV_ID ! "audio/x-raw,format=S16LE,rate=16000,channels=1" ! autoaudiosink
+
+gst-launch-1.0 alsasrc device=hw:2,0 ! autoaudiosink
+
 ```
-  - MIC_DEVICE_ID can be got by `gst-device-monitor-1.0 Audio/Source "audio/x-raw,format=S16LE,rate=16000,channels=1"`
+- MIC_DEVICE_ID can be got by `gst-device-monitor-1.0 Audio/Source "audio/x-raw,format=S16LE,rate=16000,channels=1"`
 
 * 将收到的语音进行 AGC(自动增益), AEC(回声消除) and ANS(噪声抑制) 处理
 
@@ -72,16 +87,16 @@ gst-launch-1.0 filesrc location = 16k16bit.mp3 ! decodebin ! audioconvert ! caps
 ```
 
 
-* 将 macos 上来自麦克风的音频录制成 wave file
+* 将来自麦克风的音频录制成 wave file
 
 ```sh
+# macos
 gst-launch-1.0 osxaudiosrc ! wavenc ! filesink location=audio.wav
-```
 
-* 将 linux 上来自麦克风的音频录制成 wave file
-
-```sh
+# linux
 gst-launch-1.0 pulsesrc device=xxx ! wavenc ! filesink location=test.wav
+
+gst-launch-1.0 alsasrc device=hw:3,0 ! wavenc ! filesink location=test.wav
 ```
 
 * 将语音录制为 hls 文件
@@ -185,4 +200,20 @@ gst-launch-1.0 filesrc location=audio/audio.mp3 ! decodebin ! audioconvert ! spl
 gst-launch-1.0 -v flvmux name=mux ! filesink location=test.flv  \
 audiotestsrc samplesperbuffer=44100 num-buffers=10 ! faac ! mux.  \
 videotestsrc num-buffers=250 ! video/x-raw,framerate=25/1 ! x264enc ! mux.
+```
+
+* send audio stream to rtpmp
+
+```sh
+export RTMP_DEST="rtmp://192.168.104.199:1935/live/testaudio"
+
+gst-launch-1.0 audiotestsrc is-live=true ! \
+    audioconvert ! audioresample ! audio/x-raw,rate=48000 ! \
+    voaacenc bitrate=96000 ! audio/mpeg ! aacparse ! audio/mpeg, mpegversion=4 ! \
+    flvmux name=mux ! \
+    rtmpsink location=$RTMP_DEST
+
+gst-launch-1.0 alsasrc device=hw:2,0 ! audioconvert ! wavescope ! videoconvert \
+  ! x264enc ! flvmux name=muxer ! rtmpsink location="$RTMP_DEST live=1"
+
 ```

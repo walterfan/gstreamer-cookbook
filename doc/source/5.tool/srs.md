@@ -61,24 +61,107 @@ docker run --rm --env CANDIDATE=$CANDIDATE \
 
 
 ## 用例
-* 推流
-```
+### 推流
+#### 推视频流
+```sh
 gst-launch-1.0 -v -e videotestsrc ! clockoverlay ! queue ! videoconvert ! x264enc tune=zerolatency ! flvmux streamable=true ! rtmpsink location='rtmp://192.168.0.104:1935/live/waltertest'
 ```
 
 在我的 macbook 上，通过以下命令从摄像头中捕获视频流，发送到 SRS 上
 
-```
+```sh
 gst-launch-1.0 -v -m avfvideosrc device-index=0 ! "video/x-raw,width=1280,height=720" ! queue ! videoconvert ! x264enc tune=zerolatency ! flvmux streamable=true ! rtmpsink location='rtmp://192.168.104.214:1935/live/macvideo'
 ```
 
 note: x264enc parameters: speed-preset=superfast tune=zerolatency psy-tune=grain sync-lookahead=5 bitrate=480 key-int-max=50 ref=2 
 
-* 拉流
+
+To send a video test source:
+
+```sh
+export RTMP_DEST="rtmp://192.168.104.199:1935/live/teststream"
+
+gst-launch-1.0 videotestsrc  is-live=true ! \
+    queue ! x264enc ! flvmux name=muxer ! rtmpsink location="$RTMP_DEST live=1"
 
 ```
 
+#### 推音频流
+
+* send audio stream to rtpmp
+
+```sh
+
+export RTMP_DEST="rtmp://192.168.104.199:1935/live/testaudio"
+
+gst-launch-1.0 audiotestsrc is-live=true ! \
+    audioconvert ! audioresample ! audio/x-raw,rate=48000 ! \
+    voaacenc bitrate=96000 ! audio/mpeg ! aacparse ! audio/mpeg, mpegversion=4 ! \
+    flvmux name=mux ! \
+    rtmpsink location=$RTMP_DEST
+
+
+export RTMP_DEST="rtmp://192.168.104.199:1935/live/testaudio"
+gst-launch-1.0 alsasrc device=hw:2,0 ! audioconvert ! wavescope ! videoconvert \
+  ! x264enc ! flvmux name=muxer ! rtmpsink location="$RTMP_DEST live=1"
+
 ```
 
+
+* To send an audio test source (note: flvmux is still required even though there is no muxing of audio & video):
+
+```sh
+gst-launch-1.0 audiotestsrc is-live=true ! \
+    audioconvert ! audioresample ! audio/x-raw,rate=48000 ! \
+    voaacenc bitrate=96000 ! audio/mpeg ! aacparse ! audio/mpeg, mpegversion=4 ! \
+    flvmux name=mux ! \
+    rtmpsink location=$RTMP_DEST
+```
+
+This sends both video and audio as a test source:
+
+```sh
+gst-launch-1.0 videotestsrc is-live=true ! \
+    videoconvert ! x264enc bitrate=1000 tune=zerolatency ! video/x-h264 ! h264parse ! \
+    video/x-h264 ! queue ! flvmux name=mux ! \
+    rtmpsink location=$RTMP_DEST audiotestsrc is-live=true ! \
+    audioconvert ! audioresample ! audio/x-raw,rate=48000 ! \
+    voaacenc bitrate=96000 ! audio/mpeg ! aacparse ! audio/mpeg, mpegversion=4 ! mux.
+```
+
+### 拉流
+
+#### 拉视频流
+
+```sh
+
+export RTMP_SRC="rtmp://192.168.104.199:1935/live/testaudio"
+gst-launch-1.0 playbin uri=$RTMP_SRC
+
+gst-launch-1.0 uridecodebin uri=$RTMP_SRC ! autovideosink
+
+gst-launch-1.0 rtmpsrc location=$RTMP_SRC ! decodebin ! autovideosink
+
+```
+
+#### 拉音频流
+
+
+```sh
+gst-launch-1.0 rtmpsrc name=rtmpsrc location=$RTMP_SRC ! decodebin ! \
+    queue ! audioconvert ! autoaudiosink
+
+# We can vget flvdemux to pull out the audio:
+
+gst-launch-1.0 rtmpsrc location=$RTMP_SRC ! \
+    flvdemux name=t  t.audio ! decodebin ! autoaudiosink
+
+# Incidentally, all of these work with a direct flv file:
+
+gst-launch-1.0 filesrc location="/path/to/test.flv" ! \
+    flvdemux name=t  t.audio ! decodebin ! autoaudiosink
+
+
+```
 ## 参考
 https://ossrs.net/lts/zh-cn/docs/v5/doc/low-latency

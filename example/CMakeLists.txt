@@ -18,13 +18,6 @@ add_executable(hls-test hls-test.cpp)
 add_executable(webrtc-sendrecv webrtc-sendrecv.c)
 add_executable(m3u8_reader m3u8_reader.cpp)
 
-if(LINUX) 
-    message(STATUS "Linux support inotify")
-    add_executable(file_monitor file_monitor.cpp)
-else()
-    message(STATUS "Not Linux with inotify")
-endif()
-
 target_link_libraries(gst-data-probe 
     ${GST_LIBRARIES} 
     common_utils 

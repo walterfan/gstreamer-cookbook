@@ -1,6 +1,24 @@
 # Video Pipeline
 
 ## samples
+### check video source
+
+```sh
+gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=1 ! jpegenc ! filesink location=videotest.jpg
+
+gst-launch-1.0 v4l2src device=/dev/video1 do-timestamp=true num-buffers=10 ! image/jpeg,width=1920,height=1080,framerate=20/1 ! jpegparse ! multifilesink location=videotest_%03d.jpeg
+
+```
+
+
+### play camera video
+
+```sh
+gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=10 ! image/jpeg,width=1920,height=1080,framerate=20/1 ! xvimagesink
+
+```
+
+
 ### display test video
 
 ```sh
@@ -79,5 +97,21 @@ gst-launch-1.0 filesrc location=talk.mp4 ! decodebin name=dec ! videoconvert ! a
 
 ```sh
 gst-launch-1.0 filesrc location=talk.mp4 ! decodebin name=dec ! videoconvert ! clockoverlay ! autovideosink dec. ! audioconvert ! audioresample ! autoaudiosink
+
+```
+
+### send/receive video stream over udp
+
+```sh
+# send video
+
+gst-launch-1.0 -v v4l2src device=/dev/video1 ! decodebin \
+  ! videoconvert ! omxh264enc ! video/x-h264,stream-format=byte-stream \
+  ! rtph264pay ! udpsink host=192.168.104.236 port=5000
+
+# receive video
+
+gst-launch-1.0 -v udpsrc  port=5000 caps=application/x-rtp \
+  ! rtph264depay ! avdec_h264 ! autovideosink
 
 ```

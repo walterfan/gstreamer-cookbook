@@ -21,7 +21,30 @@ gst-launch-1.0 -vv filesrc location=digits.mp4 ! decodebin ! nvvideoconvert ! id
 
 ```
 - http://192.168.104.249:8080/console/  flv.js
-```    
+```
+
+
+## HLS
+
+* playback TS file
+```sh
+gst-launch-1.0 filesrc location=xxx.ts ! tsdemux ! queue ! h264parse ! openh264dec ! autovideosink
+
+```
+
+### send and receive TS, and playback it
+* send TS over udp
+
+```sh
+gst-launch-1.0 filesrc location=xxx.ts ! tsparse set-timestamps=true ! video/mpegts ! tsdemux ! video/x-h264 ! h264parse disable-passthrough=true ! rtph264pay ! udpsink -v host=127.0.0.1 port=9999
+
+```
+
+* receive TS over udp
+
+```sh
+gst-launch-1.0 udpsrc port=9999 caps="application/x-rtp, media=video, clock-rate=90000, encoding-name=H264, payload=96" ! queue ! rtph264depay ! decodebin ! videoconvert ! glimagesink
+```
 
 
 ## Reference

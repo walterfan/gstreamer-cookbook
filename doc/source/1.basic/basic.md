@@ -173,7 +173,7 @@ gst-launch-1.0 -v ximagesrc ! video/x-raw,framerate=20/1 ! videoscale ! videocon
 gst-launch-1.0 -v avfvideosrc capture-screen=true ! video/x-raw,framerate=20/1 ! videoscale ! videoconvert ! x264enc tune=zerolatency bitrate=500 speed-preset=superfast ! rtph264pay ! udpsink host=127.0.0.1 port=5000
 
 # receive h264 rtp stream:
-gst-launch-1.0 -v udpsrc port=5000 caps = "application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! decodebin ! videoconvert ! autovideosink
+gst-launch-1.0 -v udpsrc port=5000 caps="application/x-rtp, media=video, clock-rate=90000, encoding-name=H264, payload=96" ! rtph264depay ! decodebin ! videoconvert ! autovideosink
 ```
 
 #### gst-inspect

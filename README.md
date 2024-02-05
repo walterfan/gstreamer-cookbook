@@ -129,13 +129,13 @@ gst-launch-1.0 -vv filesrc location=material/talk.mp4 \
 # send video
 
 gst-launch-1.0 -v v4l2src device=/dev/video1 ! decodebin \
-! videoconvert ! omxh264enc ! video/x-h264,stream-format=byte-stream \
-! rtph264pay ! udpsink host=192.168.104.214 port=5000
+  ! videoconvert ! omxh264enc ! video/x-h264,stream-format=byte-stream \
+  ! rtph264pay ! udpsink host=192.168.104.236 port=5000
 
 # receive video
 
 gst-launch-1.0 -v udpsrc  port=5000 caps=application/x-rtp \
-! rtph264depay ! avdec_h264 ! autovideosink
+  ! rtph264depay ! avdec_h264 ! autovideosink
 
 ```
 ## build source code
