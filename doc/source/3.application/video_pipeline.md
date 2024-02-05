@@ -63,10 +63,18 @@ t. ! queue leaky=1 ! autovideosink sync=false
 ```sh
 gst-launch-1.0 nvarguscamerasrc ! fakesink
 
-gst-launch-1.0 nvarguscamerasrc num-buffers=2000 ! 'video/x-raw(memory:NVMM),width=1920, height=1080, framerate=30/1, format=NV12' ! omxh264enc ! qtmux ! filesink location=test.mp4 -e
+gst-launch-1.0 -ev nvarguscamerasrc num-buffers=2000 ! 'video/x-raw(memory:NVMM),width=1920, height=1080, framerate=30/1, format=NV12' ! omxh264enc ! qtmux ! filesink location=test.mp4
 
-gst-launch-1.0 nvarguscamerasrc num-buffers=2000 ! 'video/x-raw(memory:NVMM),width=1920, height=1080, framerate=30/1, format=NV12' ! nvvidconv ! x264enc ! qtmux ! filesink location=test.mp4 -e
+gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=60/1' ! nvvideoconvert ! videorate ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=20/1' ! nvv4l2h264enc ! h264parse ! mp4mux ! filesink location=test.mp4                  
 
+
+
+gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=60/1' ! nvvideoconvert ! videorate max-rate=30 ! nvv4l2h264enc ! h264parse ! mp4mux ! filesink location=test.mp4 
+
+
+gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=60/1' ! nvvideoconvert ! videorate max-rate=30 ! capsfilter caps='video/x-raw,format=NV12' ! nvv4l2h264enc ! h264parse ! mp4mux ! filesink location=test.mp4 
+
+gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=60/1'  ! videorate max-rate=30 ! nvvideoconvert ! nvv4l2h264enc ! h264parse ! mp4mux ! filesink location=test.mp4 
 ```
 
 ### fps test
