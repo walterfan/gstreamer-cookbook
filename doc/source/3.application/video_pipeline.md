@@ -69,12 +69,12 @@ gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps=
 
 
 
+gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=60/1' ! nvvideoconvert ! videorate max-rate=30 drop-only=1 ! nvv4l2h264enc ! h264parse ! mp4mux ! filesink location=test.mp4 
+
+
+gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=60/1' ! nvvideoconvert ! videorate max-rate=30 ! capsfilter caps='video/x-raw,framerate=30/1' ! nvv4l2h264enc ! h264parse ! mp4mux ! filesink location=test.mp4 
+
 gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=60/1' ! nvvideoconvert ! videorate max-rate=30 ! nvv4l2h264enc ! h264parse ! mp4mux ! filesink location=test.mp4 
-
-
-gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=60/1' ! nvvideoconvert ! videorate max-rate=30 ! capsfilter caps='video/x-raw,format=NV12' ! nvv4l2h264enc ! h264parse ! mp4mux ! filesink location=test.mp4 
-
-gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=100 ! capsfilter caps='video/x-raw,width=1920, height=1080, framerate=60/1'  ! videorate max-rate=30 ! nvvideoconvert ! nvv4l2h264enc ! h264parse ! mp4mux ! filesink location=test.mp4 
 ```
 
 ### fps test
