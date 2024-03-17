@@ -1,5 +1,22 @@
 # GStreamer State
 
+GStreamer 的管道或者说元件有如下的状态转换
+
+```
+NULL -> READY -> PAUSED -> PLAYING
+
+```
+
+A sink is never set to PLAYING before it is prerolled. In order to do this, the pipeline (at the GstBin level) keeps track of all elements that require preroll (the ones that return ASYNC from the state change). These elements posted an ASYNC_START message without a matching ASYNC_DONE one.
+
+The pipeline will not change the state of the elements that are still doing an ASYNC state change.
+
+When an ASYNC element prerolls, it commits its state to PAUSED and posts an ASYNC_DONE message. The pipeline notices this ASYNC_DONE message and matches it with the ASYNC_START message it cached for the corresponding element.
+
+When all ASYNC_START messages are matched with an ASYNC_DONE message, the pipeline proceeds with setting the elements to the final state again.
+
+The base time of the element was already set by the pipeline when it changed the NO_PREROLL element to PLAYING. This operation has to be performed in the separate async state change thread (like the one currently used for going from PAUSED→PLAYING in a non-live pipeline).
+
 ## What are states?
 A state describes whether the element instance is initialized, whether it is ready to transfer data and whether it is currently handling data. There are four states defined in GStreamer:
 

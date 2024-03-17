@@ -65,11 +65,21 @@
 <li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-element.html">gst element overview</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">GstPad Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pad">连接 pad</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#request-pad">request pad</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#gstelementfactory">gstelementfactory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gstpad">GstPad</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gst-pad-add-probe">gst_pad_add_probe</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters:</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#gstpadtemplate">GstPadTemplate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gststaticpadtemplate">GstStaticPadTemplate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gst-bin.html">gst bin</a></li>
@@ -78,13 +88,15 @@
 <li class="toctree-l2"><a class="reference internal" href="gst-promise.html">GstPromise</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-caps.html">GStreamer Capabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-state.html">GStreamer State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-event.html">GstEvent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sink-element.html">Sink elements</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
 </ul>
 
         </div>
@@ -114,6 +126,126 @@
              
   <section id="gstpad-overview">
 <h1>GstPad Overview<a class="headerlink" href="#gstpad-overview" title="Link to this heading"></a></h1>
+<p>Pad 是元件之间的连接器， 它有两个方向 GstPadDirection</p>
+<ul class="simple">
+<li><p>source pads 产生数据</p></li>
+<li><p>sink pads 消费数据</p></li>
+</ul>
+<p>Pad 有三种有效性</p>
+<ul class="simple">
+<li><p>always: pad 在元件中永远存在</p></li>
+<li><p>sometimes: pad 只在特定的条件下存在</p></li>
+<li><p>on request: pad 只在应用程序要求时才创建(存在)</p></li>
+</ul>
+<section id="pad">
+<h2>连接 pad<a class="headerlink" href="#pad" title="Link to this heading"></a></h2>
+<section id="request-pad">
+<h3>request pad<a class="headerlink" href="#request-pad" title="Link to this heading"></a></h3>
+<p>An element can also have request pads. These pads are not created automatically but are only created on demand.</p>
+<p>This is very useful for multiplexers, aggregators and tee elements. Aggregators are elements that merge the content of several input streams together into one output stream.</p>
+<p>Tee elements are the reverse: they are elements that have one input stream and copy this stream to each of their output pads, which are created on request.</p>
+<p>Whenever an application needs another copy of the stream, it can simply request a new output pad from the tee element.</p>
+<p>The following piece of code shows how you can request a new output pad from a “tee” element:</p>
+<p>元件 还可以具有 request pad. 这些 pad 不会自动创建，而是仅根据需要创建。</p>
+<p>这对于多路复用器 multiplexers、聚合器 aggregators 和 Tee 元件非常有用。</p>
+<p>聚合器是将多个输入流的内容合并到一个输出流中的元素。</p>
+<p>Tee 元素则相反 – 它是具有一个输入流的元素，并将该流复制到每个输出 pad（根据请求创建）。</p>
+<p>每当应用程序需要流的另一个副本时，它可以简单地从 tee 元素请求新的 request pad。</p>
+<p>下面的代码展示了如何从 <code class="docutils literal notranslate"><span class="pre">tee</span></code> 元件 请求新的 sink pad：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span>
+<span class="nf">some_function</span><span class="w"> </span><span class="p">(</span><span class="n">GstElement</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tee</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">GstPad</span><span class="w"> </span><span class="o">*</span><span class="n">pad</span><span class="p">;</span>
+<span class="w">  </span><span class="n">gchar</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_element_request_pad_simple</span><span class="w"> </span><span class="p">(</span><span class="n">tee</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;src%d&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_pad_get_name</span><span class="w"> </span><span class="p">(</span><span class="n">pad</span><span class="p">);</span>
+<span class="w">  </span><span class="n">g_print</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;A new pad %s was created</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w">  </span><span class="n">g_free</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/* here, you would link the pad */</span>
+
+<span class="w">  </span><span class="cm">/* [..] */</span>
+
+<span class="w">  </span><span class="cm">/* and, after doing that, free our reference */</span>
+<span class="w">  </span><span class="n">gst_object_unref</span><span class="w"> </span><span class="p">(</span><span class="n">GST_OBJECT</span><span class="w"> </span><span class="p">(</span><span class="n">pad</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gst_element_request_pad_simple()</span></code> 方法可用于根据 pad 模板的名称从元素获取 pad。</p>
+<p>还可以请求与其他 pad template 兼容的 pad。 如果您想要将一个元件链接到多路复用器元素并且需要请求兼容的 pad，那么这个方法非常有用。</p>
+<p>方法 <code class="docutils literal notranslate"><span class="pre">gst_element_get_known_pad()</span></code> 可用于请求兼容的 pad ，如下一个示例所示。 它将从任何输入请求来自 Ogg 多路复用器的兼容 pad。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span>
+<span class="nf">link_to_multiplexer</span><span class="w"> </span><span class="p">(</span><span class="n">GstPad</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tolink_pad</span><span class="p">,</span><span class="w"> </span><span class="n">GstElement</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mux</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">GstPad</span><span class="w"> </span><span class="o">*</span><span class="n">pad</span><span class="p">;</span>
+<span class="w">  </span><span class="n">gchar</span><span class="w"> </span><span class="o">*</span><span class="n">srcname</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">sinkname</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">srcname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_pad_get_name</span><span class="w"> </span><span class="p">(</span><span class="n">tolink_pad</span><span class="p">);</span>
+<span class="w">  </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_element_get_compatible_pad</span><span class="w"> </span><span class="p">(</span><span class="n">mux</span><span class="p">,</span><span class="w"> </span><span class="n">tolink_pad</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">  </span><span class="n">gst_pad_link</span><span class="w"> </span><span class="p">(</span><span class="n">tolink_pad</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sinkname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_pad_get_name</span><span class="w"> </span><span class="p">(</span><span class="n">pad</span><span class="p">);</span>
+<span class="w">  </span><span class="n">gst_object_unref</span><span class="w"> </span><span class="p">(</span><span class="n">GST_OBJECT</span><span class="w"> </span><span class="p">(</span><span class="n">pad</span><span class="p">));</span>
+
+<span class="w">  </span><span class="n">g_print</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;A new pad %s was created and linked to %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sinkname</span><span class="p">,</span><span class="w"> </span><span class="n">srcname</span><span class="p">);</span>
+<span class="w">  </span><span class="n">g_free</span><span class="w"> </span><span class="p">(</span><span class="n">sinkname</span><span class="p">);</span>
+<span class="w">  </span><span class="n">g_free</span><span class="w"> </span><span class="p">(</span><span class="n">srcname</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>注意 <code class="docutils literal notranslate"><span class="pre">gst_element_request_pad_simple</span></code> 只能以 GStreamer 1.20 及其以上版本才可使用，低版本的还是要使用 <code class="docutils literal notranslate"><span class="pre">gst_element_request_pad</span></code></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+<span class="n">GstPad</span><span class="w"> </span><span class="o">*</span>
+<span class="n">gst_element_request_pad</span><span class="w"> </span><span class="p">(</span><span class="n">GstElement</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">element</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">GstPadTemplate</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">templ</span><span class="p">,</span>
+<span class="w">                         </span><span class="k">const</span><span class="w"> </span><span class="n">gchar</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">,</span>
+<span class="w">                         </span><span class="k">const</span><span class="w"> </span><span class="n">GstCaps</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">caps</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Retrieves a request pad from the element according to the provided template.
+Pad templates can be looked up using <code class="docutils literal notranslate"><span class="pre">gst_element_factory_get_static_pad_templates</span></code>.</p>
+<p>The pad should be released with gst_element_release_request_pad.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p>element – a GstElement to find a request pad of.</p></li>
+<li><p>templ – a GstPadTemplate of which we want a pad of.</p></li>
+<li><p>name ( [transfer: none][allow-none]) – the name of the request GstPad to retrieve. Can be NULL.</p></li>
+<li><p>caps ( [transfer: none][allow-none]) – the caps of the pad we want to request. Can be NULL.</p></li>
+</ul>
+<p>Returns ( [transfer: full][nullable]) – requested GstPad if found, otherwise NULL. Release after usage.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+<span class="w">   </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;gst/gst.h&gt;</span>
+
+<span class="w">   </span><span class="n">GstElement</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">;</span>
+<span class="w">   </span><span class="n">GstElementFactory</span><span class="w"> </span><span class="o">*</span><span class="n">srcfactory</span><span class="p">;</span>
+
+<span class="w">   </span><span class="n">gst_init</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+
+<span class="w">   </span><span class="n">srcfactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_element_factory_find</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;filesrc&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="n">g_return_if_fail</span><span class="w"> </span><span class="p">(</span><span class="n">srcfactory</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">   </span><span class="n">src</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_element_factory_create</span><span class="w"> </span><span class="p">(</span><span class="n">srcfactory</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;src&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="n">g_return_if_fail</span><span class="w"> </span><span class="p">(</span><span class="n">src</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">   </span><span class="p">...</span>
+
+</pre></div>
+</div>
+</section>
+</section>
+<section id="gstelementfactory">
+<h2>gstelementfactory<a class="headerlink" href="#gstelementfactory" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gst_element_factory_get_static_pad_templates</span><span class="w"> </span>
+<span class="k">const</span><span class="w"> </span><span class="n">GList</span><span class="w"> </span><span class="o">*</span>
+<span class="n">gst_element_factory_get_static_pad_templates</span><span class="w"> </span><span class="p">(</span><span class="n">GstElementFactory</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">factory</span><span class="p">)</span>
+<span class="n">Gets</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">GList</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">GstStaticPadTemplate</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">factory</span><span class="p">.</span>
+
+<span class="c1">//Parameters: factory – a GstElementFactory</span>
+<span class="w">  </span>
+<span class="c1">//Returns ( [transfer: none][element-typeGst.StaticPadTemplate]) – the static pad templates</span>
+</pre></div>
+</div>
+</section>
 <section id="gstpad">
 <h2>GstPad<a class="headerlink" href="#gstpad" title="Link to this heading"></a></h2>
 <p>A GstElement is linked to other elements via “pads”, which are extremely light-weight generic link points.</p>
@@ -205,6 +337,63 @@
 </pre></div>
 </div>
 </section>
+</section>
+<section id="gstpadtemplate">
+<h2>GstPadTemplate<a class="headerlink" href="#gstpadtemplate" title="Link to this heading"></a></h2>
+<p>Padtemplates describe the possible media types a pad or an elementfactory can handle. This allows for both inspection of handled types before loading the element plugin as well as identifying pads on elements that are not yet created (request or sometimes pads).</p>
+<p>Pad and PadTemplates have GstCaps attached to it to describe the media type they are capable of dealing with. gst_pad_template_get_caps or GST_PAD_TEMPLATE_CAPS are used to get the caps of a padtemplate. It’s not possible to modify the caps of a padtemplate after creation.</p>
+<p>PadTemplates have a GstPadPresence property which identifies the lifetime of the pad and that can be retrieved with GST_PAD_TEMPLATE_PRESENCE. Also the direction of the pad can be retrieved from the GstPadTemplate with GST_PAD_TEMPLATE_DIRECTION.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">GST_PAD_TEMPLATE_NAME_TEMPLATE()</span></code> is important for GST_PAD_REQUEST pads because it has to be used as the name in the gst_element_request_pad_simple call to instantiate a pad from this template.</p>
+<p>Padtemplates can be created with <code class="docutils literal notranslate"><span class="pre">gst_pad_template_new</span></code> or with <code class="docutils literal notranslate"><span class="pre">gst_static_pad_template_get()</span></code>, which creates a GstPadTemplate from a GstStaticPadTemplate that can be filled with the convenient GST_STATIC_PAD_TEMPLATE macro.</p>
+<p>A padtemplate can be used to create a pad (see gst_pad_new_from_template or gst_pad_new_from_static_template ()) or to add to an element class (see gst_element_class_add_static_pad_template ()).</p>
+<p>The following code example shows the code to create a pad from a padtemplate.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="n">GstStaticPadTemplate</span><span class="w"> </span><span class="n">my_template</span><span class="w"> </span><span class="o">=</span>
+<span class="w">   </span><span class="n">GST_STATIC_PAD_TEMPLATE</span><span class="w"> </span><span class="p">(</span>
+<span class="w">     </span><span class="s">&quot;sink&quot;</span><span class="p">,</span><span class="w">          </span><span class="c1">// the name of the pad</span>
+<span class="w">     </span><span class="n">GST_PAD_SINK</span><span class="p">,</span><span class="w">    </span><span class="c1">// the direction of the pad</span>
+<span class="w">     </span><span class="n">GST_PAD_ALWAYS</span><span class="p">,</span><span class="w">  </span><span class="c1">// when this pad will be present</span>
+<span class="w">     </span><span class="n">GST_STATIC_CAPS</span><span class="w"> </span><span class="p">(</span><span class="w">        </span><span class="c1">// the capabilities of the padtemplate</span>
+<span class="w">       </span><span class="s">&quot;audio/x-raw, &quot;</span>
+<span class="w">         </span><span class="s">&quot;channels = (int) [ 1, 6 ]&quot;</span>
+<span class="w">     </span><span class="p">)</span>
+<span class="w">   </span><span class="p">);</span>
+<span class="w">   </span><span class="kt">void</span>
+<span class="w">   </span><span class="nf">my_method</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="w">   </span><span class="p">{</span>
+<span class="w">     </span><span class="n">GstPad</span><span class="w"> </span><span class="o">*</span><span class="n">pad</span><span class="p">;</span>
+<span class="w">     </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gst_pad_new_from_static_template</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_template</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sink&quot;</span><span class="p">);</span>
+<span class="w">     </span><span class="p">...</span>
+<span class="w">   </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The following example shows you how to add the padtemplate to an element class, this is usually done in the class_init of the class:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span>
+<span class="w">   </span><span class="nf">my_element_class_init</span><span class="w"> </span><span class="p">(</span><span class="n">GstMyElementClass</span><span class="w"> </span><span class="o">*</span><span class="n">klass</span><span class="p">)</span>
+<span class="w">   </span><span class="p">{</span>
+<span class="w">     </span><span class="n">GstElementClass</span><span class="w"> </span><span class="o">*</span><span class="n">gstelement_class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GST_ELEMENT_CLASS</span><span class="w"> </span><span class="p">(</span><span class="n">klass</span><span class="p">);</span>
+
+<span class="w">     </span><span class="n">gst_element_class_add_static_pad_template</span><span class="w"> </span><span class="p">(</span><span class="n">gstelement_class</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">my_template</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+</pre></div>
+</div>
+<section id="gststaticpadtemplate">
+<h3>GstStaticPadTemplate<a class="headerlink" href="#gststaticpadtemplate" title="Link to this heading"></a></h3>
+<p>It is Structure describing the GstStaticPadTemplate.</p>
+<p>Members:</p>
+<ul class="simple">
+<li><p>name_template (const gchar *) – the name of the template</p></li>
+<li><p>direction (GstPadDirection) – the direction of the template</p></li>
+<li><p>presence (GstPadPresence) – the presence of the template</p></li>
+<li><p>static_caps (GstStaticCaps) – the caps of the template.</p></li>
+</ul>
+</section>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>https://gstreamer.freedesktop.org/documentation/application-development/basics/pads.html?gi-language=c</p></li>
+<li><p>https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/request.html?gi-language=c</p></li>
+</ul>
 </section>
 </section>
 

@@ -61,16 +61,18 @@
 <li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">pipeline manipulation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#core-questions">core questions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#using-probes">Using probes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">问题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">使用探针</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#probe-types">Probe types:</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">动态修改管道</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="audio_pipeline.html">Audio Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="live_stream.html">Live Stream</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
@@ -79,8 +81,9 @@
 <li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
 </ul>
 
         </div>
@@ -110,17 +113,24 @@
              
   <section id="pipeline-manipulation">
 <h1>pipeline manipulation<a class="headerlink" href="#pipeline-manipulation" title="Link to this heading"></a></h1>
-<section id="core-questions">
-<h2>core questions<a class="headerlink" href="#core-questions" title="Link to this heading"></a></h2>
+<p>管道的操作有多种方法, 例如</p>
 <ul class="simple">
-<li><p>How to insert data from an application into a pipeline</p></li>
-<li><p>How to read data from a pipeline</p></li>
-<li><p>How to manipulate the pipeline’s speed, length and starting point</p></li>
-<li><p>How to listen to a pipeline’s data processing.</p></li>
+<li><p>向管道中插入数据</p></li>
+<li><p>从管道中读取数据</p></li>
+<li><p>控制管道的速率, 长度和起始点</p></li>
+<li><p>侦听管道的数据处理</p></li>
+</ul>
+<section id="id1">
+<h2>问题<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>如何将数据从应用程序插入到管道中</p></li>
+<li><p>如何从管道中读取数据</p></li>
+<li><p>如何操纵管道的速度、长度和起点</p></li>
+<li><p>如何监听管道的数据处理。</p></li>
 </ul>
 </section>
-<section id="using-probes">
-<h2>Using probes<a class="headerlink" href="#using-probes" title="Link to this heading"></a></h2>
+<section id="id2">
+<h2>使用探针<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p>Probing is best envisioned as having access to a pad listener. Technically, a probe is nothing more than a callback that can be attached to a pad using gst_pad_add_probe (). Conversely, you can use gst_pad_remove_probe () to remove the callback. While attached, the probe notifies you of any activity on the pad. You can define what kind of notifications you are interested in when you add the probe.</p>
 <section id="probe-types">
 <h3>Probe types:<a class="headerlink" href="#probe-types" title="Link to this heading"></a></h3>
@@ -156,6 +166,20 @@ Query probes are notified twice: when the <strong>query travels upstream/downstr
 <p>Be notified when no activity is happening on a pad. You install this probe with the GST_PAD_PROBE_TYPE_IDLE flag. You can specify GST_PAD_PROBE_TYPE_PUSH and/or GST_PAD_PROBE_TYPE_PULL to only be notified depending on the pad scheduling mode. The IDLE probe is also a blocking probe in that it will not let any data pass on the pad for as long as the IDLE probe is installed.</p>
 <p>You can use idle probes to dynamically relink a pad. We will see how to use idle probes to replace an element in the pipeline. See also Dynamically changing the pipeline.</p>
 </section>
+</section>
+<section id="id3">
+<h2>动态修改管道<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>当管道处在 “PLAYING” 状态时, 如何在不打断数据流的前提下修改管道呢?</p>
+<p>以下事项需要重点注意</p>
+<ul class="simple">
+<li><p>insertbin 和 switchbin 元素可用于管道的动态修改</p></li>
+<li><p>当要从管道中移除元件时, 要确保断开连接的 pads 上没有数据流, 否则会引发严重的管道错误.
+在断开连接前要阻塞 source pad(在 push 模式下) 或者 sink pads(拉模式)</p></li>
+<li><p>当添加元件到管道中, 确保在允许数据流通前设置元件为正确的状态, 通常和父元件保持相同状态
+当一个元件新建出来, 它处于 “NULL” 状态, 当它收到数据时会抛出错误</p></li>
+<li><p>当添加元件到管道中, GStreamer 会在这个元件上设置时钟 clock 和 基准时间 base-time 为管道的当前值.
+它意味着</p></li>
+</ul>
 </section>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>

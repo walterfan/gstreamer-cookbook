@@ -35,15 +35,18 @@ gst-launch-1.0 -v -m --gst-debug=5 filesrc location=talk.mp4 ! decodebin ! nvvid
 
 * send video stream from local camera
 
-```
+```sh
+# send udp packets of video 
 gst-launch-1.0 v4l2src ! 'video/x-raw, width=640, height=480, \
 framerate=30/1' ! videoconvert ! x264enc pass=qual quantizer=20 \
-tune=zerolatency ! rtph264pay ! udpsink host=192.168.0.5 port=1234
+tune=zerolatency ! rtph264pay ! udpsink host=192.168.104.236 port=1234
 
 
+# receive udp packet and display video
 gst-launch-1.0 udpsrc port=1234 ! "application/x-rtp, payload=127" ! \
 rtph264depay ! avdec_h264 ! videoconvert ! xvimagesink
 
+# receive udp packet and display to video1
 gst-launch-1.0 udpsrc port=1234 ! "application/x-rtp, payload=127" ! \
 rtph264depay ! avdec_h264 ! videoconvert ! v4l2sink device=/dev/video1
 

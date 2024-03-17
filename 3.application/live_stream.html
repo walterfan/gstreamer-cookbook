@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Stream &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DeepStream" href="deepstream.html" />
+    <link rel="prev" title="Video Pipeline" href="video_pipeline.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_manipulation.html">pipeline manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_pipeline.html">Audio Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Live Stream</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hls">HLS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#send-and-receive-ts-and-playback-it">send and receive TS, and playback it</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
+      <li class="breadcrumb-item active">Live Stream</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/3.application/live_stream.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="live-stream">
+<h1>Live Stream<a class="headerlink" href="#live-stream" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p>启动 SRS 5</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CANDIDATE</span><span class="o">=</span><span class="s2">&quot;192.168.104.249&quot;</span>
+sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-itd<span class="w"> </span>--env<span class="w"> </span><span class="nv">CANDIDATE</span><span class="o">=</span><span class="nv">$CANDIDATE</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="m">1935</span>:1935<span class="w"> </span>-p<span class="w"> </span><span class="m">1980</span>:8080<span class="w"> </span>-p<span class="w"> </span><span class="m">1985</span>:1985<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000/udp<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>registry.cn-hangzhou.aliyuncs.com/ossrs/srs:5<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>objs/srs<span class="w"> </span>-c<span class="w"> </span>conf/rtmp2rtc.conf
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>推送视频流到 SRS 上</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-vv<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>digits.mp4<span class="w"> </span>!<span class="w"> </span>decodebin<span class="w"> </span>!<span class="w"> </span>nvvideoconvert<span class="w"> </span>!<span class="w"> </span>identity<span class="w"> </span>drop-allocation<span class="o">=</span><span class="m">1</span><span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span><span class="nv">tune</span><span class="o">=</span>zerolatency<span class="w"> </span>!<span class="w"> </span>flvmux<span class="w"> </span><span class="nv">streamable</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>rtmpsink<span class="w"> </span><span class="nv">location</span><span class="o">=</span><span class="err">&#39;</span>rtmp://192.168.104.249:1935/live/hebin
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>通过 SRS 来播放视频流</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.104.249</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">console</span><span class="o">/</span>  <span class="n">flv</span><span class="o">.</span><span class="n">js</span>
+</pre></div>
+</div>
+<section id="hls">
+<h2>HLS<a class="headerlink" href="#hls" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>playback TS file</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>xxx.ts<span class="w"> </span>!<span class="w"> </span>tsdemux<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>h264parse<span class="w"> </span>!<span class="w"> </span>openh264dec<span class="w"> </span>!<span class="w"> </span>autovideosink
+</pre></div>
+</div>
+<section id="send-and-receive-ts-and-playback-it">
+<h3>send and receive TS, and playback it<a class="headerlink" href="#send-and-receive-ts-and-playback-it" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>send TS over udp</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>xxx.ts<span class="w"> </span>!<span class="w"> </span>tsparse<span class="w"> </span>set-timestamps<span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>video/mpegts<span class="w"> </span>!<span class="w"> </span>tsdemux<span class="w"> </span>!<span class="w"> </span>video/x-h264<span class="w"> </span>!<span class="w"> </span>h264parse<span class="w"> </span>disable-passthrough<span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>rtph264pay<span class="w"> </span>!<span class="w"> </span>udpsink<span class="w"> </span>-v<span class="w"> </span><span class="nv">host</span><span class="o">=</span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9999</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>receive TS over udp</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>udpsrc<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9999</span><span class="w"> </span><span class="nv">caps</span><span class="o">=</span><span class="s2">&quot;application/x-rtp, media=video, clock-rate=90000, encoding-name=H264, payload=96&quot;</span><span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>rtph264depay<span class="w"> </span>!<span class="w"> </span>decodebin<span class="w"> </span>!<span class="w"> </span>videoconvert<span class="w"> </span>!<span class="w"> </span>glimagesink
+</pre></div>
+</div>
+</section>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>https://github.com/matthew1000/gstreamer-cheat-sheet/blob/master/rtmp.md</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="video_pipeline.html" class="btn btn-neutral float-left" title="Video Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepstream.html" class="btn btn-neutral float-right" title="DeepStream" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
