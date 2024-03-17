@@ -30,7 +30,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Sink elements" href="sink-element.html" />
+    <link rel="next" title="GstEvent" href="gst-event.html" />
     <link rel="prev" title="GStreamer Capabilities" href="gst-caps.html" /> 
 </head>
 
@@ -79,13 +79,15 @@
 <li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gst-event.html">GstEvent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sink-element.html">Sink elements</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
 </ul>
 
         </div>
@@ -115,6 +117,16 @@
              
   <section id="gstreamer-state">
 <h1>GStreamer State<a class="headerlink" href="#gstreamer-state" title="Link to this heading"></a></h1>
+<p>GStreamer 的管道或者说元件有如下的状态转换</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NULL</span> <span class="o">-&gt;</span> <span class="n">READY</span> <span class="o">-&gt;</span> <span class="n">PAUSED</span> <span class="o">-&gt;</span> <span class="n">PLAYING</span>
+
+</pre></div>
+</div>
+<p>A sink is never set to PLAYING before it is prerolled. In order to do this, the pipeline (at the GstBin level) keeps track of all elements that require preroll (the ones that return ASYNC from the state change). These elements posted an ASYNC_START message without a matching ASYNC_DONE one.</p>
+<p>The pipeline will not change the state of the elements that are still doing an ASYNC state change.</p>
+<p>When an ASYNC element prerolls, it commits its state to PAUSED and posts an ASYNC_DONE message. The pipeline notices this ASYNC_DONE message and matches it with the ASYNC_START message it cached for the corresponding element.</p>
+<p>When all ASYNC_START messages are matched with an ASYNC_DONE message, the pipeline proceeds with setting the elements to the final state again.</p>
+<p>The base time of the element was already set by the pipeline when it changed the NO_PREROLL element to PLAYING. This operation has to be performed in the separate async state change thread (like the one currently used for going from PAUSED→PLAYING in a non-live pipeline).</p>
 <section id="what-are-states">
 <h2>What are states?<a class="headerlink" href="#what-are-states" title="Link to this heading"></a></h2>
 <p>A state describes whether the element instance is initialized, whether it is ready to transfer data and whether it is currently handling data. There are four states defined in GStreamer:</p>
@@ -156,7 +168,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="gst-caps.html" class="btn btn-neutral float-left" title="GStreamer Capabilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sink-element.html" class="btn btn-neutral float-right" title="Sink elements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gst-event.html" class="btn btn-neutral float-right" title="GstEvent" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

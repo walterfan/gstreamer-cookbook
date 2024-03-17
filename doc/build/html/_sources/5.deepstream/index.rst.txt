@@ -1,5 +1,5 @@
 #######################
-5. GStreamer 
+5. DeepStream 
 #######################
 
 
@@ -8,8 +8,4 @@
    :caption: Contents:
 
    overview
-   gst-launch
-   v4l2-ctl
-   v4l2loopback
-   srs
-   gst-device-monitor
+  

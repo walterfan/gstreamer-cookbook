@@ -74,13 +74,15 @@
 <li class="toctree-l2"><a class="reference internal" href="gst-promise.html">GstPromise</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-caps.html">GStreamer Capabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-state.html">GStreamer State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-event.html">GstEvent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sink-element.html">Sink elements</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
 </ul>
 
         </div>
@@ -113,9 +115,9 @@
 <section id="gst-element-get-static-pad">
 <h2>gst_element_get_static_pad<a class="headerlink" href="#gst-element-get-static-pad" title="Link to this heading"></a></h2>
 <p>通过 name 获取一个已经存在的 element</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GstPad</span> <span class="o">*</span>
-<span class="n">gst_element_get_static_pad</span> <span class="p">(</span><span class="n">GstElement</span> <span class="o">*</span> <span class="n">element</span><span class="p">,</span>
-                            <span class="n">const</span> <span class="n">gchar</span> <span class="o">*</span> <span class="n">name</span><span class="p">)</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GstPad</span><span class="w"> </span><span class="o">*</span>
+<span class="n">gst_element_get_static_pad</span><span class="w"> </span><span class="p">(</span><span class="n">GstElement</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">element</span><span class="p">,</span>
+<span class="w">                            </span><span class="k">const</span><span class="w"> </span><span class="n">gchar</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Retrieves a pad from element by name.</p>

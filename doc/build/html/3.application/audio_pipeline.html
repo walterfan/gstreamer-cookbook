@@ -62,10 +62,16 @@
 <li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pipeline_manipulation.html">pipeline manipulation</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Audio Pipeline</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#samples">samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#samples">samples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">录制语音</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">回放语音</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">播放一段测试语音</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="live_stream.html">Live Stream</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
@@ -74,8 +80,9 @@
 <li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">5. GStreamer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
 </ul>
 
         </div>
@@ -107,15 +114,25 @@
 <h1>Audio Pipeline<a class="headerlink" href="#audio-pipeline" title="Link to this heading"></a></h1>
 <section id="samples">
 <h2>samples<a class="headerlink" href="#samples" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>播放一段测试语音</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 audiotestsrc wave=5 volume=0.3 ! audioconvert ! autoaudiosink
+<section id="id1">
+<h3>录制语音<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-vv<span class="w"> </span>alsasrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>hw:2,0<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>capsfilter<span class="w"> </span><span class="nv">caps</span><span class="o">=</span><span class="s2">&quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot;</span><span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span><span class="s2">&quot;test.wav&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>回放语音<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-vv<span class="w"> </span>alsasrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>hw:2,0<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>capsfilter<span class="w"> </span><span class="nv">caps</span><span class="o">=</span><span class="s2">&quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot;</span><span class="w"> </span>!<span class="w"> </span>autoaudiosink
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>播放一段测试语音<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>audiotestsrc<span class="w"> </span><span class="nv">wave</span><span class="o">=</span><span class="m">5</span><span class="w"> </span><span class="nv">volume</span><span class="o">=</span><span class="m">0</span>.3<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>autoaudiosink
 </pre></div>
 </div>
 <p>the wave parameters can be:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
- <span class="n">wave</span>                <span class="p">:</span> <span class="n">Oscillator</span> <span class="n">waveform</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">wave</span>                <span class="p">:</span> <span class="n">Oscillator</span> <span class="n">waveform</span>
     <span class="n">flags</span><span class="p">:</span> <span class="n">readable</span><span class="p">,</span> <span class="n">writable</span><span class="p">,</span> <span class="n">controllable</span>
     <span class="n">Enum</span> <span class="s2">&quot;GstAudioTestSrcWave&quot;</span> <span class="n">Default</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;sine&quot;</span>
         <span class="p">(</span><span class="mi">0</span><span class="p">):</span> <span class="n">sine</span>             <span class="o">-</span> <span class="n">Sine</span>
@@ -136,63 +153,68 @@
 <ul class="simple">
 <li><p>播放来自麦克风的声音</p></li>
 </ul>
-<p>MIC_DEVICE_ID can be got by <code class="docutils literal notranslate"><span class="pre">gst-device-monitor-1.0</span> <span class="pre">Audio/Source</span> <span class="pre">&quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot;</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! &quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot; ! autoaudiosink
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span><span class="nv">$MIC_DEV_ID</span><span class="w"> </span>!<span class="w"> </span><span class="s2">&quot;audio/x-raw,format=S16LE,rate=16000,channels=1&quot;</span><span class="w"> </span>!<span class="w"> </span>autoaudiosink
+
+gst-launch-1.0<span class="w"> </span>alsasrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>hw:2,0<span class="w"> </span>!<span class="w"> </span>autoaudiosink
 </pre></div>
 </div>
 <ul class="simple">
+<li><p>MIC_DEVICE_ID can be got by <code class="docutils literal notranslate"><span class="pre">gst-device-monitor-1.0</span> <span class="pre">Audio/Source</span> <span class="pre">&quot;audio/x-raw,format=S16LE,rate=16000,channels=1&quot;</span></code></p></li>
+</ul>
+<ul class="simple">
 <li><p>将收到的语音进行 AGC(自动增益), AEC(回声消除) and ANS(噪声抑制) 处理</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! &quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot; ! webrtcdsp ! webrtcechoprobe ! autoaudiosink
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! &quot;audio/x-raw,format=S16LE,rate=16000,channels=1&quot; ! webrtcdsp ! webrtcechoprobe ! autoaudiosink
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>转换语音包为 g.711 编码</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 pulsesrc device=$MIC_DEVICE_ID ! &quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot; ! alawenc
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span><span class="nv">$MIC_DEVICE_ID</span><span class="w"> </span>!<span class="w"> </span><span class="s2">&quot;audio/x-raw,format=S16LE,rate=16000,channels=1&quot;</span><span class="w"> </span>!<span class="w"> </span>alawenc
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>write out audio file to disk (using same tone):</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
-gst-launch-1.0 audiotestsrc ! audioconvert ! capsfilter caps = &quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot; ! filesink location = &quot;audio.raw&quot;
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>audiotestsrc<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>capsfilter<span class="w"> </span><span class="nv">caps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot;</span><span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;audio.raw&quot;</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>read audio file from disk (should play the same tone):</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 filesrc location=&quot;audio.raw&quot; ! capsfilter caps = &quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot; ! audioconvert ! audoaudiosink
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span><span class="s2">&quot;audio.raw&quot;</span><span class="w"> </span>!<span class="w"> </span>capsfilter<span class="w"> </span><span class="nv">caps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot;</span><span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audoaudiosink
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>decode mp3 and write to disk:</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 filesrc location = 16k16bit.mp3 ! decodebin ! audioconvert ! capsfilter caps = &quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot; ! filesink location = &quot;audio.raw&quot;
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>16k16bit.mp3<span class="w"> </span>!<span class="w"> </span>decodebin<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>capsfilter<span class="w"> </span><span class="nv">caps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot;</span><span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;audio.raw&quot;</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>将 macos 上来自麦克风的音频录制成 wave file</p></li>
+<li><p>将来自麦克风的音频录制成 wave file</p></li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>osxaudiosrc<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>audio.wav
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>将 linux 上来自麦克风的音频录制成 wave file</p></li>
-</ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>xxx<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>test.wav
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># macos</span>
+gst-launch-1.0<span class="w"> </span>osxaudiosrc<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>audio.wav
+
+<span class="c1"># linux</span>
+gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>xxx<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>test.wav
+
+gst-launch-1.0<span class="w"> </span>alsasrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>hw:3,0<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>test.wav
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>将语音录制为 hls 文件</p></li>
 </ul>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>xxx<span class="w"> </span>!<span class="w"> </span>avenc_aac<span class="w"> </span>!<span class="w"> </span>hlssink2<span class="w"> </span>max-files<span class="o">=</span><span class="m">5</span>
+
+gst-launch-1.0<span class="w"> </span>osxaudiosrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>xxx<span class="w"> </span>!<span class="w"> </span>avenc_aac<span class="w"> </span>!<span class="w"> </span>hlssink2<span class="w"> </span>max-files<span class="o">=</span><span class="m">5</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>将语音录制为 hls 文件以及 wave file</p></li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span><span class="nv">$MIC_DEVICE_ID</span><span class="w"> </span>!<span class="w"> </span><span class="s2">&quot;audio/x-raw,format=S16LE,rates=16000,channels=1&quot;</span><span class="w"> </span>!<span class="w"> </span>webrtcdsp<span class="w"> </span>!<span class="w"> </span>webrtcechoprobe<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>tee<span class="w"> </span><span class="nv">name</span><span class="o">=</span>t<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>avenc_aac<span class="w"> </span>!<span class="w"> </span>hlssink2<span class="w"> </span>max-files<span class="o">=</span><span class="m">5</span><span class="w"> </span>playlist-location<span class="o">=</span>waltertest.m3u8<span class="w"> </span><span class="nv">location</span><span class="o">=</span>waltertest_%05d.ts<span class="w"> </span>t.<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>waltertest.wav
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>pulsesrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span><span class="nv">$MIC_DEVICE_ID</span><span class="w"> </span>!<span class="w"> </span><span class="s2">&quot;audio/x-raw,format=S16LE,rate=16000,channels=1&quot;</span><span class="w"> </span>!<span class="w"> </span>webrtcdsp<span class="w"> </span>!<span class="w"> </span>webrtcechoprobe<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>tee<span class="w"> </span><span class="nv">name</span><span class="o">=</span>t<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>avenc_aac<span class="w"> </span>!<span class="w"> </span>hlssink2<span class="w"> </span>max-files<span class="o">=</span><span class="m">5</span><span class="w"> </span>playlist-location<span class="o">=</span>waltertest.m3u8<span class="w"> </span><span class="nv">location</span><span class="o">=</span>waltertest_%05d.ts<span class="w"> </span>t.<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>wavenc<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>waltertest.wav
 </pre></div>
 </div>
 <ul class="simple">
@@ -243,11 +265,14 @@ gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>filesrc<span cla
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>display audio visualisation</p></li>
+<li><p>display audio visualisation 音频可视化</p></li>
 </ul>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>audiotestsrc<span class="w"> </span><span class="nv">wave</span><span class="o">=</span><span class="m">9</span><span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>spacescope<span class="w"> </span>!<span class="w"> </span>glimagesink
 
 gst-launch-1.0<span class="w"> </span>audiotestsrc<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>wavescope<span class="w"> </span>!<span class="w"> </span>glimagesink
+
+<span class="c1"># on ubuntu, the device id can be got by arecord -l</span>
+gst-launch-1.0<span class="w"> </span>alsasrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>hw:3,0<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>wavescope<span class="w"> </span>!<span class="w"> </span>videoconvert<span class="w"> </span>!<span class="w"> </span>ximagesink
 </pre></div>
 </div>
 <ul class="simple">
@@ -262,6 +287,36 @@ gst-launch-1.0<span class="w"> </span>audiotestsrc<span class="w"> </span>!<span
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>/tmp/test.pcm<span class="w"> </span>!<span class="w"> </span>capsfilter<span class="w"> </span><span class="nv">caps</span><span class="o">=</span><span class="s2">&quot;audio/x-raw,format=S16LE,channels=1,rate=16000&quot;</span><span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>autoaudiosink
 </pre></div>
 </div>
+<ul class="simple">
+<li><p>split mp3 to multiple wav files</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>audio/audio.mp3<span class="w"> </span>!<span class="w"> </span>decodebin<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>splitmuxsink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>/tmp/out_%d.wav<span class="w"> </span><span class="nv">muxer</span><span class="o">=</span>wavenc<span class="w"> </span>max-size-time<span class="o">=</span><span class="m">10000000000</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>encodes a test audio and video stream and muxes both into an FLV file.</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>flvmux<span class="w"> </span><span class="nv">name</span><span class="o">=</span>mux<span class="w"> </span>!<span class="w"> </span>filesink<span class="w"> </span><span class="nv">location</span><span class="o">=</span>test.flv<span class="w">  </span><span class="se">\</span>
+audiotestsrc<span class="w"> </span><span class="nv">samplesperbuffer</span><span class="o">=</span><span class="m">44100</span><span class="w"> </span>num-buffers<span class="o">=</span><span class="m">10</span><span class="w"> </span>!<span class="w"> </span>faac<span class="w"> </span>!<span class="w"> </span>mux.<span class="w">  </span><span class="se">\</span>
+videotestsrc<span class="w"> </span>num-buffers<span class="o">=</span><span class="m">250</span><span class="w"> </span>!<span class="w"> </span>video/x-raw,framerate<span class="o">=</span><span class="m">25</span>/1<span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span>!<span class="w"> </span>mux.
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>send audio stream to rtpmp</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">RTMP_DEST</span><span class="o">=</span><span class="s2">&quot;rtmp://192.168.104.199:1935/live/testaudio&quot;</span>
+
+gst-launch-1.0<span class="w"> </span>audiotestsrc<span class="w"> </span>is-live<span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>audioconvert<span class="w"> </span>!<span class="w"> </span>audioresample<span class="w"> </span>!<span class="w"> </span>audio/x-raw,rate<span class="o">=</span><span class="m">48000</span><span class="w"> </span>!<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>voaacenc<span class="w"> </span><span class="nv">bitrate</span><span class="o">=</span><span class="m">96000</span><span class="w"> </span>!<span class="w"> </span>audio/mpeg<span class="w"> </span>!<span class="w"> </span>aacparse<span class="w"> </span>!<span class="w"> </span>audio/mpeg,<span class="w"> </span><span class="nv">mpegversion</span><span class="o">=</span><span class="m">4</span><span class="w"> </span>!<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>flvmux<span class="w"> </span><span class="nv">name</span><span class="o">=</span>mux<span class="w"> </span>!<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>rtmpsink<span class="w"> </span><span class="nv">location</span><span class="o">=</span><span class="nv">$RTMP_DEST</span>
+
+gst-launch-1.0<span class="w"> </span>alsasrc<span class="w"> </span><span class="nv">device</span><span class="o">=</span>hw:2,0<span class="w"> </span>!<span class="w"> </span>audioconvert<span class="w"> </span>!<span class="w"> </span>wavescope<span class="w"> </span>!<span class="w"> </span>videoconvert<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>!<span class="w"> </span>x264enc<span class="w"> </span>!<span class="w"> </span>flvmux<span class="w"> </span><span class="nv">name</span><span class="o">=</span>muxer<span class="w"> </span>!<span class="w"> </span>rtmpsink<span class="w"> </span><span class="nv">location</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$RTMP_DEST</span><span class="s2"> live=1&quot;</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 

@@ -31,7 +31,8 @@ GStreamer 学习笔记
    2.tutorial/index
    3.application/index
    4.plugin/index
-   5.tool/index
+   5.deepstream/index
+   6.tool/index
 
 Indices and tables
 ==================

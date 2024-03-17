@@ -9,7 +9,7 @@ Furthermore, each plugin or part of the GStreamer defines its own category, so y
 export GST_DEBUG=<some element name>:<1-6?>,<some otherelement>:<1-6>
 ```
 
-如果不太清楚问题出在哪儿，就用 
+如果不太清楚问题出在哪儿，就启用 debug
 
 ```sh
 export GST_DEBUG=*:3 

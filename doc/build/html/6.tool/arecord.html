@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>arecord &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">6. GStreamer Tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">arecord</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/6.tool/arecord.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="arecord">
+<h1>arecord<a class="headerlink" href="#arecord" title="Link to this heading"></a></h1>
+<p>arecord is command-line sound recorder and player for ALSA soundcard driver</p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p>arecord is a command-line soundfile recorder for the ALSA soundcard driver. It supports several file formats and multiple soundcards with multiple devices. If recording with interleaved mode samples the file is automatically split before the 2GB filesize.</p>
+<p>aplay is much the same, only it plays instead of recording. For supported soundfile formats, the sampling rate, bit depth, and so forth can be automatically determined from the soundfile header.</p>
+<p>If filename is not specified, the standard output or input is used. The aplay utility accepts multiple filenames</p>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>arecord<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span><span class="w"> </span><span class="o">[</span>filename<span class="o">]</span>
+</pre></div>
+</div>
+<p>If the filename is not specified then it uses Standard input. Options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-h, –help : It is used to show the help messages and exit.
+–version : Print current version.
+-l, –list-devices : List all soundcards and digital audio devices.
+-L, –list-pcms : List all PCMs(Pulse Code Modulation) defined.
+-D, –device=NAME : Select PCM by name.
+-q –quiet : Quiet mode. Suppress messages (not sound :).
+-t, –file-type TYPE File type (voc, wav, raw or au). If this parameter is omitted the WAVE format is used.
+-c, –channels=# : The number of channels. The default is one channel. Valid values are 1 through 32.
+-f –format=FORMAT : If no format is given U8 is used.
+-r, –rate=# : Sampling rate in Hertz. The default rate is 8000 Hertz.
+-d, –duration=# : Interrupt after # seconds.
+-s, –sleep-min=# : Min ticks to sleep. The default is not to sleep.
+-M, –mmap : Use memory-mapped (mmap) I/O mode for the audio stream. If this option is not set, the read/write I/O mode will be used.
+-N, –nonblock : Open the audio device in non-blocking mode. If the device is busy the program will exit immediately.
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<ol class="arabic simple" start="0">
+<li><p>record audio from the default audio input device and save it to a file called recording.wav:</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord -f cd -t wav recording.wav</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Record a snippet in “CD” quality (finish with Ctrl-C when done):</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord -vv --format=cd {{path/to/file.wav}}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Record a snippet in “CD” quality, with a fixed duration of 10 seconds:</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord -vv --format=cd --duration={{10}} {{path/to/file.wav}}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Record a snippet and save it as an MP3 (finish with Ctrl-C when done):</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord -vv --format=cd --file-type raw | lame -r - {{path/to/file.mp3}}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>List all sound cards and digital audio devices:</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord --list-devices</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Allow interactive interface (e.g. use space-bar or enter to play or pause):</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord --interactive</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

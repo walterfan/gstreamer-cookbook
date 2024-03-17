@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5. GStreamer &mdash; gstreamer_tutorial 1 documentation</title>
+  <title>DeepStream Overview &mdash; gstreamer_tutorial 1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -30,8 +30,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="GStreamer Tools" href="overview.html" />
-    <link rel="prev" title="webrtcbin flow" href="../4.plugin/webrtc_flow.html" /> 
+    <link rel="next" title="6. GStreamer Tools" href="../6.tool/index.html" />
+    <link rel="prev" title="5. DeepStream" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -58,16 +58,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">3. GStreamer 插件</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. GStreamer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gst-launch.html">gst-launch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="v4l2-ctl.html">v4l-utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="v4l2loopback.html">v4l2loopback</a></li>
-<li class="toctree-l2"><a class="reference internal" href="srs.html">SRS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gst-device-monitor.html">gst-device-monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. DeepStream</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DeepStream Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-dependencies">Install Dependencies</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
 </ul>
 
         </div>
@@ -84,9 +83,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">5. GStreamer</li>
+          <li class="breadcrumb-item"><a href="index.html">5. DeepStream</a></li>
+      <li class="breadcrumb-item active">DeepStream Overview</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/5.tool/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/5.deepstream/overview.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -94,27 +94,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="gstreamer">
-<h1>5. GStreamer<a class="headerlink" href="#gstreamer" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">GStreamer Tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gst-launch.html">gst-launch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="v4l2-ctl.html">v4l-utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="v4l2loopback.html">v4l2loopback</a></li>
-<li class="toctree-l1"><a class="reference internal" href="srs.html">SRS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gst-device-monitor.html">gst-device-monitor</a></li>
-</ul>
+  <section id="deepstream-overview">
+<h1>DeepStream Overview<a class="headerlink" href="#deepstream-overview" title="Link to this heading"></a></h1>
+<p>DeepStream is a GStreamer-based SDK for creating vision AI applications with AI for image processing and object detection. DeepStream includes Graph eXecution Format (GXF), a framework that supports multiple clock domains and brings GPU-accelerated state machines.</p>
+<p>NVIDIA® DeepStream Software Development Kit (SDK) is an accelerated AI framework to build intelligent video analytics (IVA) pipelines.</p>
+<section id="install-dependencies">
+<h2>Install Dependencies<a class="headerlink" href="#install-dependencies" title="Link to this heading"></a></h2>
+<p>Enter the following commands to install the prerequisite packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install \
+libssl3 \
+libssl-dev \
+libgstreamer1.0-0 \
+gstreamer1.0-tools \
+gstreamer1.0-plugins-good \
+gstreamer1.0-plugins-bad \
+gstreamer1.0-plugins-ugly \
+gstreamer1.0-libav \
+libgstreamer-plugins-base1.0-dev \
+libgstrtspserver-1.0-0 \
+libjansson4 \
+libyaml-cpp-dev
+</pre></div>
 </div>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../4.plugin/webrtc_flow.html" class="btn btn-neutral float-left" title="webrtcbin flow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="overview.html" class="btn btn-neutral float-right" title="GStreamer Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="5. DeepStream" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../6.tool/index.html" class="btn btn-neutral float-right" title="6. GStreamer Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
