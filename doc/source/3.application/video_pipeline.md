@@ -14,7 +14,7 @@ gst-launch-1.0 v4l2src device=/dev/video1 do-timestamp=true num-buffers=10 ! ima
 ### play camera video
 
 ```sh
-gst-launch-1.0 -ev v4l2src device=/dev/video0 num-buffers=10 ! image/jpeg,width=1920,height=1080,framerate=20/1 ! xvimagesink
+gst-launch-1.0 -ev v4l2src device=/dev/video1 num-buffers=100 ! image/jpeg,width=1920,height=1080,framerate=20/1 ! xvimagesink
 
 ```
 

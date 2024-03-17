@@ -23,5 +23,7 @@ gst-launch-1.0 -v v4l2src device=/dev/video0 ! 'video/x-raw,width=640,height=480
 
 gst-launch-1.0 -vv v4l2src device=/dev/video0 num-buffers=1 ! "video/x-raw,format=YUY2,width=1280,height=720" ! jpegenc ! filesink location=filename.jpg
 ```
+
+
 ## Reference
 * https://gstreamer.freedesktop.org/documentation/tutorials/basic/gstreamer-tools.html?gi-language=c#gstdiscoverer10

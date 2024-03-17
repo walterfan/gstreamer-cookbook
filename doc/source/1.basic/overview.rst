@@ -63,3 +63,52 @@ GStreamer 被封装成
 * gst-libav: 一组封装libav进行解码和编码的插件
 * 其他一些包
 
+
+GStreamer 安装 Installation
+---------------------------------------------------
+- Linux: Use the package manager (e.g., apt-get, yum) to install GStreamer.
+- Windows: Download the GStreamer binaries from the official website and run the installer.
+
+GStreamer Pipeline 管道
+---------------------------------------------------
+- A GStreamer pipeline consists of elements connected together to process and stream audio/video data.
+- The basic syntax to create a pipeline is: `gst-launch-1.0 element1 ! element2 ! ... ! elementN`.
+
+GStreamer Elements 元件
+---------------------------------------------------
+* Elements are the building blocks of a pipeline.
+* Common elements include:
+
+  - `filesrc`: Reads data from a file.
+  - `decodebin`: Automatically detects and decodes various media formats.
+  - `audioconvert`: Converts audio data between different formats.
+  - `videoconvert`: Converts video data between different formats.
+  - `audiosink`: Plays audio data.
+  - `videosink`: Displays video data.
+  - Use `gst-inspect-1.0 element` to get detailed information about an element.
+
+GStreamer Element Properties 属性
+---------------------------------------------------
+- Elements have properties that control their behavior.
+- Use `gst-inspect-1.0 element` to list the available properties of an element.
+- Set a property using the syntax: `element property=value`.
+- Example: `gst-launch-1.0 filesrc location=input.mp4 ! decodebin ! videoscale ! videosink sync=false`.
+
+
+GStreamer Streaming 流媒体
+---------------------------------------------------
+- GStreamer supports various streaming protocols (e.g., RTP, RTSP, HTTP).
+- Use appropriate elements (e.g., `rtpbin`, `rtspserver`) to handle streaming.
+- Example: `gst-launch-1.0 filesrc location=input.mp4 ! decodebin ! rtpbin.send_rtp_sink_0`.
+
+GStreamer Plugins 插件
+---------------------------------------------------
+- GStreamer supports a wide range of plugins for different functionalities.
+- Use `gst-inspect-1.0` to list available plugins and their elements.
+- Install additional plugins if needed (e.g., `gst-plugins-good`, `gst-plugins-bad`).
+
+GStreamer Debugging
+---------------------------------------------------
+- Use the `GST_DEBUG` environment variable to enable debug output.
+- Example: `GST_DEBUG=3 gst-launch-1.0 filesrc location=input.mp4 ! decodebin ! videosink`.
+

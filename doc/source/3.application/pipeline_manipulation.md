@@ -1,13 +1,20 @@
 # pipeline manipulation
 
-## core questions
+管道的操作有多种方法, 例如
 
-* How to insert data from an application into a pipeline
-* How to read data from a pipeline
-* How to manipulate the pipeline's speed, length and starting point
-* How to listen to a pipeline's data processing.
+* 向管道中插入数据
+* 从管道中读取数据
+* 控制管道的速率, 长度和起始点
+* 侦听管道的数据处理
 
-## Using probes
+## 问题
+
+* 如何将数据从应用程序插入到管道中
+* 如何从管道中读取数据
+* 如何操纵管道的速度、长度和起点
+* 如何监听管道的数据处理。
+
+## 使用探针
 
 Probing is best envisioned as having access to a pad listener. Technically, a probe is nothing more than a callback that can be attached to a pad using gst_pad_add_probe (). Conversely, you can use gst_pad_remove_probe () to remove the callback. While attached, the probe notifies you of any activity on the pad. You can define what kind of notifications you are interested in when you add the probe.
 
@@ -47,6 +54,24 @@ Blocking probes are used to temporarily block pads because they are unlinked or 
 Be notified when no activity is happening on a pad. You install this probe with the GST_PAD_PROBE_TYPE_IDLE flag. You can specify GST_PAD_PROBE_TYPE_PUSH and/or GST_PAD_PROBE_TYPE_PULL to only be notified depending on the pad scheduling mode. The IDLE probe is also a blocking probe in that it will not let any data pass on the pad for as long as the IDLE probe is installed.
 
 You can use idle probes to dynamically relink a pad. We will see how to use idle probes to replace an element in the pipeline. See also Dynamically changing the pipeline.
+
+
+
+## 动态修改管道
+
+当管道处在 "PLAYING" 状态时, 如何在不打断数据流的前提下修改管道呢?
+
+以下事项需要重点注意
+
+* insertbin 和 switchbin 元素可用于管道的动态修改
+* 当要从管道中移除元件时, 要确保断开连接的 pads 上没有数据流, 否则会引发严重的管道错误. 
+在断开连接前要阻塞 source pad(在 push 模式下) 或者 sink pads(拉模式)
+
+* 当添加元件到管道中, 确保在允许数据流通前设置元件为正确的状态, 通常和父元件保持相同状态
+当一个元件新建出来, 它处于 "NULL" 状态, 当它收到数据时会抛出错误
+
+* 当添加元件到管道中, GStreamer 会在这个元件上设置时钟 clock 和 基准时间 base-time 为管道的当前值.
+它意味着
 
 ## Reference
 * https://gstreamer.freedesktop.org/documentation/application-development/advanced/pipeline-manipulation.html?gi-language=c
