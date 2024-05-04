@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GStreamer State &mdash; gstreamer_tutorial 1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e536ea0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -18,7 +20,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
@@ -117,11 +119,24 @@
              
   <section id="gstreamer-state">
 <h1>GStreamer State<a class="headerlink" href="#gstreamer-state" title="Link to this heading"></a></h1>
-<p>GStreamer 的管道或者说元件有如下的状态转换</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NULL</span> <span class="o">-&gt;</span> <span class="n">READY</span> <span class="o">-&gt;</span> <span class="n">PAUSED</span> <span class="o">-&gt;</span> <span class="n">PLAYING</span>
-
-</pre></div>
-</div>
+<p>GStreamer 的管道或者说元件有如下的状态转换:</p>
+<p>状态转换: NULL -&gt; READY -&gt; PAUSED -&gt; PLAYING</p>
+<ul class="simple">
+<li><p>NULL: This is the initial state of an element.</p></li>
+</ul>
+<p>这是元素的初始状态</p>
+<ul class="simple">
+<li><p>READY: The element should be prepared to go to PAUSED.</p></li>
+</ul>
+<p>这时已经准备好了，可以进入暂停状态</p>
+<ul class="simple">
+<li><p>PAUSED: The element should be ready to accept and process data. Sink elements, however, only accept one buffer and then block.</p></li>
+</ul>
+<p>这时元素就可以接收和处理数据了，但是sink元件只能接受一个数据缓冲就会阻塞住</p>
+<ul class="simple">
+<li><p>PLAYING: The same as PAUSED except for live sources and sinks. Sinks accept and render data. Live sources produce data.</p></li>
+</ul>
+<p>与 PAUSED 状态相同, 除了活动的 源和sink元件。Sink接受数据并渲染，live源产生</p>
 <p>A sink is never set to PLAYING before it is prerolled. In order to do this, the pipeline (at the GstBin level) keeps track of all elements that require preroll (the ones that return ASYNC from the state change). These elements posted an ASYNC_START message without a matching ASYNC_DONE one.</p>
 <p>The pipeline will not change the state of the elements that are still doing an ASYNC state change.</p>
 <p>When an ASYNC element prerolls, it commits its state to PAUSED and posts an ASYNC_DONE message. The pipeline notices this ASYNC_DONE message and matches it with the ASYNC_START message it cached for the corresponding element.</p>

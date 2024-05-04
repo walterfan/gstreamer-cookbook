@@ -1,11 +1,25 @@
 # GStreamer State
 
-GStreamer 的管道或者说元件有如下的状态转换
+GStreamer 的管道或者说元件有如下的状态转换:
+ 
+状态转换: NULL -> READY -> PAUSED -> PLAYING
 
-```
-NULL -> READY -> PAUSED -> PLAYING
+* NULL: This is the initial state of an element.
 
-```
+这是元素的初始状态
+
+* READY: The element should be prepared to go to PAUSED.
+
+这时已经准备好了，可以进入暂停状态
+
+* PAUSED: The element should be ready to accept and process data. Sink elements, however, only accept one buffer and then block.
+
+这时元素就可以接收和处理数据了，但是sink元件只能接受一个数据缓冲就会阻塞住
+
+* PLAYING: The same as PAUSED except for live sources and sinks. Sinks accept and render data. Live sources produce data.
+
+与 PAUSED 状态相同, 除了活动的 源和sink元件。Sink接受数据并渲染，live源产生
+
 
 A sink is never set to PLAYING before it is prerolled. In order to do this, the pipeline (at the GstBin level) keeps track of all elements that require preroll (the ones that return ASYNC from the state change). These elements posted an ASYNC_START message without a matching ASYNC_DONE one.
 

@@ -189,7 +189,7 @@ gst-inspect-1.0 videotestsrc
 -   check video file codec
 
 ``` 
-gst-discoverer-1.0 ../../../material/obama_talk.mp4
+gst-discoverer-1.0 ../../../material/talk.mp4
 ```
 
 
