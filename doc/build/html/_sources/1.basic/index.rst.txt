@@ -25,5 +25,6 @@
    gst-caps
    gst-state
    gst-event
-
+   gst-query
    sink-element
+   transform-element

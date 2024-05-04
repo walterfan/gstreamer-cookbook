@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GstBuffer &mdash; gstreamer_tutorial 1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e536ea0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -18,7 +20,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
@@ -68,6 +70,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gst-bin.html">gst bin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-bus.html">GstBus overview</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">GstBuffer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#members">Members</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
@@ -114,6 +117,38 @@
   <section id="gstbuffer">
 <h1>GstBuffer<a class="headerlink" href="#gstbuffer" title="Link to this heading"></a></h1>
 <p>A GstBuffer is the object that is passed from an upstream element to a downstream element and contains memory and metadata information.</p>
+<section id="members">
+<h2>Members<a class="headerlink" href="#members" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>mini_object (GstMiniObject) – the parent structure
+父结构类型</p></li>
+<li><p>pool (GstBufferPool *) – pointer to the pool owner of the buffer
+缓冲池的指针</p></li>
+<li><p>pts (GstClockTime) – presentation timestamp of the buffer, can be GST_CLOCK_TIME_NONE when the pts is not known or relevant. The pts contains the timestamp when the media should be presented to the user.</p></li>
+</ul>
+<p>缓冲数据的播放时间戳，当不知道或者无关时为GST_CLOCK_TIME_NONE
+pts 包含了缓冲数据应该被播放的时间。</p>
+<ul class="simple">
+<li><p>dts (GstClockTime) – decoding timestamp of the buffer, can be GST_CLOCK_TIME_NONE when the dts is not known or relevant. The dts contains the timestamp when the media should be processed.</p></li>
+</ul>
+<p>缓冲数据的解码时间戳，如果不知道或无关，则为GST_CLOCK_TIME_NONE。
+dts 包含了缓冲数据应该被处理的时间。</p>
+<ul class="simple">
+<li><p>duration (GstClockTime) – duration in time of the buffer data, can be GST_CLOCK_TIME_NONE when the duration is not known or relevant.
+缓冲区数据的时长，如果不知道或无关，则为GST_CLOCK_TIME_NONE。</p></li>
+<li><p>offset (guint64) – a media specific offset for the buffer data. For video frames, this is the frame number of this buffer. For audio samples, this is the offset of the first sample in this buffer. For file data or compressed data this is the byte offset of the first byte in this buffer.</p></li>
+</ul>
+<p>对于缓冲数据的媒体的特定的位移</p>
+<ul class="simple">
+<li><p>对于视频帧，这是缓冲区数据的帧号。</p></li>
+<li><p>对于音频采样, 这是缓冲区数据的第一个采样的位移。</p></li>
+<li><p>对于文件数据或者压缩数据，这是缓冲区数据的第一个字节的位</p></li>
+</ul>
+<ul class="simple">
+<li><p>offset_end (guint64) – the last offset contained in this buffer. It has the same format as offset.</p></li>
+</ul>
+<p>缓冲区数据的最后位移，与offset相同格式。</p>
+</section>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <ul class="simple">
