@@ -1,7 +1,12 @@
 # DeepStream
 
+NVIDIA 的 DeepStream SDK 提供了一套完整的流分析工具包，用于基于 AI 的多传感器处理、视频和图像理解。Deepstream SDK 大量使用开源多媒体处理库 Gstreamer。DeepStream SDK 可用于构建端到端 AI 驱动的应用程序来分析视频和传感器数据。
 
-DeepStream 是一个流分析工具包，用于构建人工智能驱动的应用程序。 它将来自 USB/CSI 摄像头的流数据、来自文件的视频或通过 RTSP 的流作为输入，并使用人工智能和计算机视觉从像素中生成见解，以便更好地了解环境。 DeepStream SDK 可以成为许多视频分析解决方案的基础层，例如了解智慧城市中的交通和行人、医院中的健康和安全监控、零售业中的自助结账和分析、检测制造工厂中的组件缺陷等.
+它可将来自 USB/CSI 摄像头的媒体流数据、来自文件的视频或通过网络传输的媒体流作为输入，并使用人工智能和计算机视觉从中进行分析和推理，以便更好地了解视频中的内容。
+
+![deep stream](../_static/deep_stream_flow.png)
+
+DeepStream SDK 可以成为许多视频分析解决方案的基础框架，例如了解智慧城市中的交通和行人、医院中的健康和安全监控、医学影像分析, 零售业中的自助结账和分析、检测制造工厂中的组件缺陷等.
 
 ![](../_static/DeepStream_Overview.png)
 
@@ -21,40 +26,38 @@ NVIDIA将 TensorRT, cuDNN, CUDA, Video SDK 等以插件的形式集成进 GStrea
 
 ## DeepStream Graph Architecture
 
-DeepStream is an optimized graph architecture built using the open source GStreamer framework. . The graph below shows a typical video analytic application starting from input video to outputting insights. All the individual blocks are various plugins that are used. At the bottom are the different hardware engines that are utilized throughout the application. Optimum memory management with zero-memory copy between plugins and the use of various accelerators ensure the highest performance.
-
 DeepStream是使用开源 GStreamer 框架构建的优化的图架构。 下图显示了从输入视频到输出见解的典型视频分析应用程序。 所有单独的块都是使用的各种插件。 底部是整个应用程序中使用的不同硬件引擎。 插件之间零内存复制的最佳内存管理以及各种加速器的使用确保了最高性能。
 
 ![](../_static/DS_overview_graph_architecture.png)
 
 DeepStream 以 GStreamer 插件的形式提供构建块，可用于构建高效的视频分析管道。 有超过 20 个针对各种任务进行硬件加速的插件。
 
-* Streaming data can come over the network through RTSP or from a local file system or from a camera directly. The streams are captured using the CPU. Once the frames are in the memory, they are sent for decoding using the NVDEC accelerator. The plugin for decode is called `Gst-nvvideo4linux2`.
+* 视频流数据可以通过网络传输, 或本地文件系统, 或直接从摄像头捕获。流使用 CPU 捕获。一旦帧进入内存，它们就会被发送到 NVDEC 加速器进行解码。解码插件称为“Gst-nvvideo4linux2”。
 
-* After decoding, there is an optional image pre-processing step where the input image can be pre-processed before inference. The pre-processing can be image dewarping or color space conversion. `Gst-nvdewarper` plugin can dewarp the image from a fisheye or 360 degree camera. `Gst-nvvideoconvert` plugin can perform color format conversion on the frame. These plugins use GPU or VIC (vision image compositor).
+* 解码后，有一个可选的图像预处理步骤，其中可以在推理之前对输入图像进行预处理。预处理可以是图像去扭曲或颜色空间转换。`Gst-nvdewarper` 插件可以对鱼眼或 360 度相机的图像进行去扭曲。`Gst-nvvideoconvert` 插件可以对帧执行颜色格式转换。这些插件使用 GPU 或 VIC（视觉图像合成器）。
 
-* The next step is to batch the frames for optimal inference performance. Batching is done using the `Gst-nvstreammux` plugin.
+* 下一步是批量处理帧以获得最佳推理性能。批处理是使用“Gst-nvstreammux”插件完成的。
 
-* Once frames are batched, it is sent for inference. The inference can be done using TensorRT, NVIDIA’s inference accelerator runtime or can be done in the native framework such as TensorFlow or PyTorch using Triton inference server. Native TensorRT inference is performed using `Gst-nvinfer` plugin and inference using Triton is done using `Gst-nvinferserver` plugin. The inference can use the GPU or DLA (Deep Learning accelerator) for Jetson AGX Orin and Orin NX.
+* 一旦帧被批处理，它就会被发送到下一插件进行推理。可以使用 TensorRT（NVIDIA 的推理加速器运行时）进行推理，也可以使用 Triton 推理服务器在 TensorFlow 或 PyTorch 等本机框架中完成推理。本机 TensorRT 推理是使用“Gst-nvinfer”插件执行的，使用 Triton 的推理是使用“Gst-nvinferserver”插件执行的。推理可以使用 Jetson AGX Orin 和 Orin NX 的 GPU 或 DLA（深度学习加速器）。
 
-* After inference, the next step could involve tracking the object. There are several built-in reference trackers in the SDK, ranging from high performance to high accuracy. Object tracking is performed using the `Gst-nvtracker` plugin.
+* 推理之后，下一步可能涉及跟踪对象。 SDK 中有多个内置参考跟踪器，从高性能到高精度不等。 使用 `Gst-nvtracker` 插件执行对象跟踪。
 
-* For creating visualization artifacts such as bounding boxes, segmentation masks, labels there is a visualization plugin called `Gst-nvdsosd`.
+* 为了创建可视化工件（例如边界框、分割蒙版、标签），有一个名为“Gst-nvdsosd”的可视化插件。
 
-* Finally to output the results, DeepStream presents various options: render the output with the bounding boxes on the screen, save the output to the local disk, stream out over RTSP or just send the metadata to the cloud. For sending metadata to the cloud, DeepStream uses `Gst-nvmsgconv` and `Gst-nvmsgbroker` plugin. Gst-nvmsgconv converts the metadata into schema payload and Gst-nvmsgbroker establishes the connection to the cloud and sends the telemetry data. There are several built-in broker protocols such as Kafka, MQTT, AMQP and Azure IoT. Custom broker adapters can be created.
-
+* 最后，为了输出结果，DeepStream 提供了各种选项：使用屏幕上的边界框渲染输出、将输出保存到本地磁盘、通过 RTSP 流式传输或仅将元数据(metadata)发送到云端。为了将元数据发送到云端，DeepStream 使用“Gst-nvmsgconv”和“Gst-nvmsgbroker”插件。Gst-nvmsgconv 将元数据(metadata)转换为模式负载(schema payload)，Gst-nvmsgbroker 建立与云端的连接并发送遥测数据。有几种内置代理协议，例如 Kafka、MQTT、AMQP 和 Azure IoT。可以创建自定义代理适配器。
 
 ## DeepStream reference app
 
-To get started, developers can use the provided reference applications. Also included are the source code for these applications. 
+首先，开发人员可以使用提供的参考应用程序。这些应用程序的源代码也包含在内。
 
-The end-to-end application is called deepstream-app. This app is fully configurable - it allows users to configure any type and number of sources. 
+端到端应用程序称为 deepstream-app。此应用程序完全可配置 - 它允许用户配置任何类型和数量的源。
 
-Users can also select the type of networks to run inference. 
+用户还可以选择要运行推理的网络类型。
 
-It comes pre-built with an inference plugin to do object detection cascaded by inference plugins to do image classification. There is an option to configure a tracker. 
+它预装了一个推理插件，用于进行对象检测，并通过推理插件进行级联以进行图像分类。有一个选项可以配置跟踪器。
 
-For the output, users can select between rendering on screen, saving the output file, or streaming the video out over RTSP.
+对于输出，用户可以选择在屏幕上渲染、保存输出文件或通过 RTSP 流式传输视频。
+
 
 ![](../_static/DS_overview_reference_app.png)
 

@@ -6,7 +6,7 @@ A cookbook for gstreamer developer - [GStreamer cookbook](https://walterfan.gith
 ## 新手 Primer
 * [GStreamer 快速入门](doc/source/1.basic/basic.md)
 * [GStreamer 基本概念](doc/source/1.basic/concept.md)
-* [GStreamer 设计原则](doc/source/1.basic/design.md)
+* [GStreamer 设计原则](doc/source/1.basic/design.rst)
 * [GStreamer Element](doc/source/1.basic/gst-element.md)
 * [GStreamer Bin](doc/source/1.basic/gst-bin.md)
 * [GStreamer Bus](doc/source/1.basic/gst-bus.md)

@@ -111,6 +111,14 @@ gst-launch-1.0 -v udpsrc  port=5000 caps=application/x-rtp ! rtph264depay ! avde
 6) 注册这个元素
 
 
+## How to read video and save the stream to png
+
+```
+gst-launch-1.0 -v v4l2src device=/dev/video1 num-buffers=1 ! videoconvert ! pngenc ! filesink location=camera_dump.png
+
+gst-launch-1.0 -v v4l2src device=/dev/video1 ! videoconvert ! pngenc ! multifilesink location=camera_dump_%d.png
+```
+
 Reference
 ==============
 * GStreamer document: https://gitlab.freedesktop.org/gstreamer/gst-docs.git
