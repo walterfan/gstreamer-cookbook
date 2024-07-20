@@ -13,9 +13,12 @@
 
    audio_pipeline
    video_pipeline
-   
+
    live_stream
+   iva
 
    deepstream
+   gst-dsexample
+   
    faq
    debug

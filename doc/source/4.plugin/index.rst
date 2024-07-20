@@ -13,6 +13,7 @@
    7.plugin-signal
    8.plugin-test
 
+   nvvideoconvert
    
    decodebin
    filesink

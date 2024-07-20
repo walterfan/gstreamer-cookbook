@@ -8,6 +8,7 @@
    :caption: Contents:
 
    overview
+   linux
    gst-launch
    v4l2-ctl
    v4l2loopback

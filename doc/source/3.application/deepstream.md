@@ -62,5 +62,36 @@ DeepStream 以 GStreamer 插件的形式提供构建块，可用于构建高效�
 ![](../_static/DS_overview_reference_app.png)
 
 
+## Example
+
+* 安装依赖库
+
+```
+$ sudo apt install \
+libssl3 \
+libssl-dev \
+libgstreamer1.0-0 \
+gstreamer1.0-tools \
+gstreamer1.0-plugins-good \
+gstreamer1.0-plugins-bad \
+gstreamer1.0-plugins-ugly \
+gstreamer1.0-libav \
+libgstreamer-plugins-base1.0-dev \
+libgstrtspserver-1.0-0 \
+libjansson4 \
+libyaml-cpp-dev
+```
+
+```
+DISPLAY=:0 gst-launch-1.0 -v filesrc location=talk.mp4 ! qtdemux ! h264parse \
+! nvv4l2decoder ! m.sink_0 nvstreammux name=m batch-size=1 width=1280 height=720 \
+! nvvideoconvert ! dsexample full-frame=1 ! nvdsosd ! nv3dsink
+
+DISPLAY=:0 gst-launch-1.0 -v filesrc location=talk.mp4 ! qtdemux ! h264parse \
+! nvv4l2decoder ! m.sink_0 nvstreammux name=m batch-size=1 width=1280 height=720 \
+! nvvideoconvert ! dsexample full-frame=1 ! nvdsosd ! autovideosink
+```
+
+
 ## Reference
 * https://resources.nvidia.com/en-us-deepstream-get-started-with-c-cpp
