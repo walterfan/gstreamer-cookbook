@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DeepStream Overview &mdash; gstreamer_tutorial 1 documentation</title>
+  <title>NV12 format &mdash; gstreamer_tutorial 1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -32,8 +32,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6. GStreamer Tools" href="../6.tool/index.html" />
-    <link rel="prev" title="5. DeepStream" href="index.html" /> 
+    <link rel="next" title="glib Overview" href="glib.html" />
+    <link rel="prev" title="GStreamer 基本概念" href="concept.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,18 +57,37 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 概论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">GStreamer 设计原则</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html">GStreamer 预备知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html">GStreamer 基础知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept.html">GStreamer 基本概念</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">NV12 format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reference">reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glib.html">glib Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-element.html">gst element overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-pad.html">GstPad Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bin.html">gst bin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bus.html">GstBus overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-buffer.html">GstBuffer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-promise.html">GstPromise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-caps.html">GStreamer Capabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-state.html">GStreamer State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-event.html">GstEvent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-query.html">Gstreamer Query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink-element.html">Sink elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transform-element.html">Transform elements</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. DeepStream</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">DeepStream Overview</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#install-dependencies">Install Dependencies</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -85,10 +104,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">5. DeepStream</a></li>
-      <li class="breadcrumb-item active">DeepStream Overview</li>
+          <li class="breadcrumb-item"><a href="index.html">1. GStreamer 基础</a></li>
+      <li class="breadcrumb-item active">NV12 format</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/5.deepstream/overview.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/1.basic/nv12.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -96,28 +115,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="deepstream-overview">
-<h1>DeepStream Overview<a class="headerlink" href="#deepstream-overview" title="Link to this heading"></a></h1>
-<p>DeepStream is a GStreamer-based SDK for creating vision AI applications with AI for image processing and object detection. DeepStream includes Graph eXecution Format (GXF), a framework that supports multiple clock domains and brings GPU-accelerated state machines.</p>
-<p>NVIDIA® DeepStream Software Development Kit (SDK) is an accelerated AI framework to build intelligent video analytics (IVA) pipelines.</p>
-<section id="install-dependencies">
-<h2>Install Dependencies<a class="headerlink" href="#install-dependencies" title="Link to this heading"></a></h2>
-<p>Enter the following commands to install the prerequisite packages:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install \
-libssl3 \
-libssl-dev \
-libgstreamer1.0-0 \
-gstreamer1.0-tools \
-gstreamer1.0-plugins-good \
-gstreamer1.0-plugins-bad \
-gstreamer1.0-plugins-ugly \
-gstreamer1.0-libav \
-libgstreamer-plugins-base1.0-dev \
-libgstrtspserver-1.0-0 \
-libjansson4 \
-libyaml-cpp-dev
-</pre></div>
-</div>
+  <section id="nv12-format">
+<h1>NV12 format<a class="headerlink" href="#nv12-format" title="Link to this heading"></a></h1>
+<p>YUV is a class of pixel formats used in video applications.</p>
+<p>YUV is actually the name of the color space that is common to all “YUV” pixel formats. Contrary to RGB formats (Red-Green-Blue), YUV colors are represented with one “luminance” component called Y (equivalent to grey scale) and two “chrominance” components, called U (blue projection) and V (red projection) respectively, hence the name.</p>
+<section id="reference">
+<h2>reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>https://wiki.videolan.org/YUV/#NV12</p></li>
+</ul>
 </section>
 </section>
 
@@ -125,8 +131,8 @@ libyaml-cpp-dev
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="5. DeepStream" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../6.tool/index.html" class="btn btn-neutral float-right" title="6. GStreamer Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="concept.html" class="btn btn-neutral float-left" title="GStreamer 基本概念" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="glib.html" class="btn btn-neutral float-right" title="glib Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

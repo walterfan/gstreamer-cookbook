@@ -32,8 +32,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="FAQ" href="faq.html" />
-    <link rel="prev" title="Live Stream" href="live_stream.html" /> 
+    <link rel="next" title="DeepStream-API" href="deepstream-api.html" />
+    <link rel="prev" title="A/V sync" href="av_sync.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -66,12 +66,29 @@
 <li class="toctree-l2"><a class="reference internal" href="audio_pipeline.html">Audio Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="live_stream.html">Live Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iva.html">Intelligent Video Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="av_sync.html">A/V sync</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DeepStream</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#deepstream-graph-architecture">DeepStream Graph Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deepstream-for-cv">DeepStream for CV</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">1. <strong>视频解码</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">2. <strong>预处理</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">3. <strong>深度学习推理</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4. <strong>后处理</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">5. <strong>显示/输出</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">6. <strong>管道优化与扩展</strong></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#deepstream-reference-app">DeepStream reference app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deepstream-plugin">deepstream plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deepstream-test1">deepstream-test1</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream-api.html">DeepStream-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-dsexample.html">gst-dsexample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html">MetaData in the DeepStream SDK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
@@ -80,8 +97,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -111,7 +128,10 @@
              
   <section id="deepstream">
 <h1>DeepStream<a class="headerlink" href="#deepstream" title="Link to this heading"></a></h1>
-<p>DeepStream 是一个流分析工具包，用于构建人工智能驱动的应用程序。 它将来自 USB/CSI 摄像头的流数据、来自文件的视频或通过 RTSP 的流作为输入，并使用人工智能和计算机视觉从像素中生成见解，以便更好地了解环境。 DeepStream SDK 可以成为许多视频分析解决方案的基础层，例如了解智慧城市中的交通和行人、医院中的健康和安全监控、零售业中的自助结账和分析、检测制造工厂中的组件缺陷等.</p>
+<p>NVIDIA 的 DeepStream SDK 提供了一套完整的流分析工具包，用于基于 AI 的多传感器处理、视频和图像理解。Deepstream SDK 大量使用开源多媒体处理库 Gstreamer。DeepStream SDK 可用于构建端到端 AI 驱动的应用程序来分析视频和传感器数据。</p>
+<p>它可将来自 USB/CSI 摄像头的媒体流数据、来自文件的视频或通过网络传输的媒体流作为输入，并使用人工智能和计算机视觉从中进行分析和推理，以便更好地了解视频中的内容。</p>
+<p><img alt="deep stream" src="../_images/deep_stream_flow.png" /></p>
+<p>DeepStream SDK 可以成为许多视频分析解决方案的基础框架，例如了解智慧城市中的交通和行人、医院中的健康和安全监控、医学影像分析, 零售业中的自助结账和分析、检测制造工厂中的组件缺陷等.</p>
 <p><img alt="" src="../_images/DeepStream_Overview.png" /></p>
 <p>DeepStream是NVIDIA基于GStreamer的插件系统开发的, 继承了GStreamer的特性。DeepSream提供超过15种以上的GStreamer插件模块, 以此建造一个高效的视频分析管道（Pipeline）。</p>
 <p>NVIDIA将 TensorRT, cuDNN, CUDA, Video SDK 等以插件的形式集成进 GStreamer 当中, 以管道的形式进行智能视频分析应用的开发, 将各个功能封装成组件, 通过将对应功能的组件插入管道中, 启动管道使数据按照要求在管道内流动, 数据经过解析、编解码、预处理、算法处理后进行图像渲染或者发送到云端。</p>
@@ -127,28 +147,97 @@
 </ul>
 <section id="deepstream-graph-architecture">
 <h2>DeepStream Graph Architecture<a class="headerlink" href="#deepstream-graph-architecture" title="Link to this heading"></a></h2>
-<p>DeepStream is an optimized graph architecture built using the open source GStreamer framework. . The graph below shows a typical video analytic application starting from input video to outputting insights. All the individual blocks are various plugins that are used. At the bottom are the different hardware engines that are utilized throughout the application. Optimum memory management with zero-memory copy between plugins and the use of various accelerators ensure the highest performance.</p>
 <p>DeepStream是使用开源 GStreamer 框架构建的优化的图架构。 下图显示了从输入视频到输出见解的典型视频分析应用程序。 所有单独的块都是使用的各种插件。 底部是整个应用程序中使用的不同硬件引擎。 插件之间零内存复制的最佳内存管理以及各种加速器的使用确保了最高性能。</p>
 <p><img alt="" src="../_images/DS_overview_graph_architecture.png" /></p>
 <p>DeepStream 以 GStreamer 插件的形式提供构建块，可用于构建高效的视频分析管道。 有超过 20 个针对各种任务进行硬件加速的插件。</p>
 <ul class="simple">
-<li><p>Streaming data can come over the network through RTSP or from a local file system or from a camera directly. The streams are captured using the CPU. Once the frames are in the memory, they are sent for decoding using the NVDEC accelerator. The plugin for decode is called <code class="docutils literal notranslate"><span class="pre">Gst-nvvideo4linux2</span></code>.</p></li>
-<li><p>After decoding, there is an optional image pre-processing step where the input image can be pre-processed before inference. The pre-processing can be image dewarping or color space conversion. <code class="docutils literal notranslate"><span class="pre">Gst-nvdewarper</span></code> plugin can dewarp the image from a fisheye or 360 degree camera. <code class="docutils literal notranslate"><span class="pre">Gst-nvvideoconvert</span></code> plugin can perform color format conversion on the frame. These plugins use GPU or VIC (vision image compositor).</p></li>
-<li><p>The next step is to batch the frames for optimal inference performance. Batching is done using the <code class="docutils literal notranslate"><span class="pre">Gst-nvstreammux</span></code> plugin.</p></li>
-<li><p>Once frames are batched, it is sent for inference. The inference can be done using TensorRT, NVIDIA’s inference accelerator runtime or can be done in the native framework such as TensorFlow or PyTorch using Triton inference server. Native TensorRT inference is performed using <code class="docutils literal notranslate"><span class="pre">Gst-nvinfer</span></code> plugin and inference using Triton is done using <code class="docutils literal notranslate"><span class="pre">Gst-nvinferserver</span></code> plugin. The inference can use the GPU or DLA (Deep Learning accelerator) for Jetson AGX Orin and Orin NX.</p></li>
-<li><p>After inference, the next step could involve tracking the object. There are several built-in reference trackers in the SDK, ranging from high performance to high accuracy. Object tracking is performed using the <code class="docutils literal notranslate"><span class="pre">Gst-nvtracker</span></code> plugin.</p></li>
-<li><p>For creating visualization artifacts such as bounding boxes, segmentation masks, labels there is a visualization plugin called <code class="docutils literal notranslate"><span class="pre">Gst-nvdsosd</span></code>.</p></li>
-<li><p>Finally to output the results, DeepStream presents various options: render the output with the bounding boxes on the screen, save the output to the local disk, stream out over RTSP or just send the metadata to the cloud. For sending metadata to the cloud, DeepStream uses <code class="docutils literal notranslate"><span class="pre">Gst-nvmsgconv</span></code> and <code class="docutils literal notranslate"><span class="pre">Gst-nvmsgbroker</span></code> plugin. Gst-nvmsgconv converts the metadata into schema payload and Gst-nvmsgbroker establishes the connection to the cloud and sends the telemetry data. There are several built-in broker protocols such as Kafka, MQTT, AMQP and Azure IoT. Custom broker adapters can be created.</p></li>
+<li><p>视频流数据可以通过网络传输, 或本地文件系统, 或直接从摄像头捕获。流使用 CPU 捕获。一旦帧进入内存，它们就会被发送到 NVDEC 加速器进行解码。解码插件称为“Gst-nvvideo4linux2”。</p></li>
+<li><p>解码后，有一个可选的图像预处理步骤，其中可以在推理之前对输入图像进行预处理。预处理可以是图像去扭曲或颜色空间转换。<code class="docutils literal notranslate"><span class="pre">Gst-nvdewarper</span></code> 插件可以对鱼眼或 360 度相机的图像进行去扭曲。<code class="docutils literal notranslate"><span class="pre">Gst-nvvideoconvert</span></code> 插件可以对帧执行颜色格式转换。这些插件使用 GPU 或 VIC（视觉图像合成器）。</p></li>
+<li><p>下一步是批量处理帧以获得最佳推理性能。批处理是使用“Gst-nvstreammux”插件完成的。</p></li>
+<li><p>一旦帧被批处理，它就会被发送到下一插件进行推理。可以使用 TensorRT（NVIDIA 的推理加速器运行时）进行推理，也可以使用 Triton 推理服务器在 TensorFlow 或 PyTorch 等本机框架中完成推理。本机 TensorRT 推理是使用“Gst-nvinfer”插件执行的，使用 Triton 的推理是使用“Gst-nvinferserver”插件执行的。推理可以使用 Jetson AGX Orin 和 Orin NX 的 GPU 或 DLA（深度学习加速器）。</p></li>
+<li><p>推理之后，下一步可能涉及跟踪对象。 SDK 中有多个内置参考跟踪器，从高性能到高精度不等。 使用 <code class="docutils literal notranslate"><span class="pre">Gst-nvtracker</span></code> 插件执行对象跟踪。</p></li>
+<li><p>为了创建可视化工件（例如边界框、分割蒙版、标签），有一个名为“Gst-nvdsosd”的可视化插件。</p></li>
+<li><p>最后，为了输出结果，DeepStream 提供了各种选项：使用屏幕上的边界框渲染输出、将输出保存到本地磁盘、通过 RTSP 流式传输或仅将元数据(metadata)发送到云端。为了将元数据发送到云端，DeepStream 使用“Gst-nvmsgconv”和“Gst-nvmsgbroker”插件。Gst-nvmsgconv 将元数据(metadata)转换为模式负载(schema payload)，Gst-nvmsgbroker 建立与云端的连接并发送遥测数据。有几种内置代理协议，例如 Kafka、MQTT、AMQP 和 Azure IoT。可以创建自定义代理适配器。</p></li>
 </ul>
+</section>
+<section id="deepstream-for-cv">
+<h2>DeepStream for CV<a class="headerlink" href="#deepstream-for-cv" title="Link to this heading"></a></h2>
+<p>NVIDIA DeepStream 是一个高性能的流媒体分析工具包，专为视频分析和推理应用设计。它支持多个输入流，并利用 NVIDIA GPU 的并行计算能力来加速图像识别和其他计算密集型任务。</p>
+<p>DeepStream 通过以下步骤进行图像识别：</p>
+<section id="id1">
+<h3>1. <strong>视频解码</strong><a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>首先，DeepStream 从视频流中提取图像帧。它支持多种视频格式（如 H.264、H.265 等），并使用 GPU 加速进行视频解码。</p>
+</section>
+<section id="id2">
+<h3>2. <strong>预处理</strong><a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>在解码后的图像帧进入神经网络模型之前，需要进行预处理。预处理包括图像缩放、颜色空间转换、图像标准化等操作。这一步是为了确保输入符合模型的要求。</p>
+</section>
+<section id="id3">
+<h3>3. <strong>深度学习推理</strong><a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>DeepStream 集成了 NVIDIA TensorRT，用于执行深度学习推理任务。TensorRT 是一个高性能的推理引擎，支持各种深度学习框架训练的模型（如 TensorFlow、PyTorch、ONNX）。在这个阶段，图像帧通过神经网络模型进行特征提取和分类，从而识别出图像中的对象或场景。</p>
+</section>
+<section id="id4">
+<h3>4. <strong>后处理</strong><a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>推理的输出通常需要进一步的处理。例如，输出可能是图像中检测到的对象的边界框，后处理步骤可能包括将这些边界框绘制在图像上、过滤不需要的结果，或者将结果转换为应用程序可以使用的格式。</p>
+</section>
+<section id="id5">
+<h3>5. <strong>显示/输出</strong><a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>最后，处理后的结果可以显示在屏幕上、保存到文件、或者通过网络发送到其他系统。DeepStream 支持多种输出方式，可以根据具体需求进行配置。</p>
+</section>
+<section id="id6">
+<h3>6. <strong>管道优化与扩展</strong><a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>DeepStream 允许用户通过 GStreamer 管道进行扩展和优化。例如，可以添加多路流处理、基于事件的触发机制、结果合并等复杂功能。此外，DeepStream 提供了丰富的插件库，支持各种视频分析任务，如目标跟踪、人脸识别、动作检测等。</p>
+<p>DeepStream 的架构使其能够处理高吞吐量的视频流，并广泛应用于智能城市监控、零售分析、机器人视觉等领域。</p>
+</section>
 </section>
 <section id="deepstream-reference-app">
 <h2>DeepStream reference app<a class="headerlink" href="#deepstream-reference-app" title="Link to this heading"></a></h2>
-<p>To get started, developers can use the provided reference applications. Also included are the source code for these applications.</p>
-<p>The end-to-end application is called deepstream-app. This app is fully configurable - it allows users to configure any type and number of sources.</p>
-<p>Users can also select the type of networks to run inference.</p>
-<p>It comes pre-built with an inference plugin to do object detection cascaded by inference plugins to do image classification. There is an option to configure a tracker.</p>
-<p>For the output, users can select between rendering on screen, saving the output file, or streaming the video out over RTSP.</p>
+<p>首先，开发人员可以使用提供的参考应用程序。这些应用程序的源代码也包含在内。</p>
+<p>端到端应用程序称为 deepstream-app。此应用程序完全可配置 - 它允许用户配置任何类型和数量的源。</p>
+<p>用户还可以选择要运行推理的网络类型。</p>
+<p>它预装了一个推理插件，用于进行对象检测，并通过推理插件进行级联以进行图像分类。有一个选项可以配置跟踪器。</p>
+<p>对于输出，用户可以选择在屏幕上渲染、保存输出文件或通过 RTSP 流式传输视频。</p>
 <p><img alt="" src="../_images/DS_overview_reference_app.png" /></p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>安装依赖库</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install \
+libssl3 \
+libssl-dev \
+libgstreamer1.0-0 \
+gstreamer1.0-tools \
+gstreamer1.0-plugins-good \
+gstreamer1.0-plugins-bad \
+gstreamer1.0-plugins-ugly \
+gstreamer1.0-libav \
+libgstreamer-plugins-base1.0-dev \
+libgstrtspserver-1.0-0 \
+libjansson4 \
+libyaml-cpp-dev
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DISPLAY=:0 gst-launch-1.0 -v filesrc location=talk.mp4 ! qtdemux ! h264parse \
+! nvv4l2decoder ! m.sink_0 nvstreammux name=m batch-size=1 width=1280 height=720 \
+! nvvideoconvert ! dsexample full-frame=1 ! nvdsosd ! nv3dsink
+
+DISPLAY=:0 gst-launch-1.0 -v filesrc location=talk.mp4 ! qtdemux ! h264parse \
+! nvv4l2decoder ! m.sink_0 nvstreammux name=m batch-size=1 width=1280 height=720 \
+! nvvideoconvert ! dsexample full-frame=1 ! nvdsosd ! autovideosink
+</pre></div>
+</div>
+</section>
+<section id="deepstream-plugin">
+<h2>deepstream plugin<a class="headerlink" href="#deepstream-plugin" title="Link to this heading"></a></h2>
+<p><img alt="deepstream plugin" src="../_images/ds_plugins.png" /></p>
+</section>
+<section id="deepstream-test1">
+<h2>deepstream-test1<a class="headerlink" href="#deepstream-test1" title="Link to this heading"></a></h2>
+<p>Sample of how to use DeepStream elements for a single H.264 stream:</p>
+<p>filesrc → decode → nvstreammux → nvinfer or nvinferserver (primary detector) → nvdsosd → renderer.</p>
+<p>This app uses resnet18_trafficcamnet.etlt for detection.</p>
 </section>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
@@ -162,8 +251,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="live_stream.html" class="btn btn-neutral float-left" title="Live Stream" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="av_sync.html" class="btn btn-neutral float-left" title="A/V sync" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepstream-api.html" class="btn btn-neutral float-right" title="DeepStream-API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

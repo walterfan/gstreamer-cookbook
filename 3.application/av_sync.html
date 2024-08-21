@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5. DeepStream &mdash; gstreamer_tutorial 1 documentation</title>
+  <title>A/V sync &mdash; gstreamer_tutorial 1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -32,8 +32,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="DeepStream Overview" href="overview.html" />
-    <link rel="prev" title="webrtcbin flow" href="../4.plugin/webrtc_flow.html" /> 
+    <link rel="next" title="DeepStream" href="deepstream.html" />
+    <link rel="prev" title="Intelligent Video Analysis" href="iva.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -59,13 +59,32 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. DeepStream</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overview.html">DeepStream Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_manipulation.html">pipeline manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_pipeline.html">Audio Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="live_stream.html">Live Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iva.html">Intelligent Video Analysis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">A/V sync</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream-api.html">DeepStream-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-dsexample.html">gst-dsexample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html">MetaData in the DeepStream SDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -82,9 +101,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">5. DeepStream</li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
+      <li class="breadcrumb-item active">A/V sync</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/5.deepstream/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/3.application/av_sync.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -92,22 +112,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="deepstream">
-<h1>5. DeepStream<a class="headerlink" href="#deepstream" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">DeepStream Overview</a></li>
+  <section id="a-v-sync">
+<h1>A/V sync<a class="headerlink" href="#a-v-sync" title="Link to this heading"></a></h1>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>deepstream-avsync-app</p></li>
+<li><p>https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_AVSync.html</p></li>
 </ul>
-</div>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../4.plugin/webrtc_flow.html" class="btn btn-neutral float-left" title="webrtcbin flow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="overview.html" class="btn btn-neutral float-right" title="DeepStream Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="iva.html" class="btn btn-neutral float-left" title="Intelligent Video Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepstream.html" class="btn btn-neutral float-right" title="DeepStream" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

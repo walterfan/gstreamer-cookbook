@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gst-dsexample &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e536ea0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MetaData in the DeepStream SDK" href="metadata.html" />
+    <link rel="prev" title="DeepStream-API" href="deepstream-api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_manipulation.html">pipeline manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_pipeline.html">Audio Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="live_stream.html">Live Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iva.html">Intelligent Video Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="av_sync.html">A/V sync</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream-api.html">DeepStream-API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">gst-dsexample</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gstbasetransfrom-class-functions">GstBaseTransfrom Class Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html">MetaData in the DeepStream SDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
+      <li class="breadcrumb-item active">gst-dsexample</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/3.application/gst-dsexample.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gst-dsexample">
+<h1>gst-dsexample<a class="headerlink" href="#gst-dsexample" title="Link to this heading"></a></h1>
+<p>The GStreamer example plugin (gst-dsexample) demonstrates the following:</p>
+<ul class="simple">
+<li><p>Processing the entire frame, with downscaling / color conversion if required.
+处理整个视频帧, 包括所需的大小和色彩转换</p></li>
+<li><p>Processing objects detected by the Primary Detector, specifically, cropping these objects from the frame and then processing the crops.
+处理被主检测器检测到的对象, 尤其是从视频帧中裁剪这些对象, 并处理这些裁剪过的片段</p></li>
+<li><p>In-place modification of the buffer frame contents using OpenCV
+通过 opencv 就地修改缓冲区的视频帧内容</p></li>
+<li><p>Two versions of the plugin are included. Refer to the plugin’s Makefile and README to switch between them
+这里包括 两个版本的 plugin</p>
+<ul>
+<li><p>Simple (gstdsexample.cpp) - Sequential pre-processing and processing
+简单版本</p></li>
+<li><p>Optimized (gstdsexample_optimized.cpp) - Parallel batch pre-processing and processing
+优化版本</p></li>
+</ul>
+</li>
+</ul>
+<p>This release includes a simple static library dsexample_lib that demonstrates the interface between custom libraries and this Gstreamer plugin. The library generates simple labels of the form “Obj_label”. The library implements these functions:</p>
+<p>这个 plugin 包括以下这些函数</p>
+<ul class="simple">
+<li><p>DsExampleCtxInit—Initalizes the custom library</p></li>
+<li><p>DsExampleCtxDeinit—De-initalizes the custom library</p></li>
+<li><p>DsExampleProcess – Process on an input frame</p></li>
+</ul>
+<p>The GStreamer plugin itself is a standard in-place transform plugin. Because it does not generate new buffers but only adds / updates existing metadata, the plugin implements an in-place transform. Some of the code is standard GStreamer plugin boilerplate (e.g. plugin_init, class_init, instance_init). Other functions of interest are as follows:</p>
+<section id="gstbasetransfrom-class-functions">
+<h2>GstBaseTransfrom Class Functions<a class="headerlink" href="#gstbasetransfrom-class-functions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>start—Acquires resources, allocate memory, initialize example library.</p></li>
+<li><p>stop—De-initializes the example library and frees up resources and memory.</p></li>
+<li><p>set_caps—Gets the capabilities of the video (i.e. resolution, color format, framerate) that flow through this element. Allocations / initializations that depend on input video format can be done here.</p></li>
+<li><p>transform_ip—Implemented in the simple version. Called when the plugin receives a buffer from upstream element.</p></li>
+<li><p>Finds the metadata of the primary detector.</p></li>
+<li><p>Use get_converted_mat to pre-process frame/object crop to get the required buffer for pushing to library. Push the data to the example library. Pop the example library output.</p></li>
+<li><p>Attach / update metadata using attach_metadata_full_frame or attach_metadata_object.</p></li>
+<li><p>Alternatively, modify frame contents in-place to blur objects using blur_objects.</p></li>
+<li><p>submit_input_buffer — Implemented in the optimized version. Called when the plugin receives a buffer from upstream element. Works in parallel with gst_dsexample_output_loop to improve performance.</p></li>
+<li><p>Finds the metadata of the primary detector.</p></li>
+<li><p>Create a batch of frames/objects to pre-process. Pre-process the batches and push the pre-processed output to the processing thread.</p></li>
+<li><p>Pre-process on the next batch while the processing thread works on an older batch.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="deepstream-api.html" class="btn btn-neutral float-left" title="DeepStream-API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="metadata.html" class="btn btn-neutral float-right" title="MetaData in the DeepStream SDK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

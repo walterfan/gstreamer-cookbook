@@ -33,7 +33,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Gstreamer Debug" href="debug.html" />
-    <link rel="prev" title="DeepStream" href="deepstream.html" /> 
+    <link rel="prev" title="MetaData in the DeepStream SDK" href="metadata.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -66,7 +66,12 @@
 <li class="toctree-l2"><a class="reference internal" href="audio_pipeline.html">Audio Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="live_stream.html">Live Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iva.html">Intelligent Video Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="av_sync.html">A/V sync</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream-api.html">DeepStream-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-dsexample.html">gst-dsexample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html">MetaData in the DeepStream SDK</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what">What</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#what-state-of-a-pipeline">What state of a pipeline?</a></li>
@@ -86,6 +91,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-make-a-gstreamer-plugin">How to make a gstreamer plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-read-video-and-save-the-stream-to-png">How to read video and save the stream to png</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
@@ -93,8 +99,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -243,6 +249,14 @@ gst-launch-1.0 -v udpsrc  port=5000 caps=application/x-rtp ! rtph264depay ! avde
 <li><p>注册这个元素</p></li>
 </ol>
 </section>
+<section id="how-to-read-video-and-save-the-stream-to-png">
+<h2>How to read video and save the stream to png<a class="headerlink" href="#how-to-read-video-and-save-the-stream-to-png" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0 -v v4l2src device=/dev/video1 num-buffers=1 ! videoconvert ! pngenc ! filesink location=camera_dump.png
+
+gst-launch-1.0 -v v4l2src device=/dev/video1 ! videoconvert ! pngenc ! multifilesink location=camera_dump_%d.png
+</pre></div>
+</div>
+</section>
 </section>
 <section id="reference">
 <h1>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h1>
@@ -257,7 +271,7 @@ gst-launch-1.0 -v udpsrc  port=5000 caps=application/x-rtp ! rtph264depay ! avde
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="deepstream.html" class="btn btn-neutral float-left" title="DeepStream" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="metadata.html" class="btn btn-neutral float-left" title="MetaData in the DeepStream SDK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="debug.html" class="btn btn-neutral float-right" title="Gstreamer Debug" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

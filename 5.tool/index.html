@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gst-device-monitor &mdash; gstreamer_tutorial 1 documentation</title>
+  <title>6. GStreamer Tools &mdash; gstreamer_tutorial 1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -32,7 +32,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="SRS" href="srs.html" /> 
+    <link rel="next" title="GStreamer Tools" href="overview.html" />
+    <link rel="prev" title="webrtcbin flow" href="../4.plugin/webrtc_flow.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,16 +61,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. GStreamer Tools</a><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. GStreamer Tools</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linux.html">Linux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-launch.html">gst-launch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="v4l2-ctl.html">v4l-utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="v4l2loopback.html">v4l2loopback</a></li>
 <li class="toctree-l2"><a class="reference internal" href="srs.html">SRS</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">gst-device-monitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="arecord.html">arecord</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-tracer.html">GST Tracer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-device-monitor.html">gst-device-monitor</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -86,10 +90,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">6. GStreamer Tools</a></li>
-      <li class="breadcrumb-item active">gst-device-monitor</li>
+      <li class="breadcrumb-item active">6. GStreamer Tools</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/6.tool/gst-device-monitor.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/5.tool/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -97,16 +100,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="gst-device-monitor">
-<h1>gst-device-monitor<a class="headerlink" href="#gst-device-monitor" title="Link to this heading"></a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gst</span><span class="o">-</span><span class="n">device</span><span class="o">-</span><span class="n">monitor</span><span class="o">-</span><span class="mf">1.0</span> <span class="n">Video</span><span class="o">/</span><span class="n">Source</span><span class="p">:</span><span class="s2">&quot;image/jpeg, width=1920, height=1080&quot;</span><span class="o">|</span><span class="n">grep</span> <span class="n">device</span><span class="o">.</span><span class="n">path</span>
-
-<span class="n">gst</span><span class="o">-</span><span class="n">device</span><span class="o">-</span><span class="n">monitor</span><span class="o">-</span><span class="mf">1.0</span> <span class="n">Video</span><span class="o">/</span><span class="n">Source</span><span class="p">:</span><span class="s2">&quot;image/jpeg, width=1920, height=1080&quot;</span><span class="o">|</span><span class="n">grep</span> <span class="n">device</span><span class="o">.</span><span class="n">serial</span>
-
-<span class="n">gst</span><span class="o">-</span><span class="n">device</span><span class="o">-</span><span class="n">monitor</span><span class="o">-</span><span class="mf">1.0</span> <span class="n">Video</span><span class="o">/</span><span class="n">Source</span><span class="p">:</span><span class="s2">&quot;video/x-raw, width=1920, height=1080&quot;</span><span class="o">|</span><span class="n">grep</span> <span class="n">device</span><span class="o">.</span><span class="n">path</span>
-
-<span class="n">gst</span><span class="o">-</span><span class="n">device</span><span class="o">-</span><span class="n">monitor</span><span class="o">-</span><span class="mf">1.0</span> <span class="n">Video</span><span class="o">/</span><span class="n">Source</span><span class="p">:</span><span class="s2">&quot;video/x-raw, width=1920, height=1080&quot;</span><span class="o">|</span><span class="n">grep</span> <span class="n">device</span><span class="o">.</span><span class="n">serial</span>
-</pre></div>
+  <section id="gstreamer-tools">
+<h1>6. GStreamer Tools<a class="headerlink" href="#gstreamer-tools" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux.html">Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gst-launch.html">gst-launch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="v4l2-ctl.html">v4l-utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="v4l2loopback.html">v4l2loopback</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srs.html">SRS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arecord.html">arecord</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gst-tracer.html">GST Tracer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gst-device-monitor.html">gst-device-monitor</a></li>
+</ul>
 </div>
 </section>
 
@@ -114,7 +122,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="srs.html" class="btn btn-neutral float-left" title="SRS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../4.plugin/webrtc_flow.html" class="btn btn-neutral float-left" title="webrtcbin flow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-right" title="GStreamer Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

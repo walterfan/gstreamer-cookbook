@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>v4l-utils &mdash; gstreamer_tutorial 1 documentation</title>
+  <title>5. DeepStream &mdash; gstreamer_tutorial 1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -32,8 +32,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="v4l2loopback" href="v4l2loopback.html" />
-    <link rel="prev" title="gst-launch" href="gst-launch.html" /> 
+    <link rel="next" title="Linux Tips" href="linux_tips.html" />
+    <link rel="prev" title="gst-device-monitor" href="../5.tool/gst-device-monitor.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -61,14 +61,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. GStreamer Tools</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gst-launch.html">gst-launch</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">v4l-utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="v4l2loopback.html">v4l2loopback</a></li>
-<li class="toctree-l2"><a class="reference internal" href="srs.html">SRS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gst-device-monitor.html">gst-device-monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. DeepStream</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="linux_tips.html">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cross_compile.html">Cross compile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opencv.html">Opencv</a></li>
 </ul>
 </li>
 </ul>
@@ -87,10 +84,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">6. GStreamer Tools</a></li>
-      <li class="breadcrumb-item active">v4l-utils</li>
+      <li class="breadcrumb-item active">5. DeepStream</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/6.tool/v4l2-ctl.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/6.misc/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -98,55 +94,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="v4l-utils">
-<h1>v4l-utils<a class="headerlink" href="#v4l-utils" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p>安装</p></li>
+  <section id="deepstream">
+<h1>5. DeepStream<a class="headerlink" href="#deepstream" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="linux_tips.html">Linux Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cross_compile.html">Cross compile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="opencv.html">Opencv</a></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">v4l</span><span class="o">-</span><span class="n">utils</span>
-</pre></div>
-</div>
-<ol class="arabic simple">
-<li><p>列出设备</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">v4l2</span><span class="o">-</span><span class="n">ctl</span> <span class="o">--</span><span class="nb">list</span><span class="o">-</span><span class="n">devices</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>列出设备支持的格式</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">v4l2</span><span class="o">-</span><span class="n">ctl</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">video1</span> <span class="o">--</span><span class="nb">list</span><span class="o">-</span><span class="n">formats</span><span class="o">-</span><span class="n">ext</span> 
-</pre></div>
-</div>
-<ol class="arabic simple" start="3">
-<li><p>List supported video formats and resolutions of a specific video device:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># v4l2-ctl --list-formats-ext --device path/to/video_device</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="4">
-<li><p>Get all details of a video device:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># v4l2-ctl --all --device path/to/video_device</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="5">
-<li><p>Capture a JPEG photo with a specific resolution from video device:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># v4l2-ctl --device path/to/video_device --set-fmt-video=width=width,height=height,pixelformat=MJPG --stream-mmap --stream-to=path/to/output.jpg --stream-count=1</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="6">
-<li><p>Capture a raw video stream from video device:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># v4l2-ctl --device path/to/video_device --set-fmt-video=width=width,height=height,pixelformat=format --stream-mmap --stream-to=path/to/output --stream-count=number_of_frames_to_capture</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="7">
-<li><p>List all video device’s controls and their values:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># v4l2-ctl --list-ctrls --device /path/to/video_device</span>
-</pre></div>
 </div>
 </section>
 
@@ -154,8 +110,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="gst-launch.html" class="btn btn-neutral float-left" title="gst-launch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="v4l2loopback.html" class="btn btn-neutral float-right" title="v4l2loopback" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../5.tool/gst-device-monitor.html" class="btn btn-neutral float-left" title="gst-device-monitor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="linux_tips.html" class="btn btn-neutral float-right" title="Linux Tips" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

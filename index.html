@@ -60,8 +60,8 @@
 <li class="toctree-l1"><a class="reference internal" href="2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.application/index.html">3. GStreamer 应用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5.deepstream/index.html">5. DeepStream</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -105,7 +105,7 @@
 <td><p>WIP</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Updated</strong></p></td>
-<td><p>2024-05-04</p></td>
+<td><p>2024-08-21</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>License</strong></p></td>
 <td><p><a class="reference external" href="http://creativecommons.org/licenses/by-nc-nd/4.0">CC-BY-NC-ND 4.0</a></p></td>
@@ -121,6 +121,7 @@
 <li class="toctree-l2"><a class="reference internal" href="1.basic/preliminary.html">GStreamer 预备知识</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1.basic/basic.html">GStreamer 基础知识</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1.basic/concept.html">GStreamer 基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.basic/nv12.html">NV12 format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1.basic/glib.html">glib Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1.basic/gobject.html">gobject overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1.basic/gst-element.html">gst element overview</a></li>
@@ -157,7 +158,12 @@
 <li class="toctree-l2"><a class="reference internal" href="3.application/audio_pipeline.html">Audio Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3.application/video_pipeline.html">Video Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3.application/live_stream.html">Live Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.application/iva.html">Intelligent Video Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.application/av_sync.html">A/V sync</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3.application/deepstream.html">DeepStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.application/deepstream-api.html">DeepStream-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.application/gst-dsexample.html">gst-dsexample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.application/metadata.html">MetaData in the DeepStream SDK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3.application/faq.html">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3.application/faq.html#what">What</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3.application/faq.html#how-to">How to</a></li>
@@ -171,6 +177,9 @@
 <li class="toctree-l2"><a class="reference internal" href="4.plugin/2.plugin-pads.html">Specifying the pads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.plugin/7.plugin-signal.html">Signal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.plugin/8.plugin-test.html">测试你的插件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.plugin/nvvideoconvert.html">DeepStream Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.plugin/nvvideo4linux2.html">nvvideo4linux2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.plugin/nvstreammux.html">nvstreammux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.plugin/decodebin.html">decodebin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.plugin/filesink.html">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.plugin/filesink.html#example">Example</a></li>
@@ -188,19 +197,22 @@
 <li class="toctree-l2"><a class="reference internal" href="4.plugin/webrtc_flow.html">webrtcbin flow</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="5.deepstream/index.html">5. DeepStream</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="5.deepstream/overview.html">DeepStream Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.tool/index.html">6. GStreamer Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="5.tool/overview.html">GStreamer Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.tool/linux.html">Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.tool/gst-launch.html">gst-launch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.tool/v4l2-ctl.html">v4l-utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.tool/v4l2loopback.html">v4l2loopback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.tool/srs.html">SRS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.tool/arecord.html">arecord</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.tool/gst-tracer.html">GST Tracer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.tool/gst-device-monitor.html">gst-device-monitor</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="6.tool/index.html">6. GStreamer Tools</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="6.tool/overview.html">GStreamer Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="6.tool/gst-launch.html">gst-launch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="6.tool/v4l2-ctl.html">v4l-utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="6.tool/v4l2loopback.html">v4l2loopback</a></li>
-<li class="toctree-l2"><a class="reference internal" href="6.tool/srs.html">SRS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="6.tool/arecord.html">arecord</a></li>
-<li class="toctree-l2"><a class="reference internal" href="6.tool/gst-tracer.html">GST Tracer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="6.tool/gst-device-monitor.html">gst-device-monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6.misc/index.html">5. DeepStream</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="6.misc/linux_tips.html">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.misc/cross_compile.html">Cross compile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.misc/opencv.html">Opencv</a></li>
 </ul>
 </li>
 </ul>

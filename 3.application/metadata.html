@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MetaData in the DeepStream SDK &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e536ea0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FAQ" href="faq.html" />
+    <link rel="prev" title="gst-dsexample" href="gst-dsexample.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. GStreamer 应用</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caps_negotiation.html">Caps negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_manipulation.html">pipeline manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_pipeline.html">Audio Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="video_pipeline.html">Video Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="live_stream.html">Live Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iva.html">Intelligent Video Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="av_sync.html">A/V sync</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream-api.html">DeepStream-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-dsexample.html">gst-dsexample</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">MetaData in the DeepStream SDK</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nvdsbatchmeta">NvDsBatchMeta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-custom-metadata-addition-inside-nvdsbatchmeta">User/Custom Metadata Addition inside NvDsBatchMeta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html">Gstreamer Debug</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. GStreamer 应用</a></li>
+      <li class="breadcrumb-item active">MetaData in the DeepStream SDK</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/3.application/metadata.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="metadata-in-the-deepstream-sdk">
+<h1>MetaData in the DeepStream SDK<a class="headerlink" href="#metadata-in-the-deepstream-sdk" title="Link to this heading"></a></h1>
+<p>Gst Buffer is the basic unit of data transfer in GStreamer. Each Gst Buffer has associated metadata. The DeepStream SDK attaches the DeepStream metadata object, NvDsBatchMeta.</p>
+<section id="nvdsbatchmeta">
+<h2>NvDsBatchMeta<a class="headerlink" href="#nvdsbatchmeta" title="Link to this heading"></a></h2>
+<p>Basic Metadata Structure</p>
+<p>DeepStream uses an extensible standard structure for metadata.</p>
+<p>The basic metadata structure NvDsBatchMeta starts with batch level metadata, created inside the Gst-nvstreammux plugin. Subsidiary metadata structures hold frame, object, classifier, and label data.</p>
+<p>DeepStream also provides a mechanism for adding user-specific metadata at the batch, frame, or object level.</p>
+<p>DeepStream attaches metadata to a Gst Buffer by attaching an NvDsBatchMeta structure and setting GstNvDsMetaType.meta_type to NVDS_BATCH_GST_META in the Gst-nvstreammux plugin. When your application processes the Gst Buffer, it can iterate over the attached metadata to find NVDS_BATCH_GST_META.</p>
+<p>The function gst_buffer_get_nvds_batch_meta() extracts NvDsBatchMeta from the Gst Buffer. (See the declaration in sources/include/gstnvdsmeta.h.) See the deepstream-test1 sample application for an example of this function’s usage.</p>
+<p>For more details, see the DeepStream SDK API reference documentation in DeepStream API Guides.</p>
+<p><img alt="NvDsBatchMeta" src="../_images/NvDsBatchMeta.png" /></p>
+</section>
+<section id="user-custom-metadata-addition-inside-nvdsbatchmeta">
+<h2>User/Custom Metadata Addition inside NvDsBatchMeta<a class="headerlink" href="#user-custom-metadata-addition-inside-nvdsbatchmeta" title="Link to this heading"></a></h2>
+<p>To attach user-specific metadata at the batch, frame, or object level within NvDsBatchMeta, you must acquire an instance of NvDsUserMeta from the user meta pool by calling nvds_acquire_user_meta_from_pool().
+(See sources/includes/nvdsmeta.h for details.)</p>
+<p>Then you must initialize NvDsUserMeta. The members you must set are user_meta_data, meta_type, copy_func, and release_func.</p>
+<p>For more details, see the sample application source code in sources/apps/sample_apps/deepstream-user-metadata-test/deepstream_user_metadata_app.c.</p>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_plugin_metadata.html</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gst-dsexample.html" class="btn btn-neutral float-left" title="gst-dsexample" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

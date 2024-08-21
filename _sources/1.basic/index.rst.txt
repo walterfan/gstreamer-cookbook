@@ -12,6 +12,7 @@
    preliminary
    basic
    concept
+   nv12
 
    glib
    gobject

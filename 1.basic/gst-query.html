@@ -31,7 +31,9 @@
         <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sink elements" href="sink-element.html" />
+    <link rel="prev" title="GstEvent" href="gst-event.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,13 +56,35 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">1. GStreamer 基础</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. GStreamer 基础</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer 概论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">GStreamer 设计原则</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preliminary.html">GStreamer 预备知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html">GStreamer 基础知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept.html">GStreamer 基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nv12.html">NV12 format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glib.html">glib Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-element.html">gst element overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-pad.html">GstPad Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bin.html">gst bin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-bus.html">GstBus overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-buffer.html">GstBuffer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-promise.html">GstPromise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-caps.html">GStreamer Capabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-state.html">GStreamer State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-event.html">GstEvent</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Gstreamer Query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink-element.html">Sink elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transform-element.html">Transform elements</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -77,6 +101,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">1. GStreamer 基础</a></li>
       <li class="breadcrumb-item active">Gstreamer Query</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/1.basic/gst-query.md.txt" rel="nofollow"> View page source</a>
@@ -95,7 +120,10 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gst-event.html" class="btn btn-neutral float-left" title="GstEvent" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sink-element.html" class="btn btn-neutral float-right" title="Sink elements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

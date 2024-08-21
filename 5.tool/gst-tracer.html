@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>arecord &mdash; gstreamer_tutorial 1 documentation</title>
+  <title>GST Tracer &mdash; gstreamer_tutorial 1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -31,7 +31,9 @@
         <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gst-device-monitor" href="gst-device-monitor.html" />
+    <link rel="prev" title="arecord" href="arecord.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,13 +56,24 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. GStreamer Tools</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">GStreamer Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linux.html">Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-launch.html">gst-launch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v4l2-ctl.html">v4l-utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="v4l2loopback.html">v4l2loopback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srs.html">SRS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="arecord.html">arecord</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GST Tracer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-device-monitor.html">gst-device-monitor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -77,9 +90,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">arecord</li>
+          <li class="breadcrumb-item"><a href="index.html">6. GStreamer Tools</a></li>
+      <li class="breadcrumb-item active">GST Tracer</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/6.tool/arecord.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/5.tool/gst-tracer.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -87,83 +101,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="arecord">
-<h1>arecord<a class="headerlink" href="#arecord" title="Link to this heading"></a></h1>
-<p>arecord is command-line sound recorder and player for ALSA soundcard driver</p>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
-<p>arecord is a command-line soundfile recorder for the ALSA soundcard driver. It supports several file formats and multiple soundcards with multiple devices. If recording with interleaved mode samples the file is automatically split before the 2GB filesize.</p>
-<p>aplay is much the same, only it plays instead of recording. For supported soundfile formats, the sampling rate, bit depth, and so forth can be automatically determined from the soundfile header.</p>
-<p>If filename is not specified, the standard output or input is used. The aplay utility accepts multiple filenames</p>
-</section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>arecord<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span><span class="w"> </span><span class="o">[</span>filename<span class="o">]</span>
+  <section id="gst-tracer">
+<h1>GST Tracer<a class="headerlink" href="#gst-tracer" title="Link to this heading"></a></h1>
+<p>It provides a mechanism to get structured tracing info from GStreamer applications. This can be used for post-run analysis as well as for live introspection.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>env<span class="w"> </span><span class="nv">GST_DEBUG</span><span class="o">=</span><span class="s2">&quot;GST_TRACER:7&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">GST_TRACERS</span><span class="o">=</span><span class="s2">&quot;latency(flags=element+pipeline)&quot;</span><span class="w"> </span><span class="se">\ </span>
+<span class="w">    </span><span class="nv">GST_DEBUG_FILE</span><span class="o">=</span>./latency.log<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>gst-launch-1.0<span class="w"> </span>-v<span class="w"> </span>videotestsrc<span class="w"> </span><span class="nv">pattern</span><span class="o">=</span>snow<span class="w"> </span>!<span class="w"> </span>video/x-raw,width<span class="o">=</span><span class="m">640</span>,height<span class="o">=</span><span class="m">480</span>,framerate<span class="o">=</span><span class="m">30</span>/1<span class="w"> </span>!<span class="w"> </span>videoconvert<span class="w"> </span>!<span class="w"> </span>autovideosink
 </pre></div>
 </div>
-<p>If the filename is not specified then it uses Standard input. Options:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-h, –help : It is used to show the help messages and exit.
-–version : Print current version.
--l, –list-devices : List all soundcards and digital audio devices.
--L, –list-pcms : List all PCMs(Pulse Code Modulation) defined.
--D, –device=NAME : Select PCM by name.
--q –quiet : Quiet mode. Suppress messages (not sound :).
--t, –file-type TYPE File type (voc, wav, raw or au). If this parameter is omitted the WAVE format is used.
--c, –channels=# : The number of channels. The default is one channel. Valid values are 1 through 32.
--f –format=FORMAT : If no format is given U8 is used.
--r, –rate=# : Sampling rate in Hertz. The default rate is 8000 Hertz.
--d, –duration=# : Interrupt after # seconds.
--s, –sleep-min=# : Min ticks to sleep. The default is not to sleep.
--M, –mmap : Use memory-mapped (mmap) I/O mode for the audio stream. If this option is not set, the read/write I/O mode will be used.
--N, –nonblock : Open the audio device in non-blocking mode. If the device is busy the program will exit immediately.
-</pre></div>
-</div>
-</section>
-<section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
-<ol class="arabic simple" start="0">
-<li><p>record audio from the default audio input device and save it to a file called recording.wav:</p></li>
-</ol>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord -f cd -t wav recording.wav</span>
-</pre></div>
-</div>
-<ol class="arabic simple">
-<li><p>Record a snippet in “CD” quality (finish with Ctrl-C when done):</p></li>
-</ol>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord -vv --format=cd {{path/to/file.wav}}</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>Record a snippet in “CD” quality, with a fixed duration of 10 seconds:</p></li>
-</ol>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord -vv --format=cd --duration={{10}} {{path/to/file.wav}}</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="3">
-<li><p>Record a snippet and save it as an MP3 (finish with Ctrl-C when done):</p></li>
-</ol>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord -vv --format=cd --file-type raw | lame -r - {{path/to/file.mp3}}</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="4">
-<li><p>List all sound cards and digital audio devices:</p></li>
-</ol>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord --list-devices</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="5">
-<li><p>Allow interactive interface (e.g. use space-bar or enter to play or pause):</p></li>
-</ol>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># arecord --interactive</span>
-</pre></div>
-</div>
-</section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="arecord.html" class="btn btn-neutral float-left" title="arecord" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gst-device-monitor.html" class="btn btn-neutral float-right" title="gst-device-monitor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
