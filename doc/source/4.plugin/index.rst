@@ -7,14 +7,16 @@
    :caption: Contents:
 
    overview
-   
+    
    1.plugin-boilerplate
    2.plugin-pads
    7.plugin-signal
    8.plugin-test
 
    nvvideoconvert
-   
+   nvvideo4linux2
+   nvstreammux
+
    decodebin
    filesink
    frequent-plugin

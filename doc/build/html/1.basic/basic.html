@@ -82,6 +82,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="concept.html">GStreamer 基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nv12.html">NV12 format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="glib.html">glib Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gobject.html">gobject overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-element.html">gst element overview</a></li>
@@ -93,14 +94,16 @@
 <li class="toctree-l2"><a class="reference internal" href="gst-caps.html">GStreamer Capabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-state.html">GStreamer State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gst-event.html">GstEvent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-query.html">Gstreamer Query</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sink-element.html">Sink elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transform-element.html">Transform elements</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -133,10 +136,13 @@
 <section id="id1">
 <h2>概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <blockquote>
-<div><p>GStreamer is a the multi-platform, modular, open-source, media streaming
-framework.</p>
+<div><p>GStreamer is a the multi-platform, modular, open-source, media streaming framework.</p>
 </div></blockquote>
-<p>它是一个跨多平台，模块化的开源媒体流处理框架，功能强大。GStreamer 核心功能提供了一个框架，用于插件，数据流和媒体处理和协商， 它还提供了一些 API 来用不同的插件编写应用程序</p>
+<p>GStreamer 是一个跨多平台，模块化的开源的媒体流处理框架。GStreamer 框架旨在使编写处理音频或视频或两者的应用程序变得容易。</p>
+<p>它不仅限于音频和视频，还可以处理任何类型的数据流。该框架基于插件，这些插件将提供各种编解码器和其他功能。插件可以链接并排列在管道 pipeline 中。
+而管道 pipeline 就定义了了数据流。</p>
+<p>GStreamer 的核心功能是为插件、数据流和媒体类型处理/协商提供一个处理框架。它还提供了一些 API，用于使用各种插件编写应用程序。</p>
+<p>https://gstreamer.freedesktop.org/documentation/application-development/introduction/gstreamer.html</p>
 <ul class="simple">
 <li><p>an API for multimedia applications</p></li>
 <li><p>a plugin architecture</p></li>

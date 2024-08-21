@@ -13,9 +13,15 @@
 
    audio_pipeline
    video_pipeline
-   
-   live_stream
 
+   live_stream
+   iva
+   av_sync
+   
    deepstream
+   deepstream-api
+   gst-dsexample
+   metadata
+
    faq
    debug

@@ -2,10 +2,16 @@
 
 ## 概述
 
-> GStreamer is a the multi-platform, modular, open-source, media streaming
-framework.
+> GStreamer is a the multi-platform, modular, open-source, media streaming framework.
 
-它是一个跨多平台，模块化的开源媒体流处理框架，功能强大。GStreamer 核心功能提供了一个框架，用于插件，数据流和媒体处理和协商， 它还提供了一些 API 来用不同的插件编写应用程序
+GStreamer 是一个跨多平台，模块化的开源的媒体流处理框架。GStreamer 框架旨在使编写处理音频或视频或两者的应用程序变得容易。
+
+它不仅限于音频和视频，还可以处理任何类型的数据流。该框架基于插件，这些插件将提供各种编解码器和其他功能。插件可以链接并排列在管道 pipeline 中。
+而管道 pipeline 就定义了了数据流。
+
+GStreamer 的核心功能是为插件、数据流和媒体类型处理/协商提供一个处理框架。它还提供了一些 API，用于使用各种插件编写应用程序。
+
+https://gstreamer.freedesktop.org/documentation/application-development/introduction/gstreamer.html
 
 * an API for multimedia applications
 * a plugin architecture

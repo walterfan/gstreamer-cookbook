@@ -32,7 +32,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="DeepStream" href="deepstream.html" />
+    <link rel="next" title="Intelligent Video Analysis" href="iva.html" />
     <link rel="prev" title="Video Pipeline" href="video_pipeline.html" /> 
 </head>
 
@@ -73,7 +73,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="iva.html">Intelligent Video Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="av_sync.html">A/V sync</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deepstream.html">DeepStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepstream-api.html">DeepStream-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gst-dsexample.html">gst-dsexample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html">MetaData in the DeepStream SDK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#what">What</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#how-to">How to</a></li>
@@ -82,8 +87,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5.deepstream/index.html">5. DeepStream</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.misc/index.html">5. DeepStream</a></li>
 </ul>
 
         </div>
@@ -116,7 +121,7 @@
 <ol class="arabic simple">
 <li><p>启动 SRS 5</p></li>
 </ol>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CANDIDATE</span><span class="o">=</span><span class="s2">&quot;192.168.104.249&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CANDIDATE</span><span class="o">=</span><span class="s2">&quot;192.168.104.249&quot;</span>
 sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-itd<span class="w"> </span>--env<span class="w"> </span><span class="nv">CANDIDATE</span><span class="o">=</span><span class="nv">$CANDIDATE</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-p<span class="w"> </span><span class="m">1935</span>:1935<span class="w"> </span>-p<span class="w"> </span><span class="m">1980</span>:8080<span class="w"> </span>-p<span class="w"> </span><span class="m">1985</span>:1985<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000/udp<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>registry.cn-hangzhou.aliyuncs.com/ossrs/srs:5<span class="w"> </span><span class="se">\</span>
@@ -126,7 +131,9 @@ sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </
 <ol class="arabic simple" start="2">
 <li><p>推送视频流到 SRS 上</p></li>
 </ol>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-vv<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>digits.mp4<span class="w"> </span>!<span class="w"> </span>decodebin<span class="w"> </span>!<span class="w"> </span>nvvideoconvert<span class="w"> </span>!<span class="w"> </span>identity<span class="w"> </span>drop-allocation<span class="o">=</span><span class="m">1</span><span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span><span class="nv">tune</span><span class="o">=</span>zerolatency<span class="w"> </span>!<span class="w"> </span>flvmux<span class="w"> </span><span class="nv">streamable</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>rtmpsink<span class="w"> </span><span class="nv">location</span><span class="o">=</span><span class="err">&#39;</span>rtmp://192.168.104.249:1935/live/hebin
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>-vv<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>digits.mp4<span class="w"> </span>!<span class="w"> </span>decodebin<span class="w"> </span>!<span class="w"> </span>nvvideoconvert<span class="w"> </span><span class="se">\</span>
+!<span class="w"> </span>identity<span class="w"> </span>drop-allocation<span class="o">=</span><span class="m">1</span><span class="w"> </span>!<span class="w"> </span>x264enc<span class="w"> </span><span class="nv">tune</span><span class="o">=</span>zerolatency<span class="w"> </span><span class="se">\</span>
+!<span class="w"> </span>flvmux<span class="w"> </span><span class="nv">streamable</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>rtmpsink<span class="w"> </span><span class="nv">location</span><span class="o">=</span><span class="s1">&#39;rtmp://192.168.104.249:1935/live/waltertest&#39;</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="3">
@@ -140,7 +147,7 @@ sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </
 <ul class="simple">
 <li><p>playback TS file</p></li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>xxx.ts<span class="w"> </span>!<span class="w"> </span>tsdemux<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>h264parse<span class="w"> </span>!<span class="w"> </span>openh264dec<span class="w"> </span>!<span class="w"> </span>autovideosink
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>xxx.ts<span class="w"> </span>!<span class="w"> </span>tsdemux<span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>h264parse<span class="w"> </span>!<span class="w"> </span>openh264dec<span class="w"> </span>!<span class="w"> </span>autovideosink
 </pre></div>
 </div>
 <section id="send-and-receive-ts-and-playback-it">
@@ -148,13 +155,13 @@ sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </
 <ul class="simple">
 <li><p>send TS over udp</p></li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>xxx.ts<span class="w"> </span>!<span class="w"> </span>tsparse<span class="w"> </span>set-timestamps<span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>video/mpegts<span class="w"> </span>!<span class="w"> </span>tsdemux<span class="w"> </span>!<span class="w"> </span>video/x-h264<span class="w"> </span>!<span class="w"> </span>h264parse<span class="w"> </span>disable-passthrough<span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>rtph264pay<span class="w"> </span>!<span class="w"> </span>udpsink<span class="w"> </span>-v<span class="w"> </span><span class="nv">host</span><span class="o">=</span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9999</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>filesrc<span class="w"> </span><span class="nv">location</span><span class="o">=</span>xxx.ts<span class="w"> </span>!<span class="w"> </span>tsparse<span class="w"> </span>set-timestamps<span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>video/mpegts<span class="w"> </span>!<span class="w"> </span>tsdemux<span class="w"> </span>!<span class="w"> </span>video/x-h264<span class="w"> </span>!<span class="w"> </span>h264parse<span class="w"> </span>disable-passthrough<span class="o">=</span><span class="nb">true</span><span class="w"> </span>!<span class="w"> </span>rtph264pay<span class="w"> </span>!<span class="w"> </span>udpsink<span class="w"> </span>-v<span class="w"> </span><span class="nv">host</span><span class="o">=</span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9999</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>receive TS over udp</p></li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>udpsrc<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9999</span><span class="w"> </span><span class="nv">caps</span><span class="o">=</span><span class="s2">&quot;application/x-rtp, media=video, clock-rate=90000, encoding-name=H264, payload=96&quot;</span><span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>rtph264depay<span class="w"> </span>!<span class="w"> </span>decodebin<span class="w"> </span>!<span class="w"> </span>videoconvert<span class="w"> </span>!<span class="w"> </span>glimagesink
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gst-launch-1.0<span class="w"> </span>udpsrc<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">9999</span><span class="w"> </span><span class="nv">caps</span><span class="o">=</span><span class="s2">&quot;application/x-rtp, media=video, clock-rate=90000, encoding-name=H264, payload=96&quot;</span><span class="w"> </span>!<span class="w"> </span>queue<span class="w"> </span>!<span class="w"> </span>rtph264depay<span class="w"> </span>!<span class="w"> </span>decodebin<span class="w"> </span>!<span class="w"> </span>videoconvert<span class="w"> </span>!<span class="w"> </span>glimagesink
 </pre></div>
 </div>
 </section>
@@ -172,7 +179,7 @@ sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="video_pipeline.html" class="btn btn-neutral float-left" title="Video Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="deepstream.html" class="btn btn-neutral float-right" title="DeepStream" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="iva.html" class="btn btn-neutral float-right" title="Intelligent Video Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

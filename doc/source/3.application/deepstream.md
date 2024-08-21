@@ -46,6 +46,33 @@ DeepStream 以 GStreamer 插件的形式提供构建块，可用于构建高效�
 
 * 最后，为了输出结果，DeepStream 提供了各种选项：使用屏幕上的边界框渲染输出、将输出保存到本地磁盘、通过 RTSP 流式传输或仅将元数据(metadata)发送到云端。为了将元数据发送到云端，DeepStream 使用“Gst-nvmsgconv”和“Gst-nvmsgbroker”插件。Gst-nvmsgconv 将元数据(metadata)转换为模式负载(schema payload)，Gst-nvmsgbroker 建立与云端的连接并发送遥测数据。有几种内置代理协议，例如 Kafka、MQTT、AMQP 和 Azure IoT。可以创建自定义代理适配器。
 
+
+## DeepStream for CV
+
+NVIDIA DeepStream 是一个高性能的流媒体分析工具包，专为视频分析和推理应用设计。它支持多个输入流，并利用 NVIDIA GPU 的并行计算能力来加速图像识别和其他计算密集型任务。
+
+DeepStream 通过以下步骤进行图像识别：
+
+### 1. **视频解码**  
+首先，DeepStream 从视频流中提取图像帧。它支持多种视频格式（如 H.264、H.265 等），并使用 GPU 加速进行视频解码。
+
+### 2. **预处理**  
+在解码后的图像帧进入神经网络模型之前，需要进行预处理。预处理包括图像缩放、颜色空间转换、图像标准化等操作。这一步是为了确保输入符合模型的要求。
+
+### 3. **深度学习推理**  
+DeepStream 集成了 NVIDIA TensorRT，用于执行深度学习推理任务。TensorRT 是一个高性能的推理引擎，支持各种深度学习框架训练的模型（如 TensorFlow、PyTorch、ONNX）。在这个阶段，图像帧通过神经网络模型进行特征提取和分类，从而识别出图像中的对象或场景。
+
+### 4. **后处理**  
+推理的输出通常需要进一步的处理。例如，输出可能是图像中检测到的对象的边界框，后处理步骤可能包括将这些边界框绘制在图像上、过滤不需要的结果，或者将结果转换为应用程序可以使用的格式。
+
+### 5. **显示/输出**  
+最后，处理后的结果可以显示在屏幕上、保存到文件、或者通过网络发送到其他系统。DeepStream 支持多种输出方式，可以根据具体需求进行配置。
+
+### 6. **管道优化与扩展**  
+DeepStream 允许用户通过 GStreamer 管道进行扩展和优化。例如，可以添加多路流处理、基于事件的触发机制、结果合并等复杂功能。此外，DeepStream 提供了丰富的插件库，支持各种视频分析任务，如目标跟踪、人脸识别、动作检测等。
+
+DeepStream 的架构使其能够处理高吞吐量的视频流，并广泛应用于智能城市监控、零售分析、机器人视觉等领域。
+
 ## DeepStream reference app
 
 首先，开发人员可以使用提供的参考应用程序。这些应用程序的源代码也包含在内。
@@ -91,6 +118,18 @@ DISPLAY=:0 gst-launch-1.0 -v filesrc location=talk.mp4 ! qtdemux ! h264parse \
 ! nvv4l2decoder ! m.sink_0 nvstreammux name=m batch-size=1 width=1280 height=720 \
 ! nvvideoconvert ! dsexample full-frame=1 ! nvdsosd ! autovideosink
 ```
+
+## deepstream plugin
+
+![deepstream plugin](ds_plugins.png)
+
+## deepstream-test1
+
+Sample of how to use DeepStream elements for a single H.264 stream:
+
+filesrc → decode → nvstreammux → nvinfer or nvinferserver (primary detector) → nvdsosd → renderer.
+
+This app uses resnet18_trafficcamnet.etlt for detection.
 
 
 ## Reference

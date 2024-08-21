@@ -16,9 +16,12 @@
 
    live_stream
    iva
-
-   deepstream
-   gst-dsexample
+   av_sync
    
+   deepstream
+   deepstream-api
+   gst-dsexample
+   metadata
+
    faq
    debug

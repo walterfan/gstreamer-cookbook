@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opencv &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e536ea0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Cross compile" href="cross_compile.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. DeepStream</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="linux_tips.html">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cross_compile.html">Cross compile</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Opencv</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cross-compile">cross compile</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#set-up-your-cross-compilation-environment">1. Set Up Your Cross-Compilation Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#download-and-prepare-opencv">2. Download and Prepare OpenCV</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configure-the-build-with-cmake">3. Configure the Build with CMake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-opencv">4. Build OpenCV</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install-opencv">5. Install OpenCV</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cross-compile-your-opencv-program">6. Cross-Compile Your OpenCV Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transfer-and-run-on-arm-platform">7. Transfer and Run on ARM Platform</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">5. DeepStream</a></li>
+      <li class="breadcrumb-item active">Opencv</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/6.misc/opencv.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="opencv">
+<h1>Opencv<a class="headerlink" href="#opencv" title="Link to this heading"></a></h1>
+<section id="cross-compile">
+<h2>cross compile<a class="headerlink" href="#cross-compile" title="Link to this heading"></a></h2>
+<p>To compile an OpenCV program on an x86 server for an ARM platform, you’ll need to use cross-compilation. Here’s a general guide on how to do it:</p>
+<section id="set-up-your-cross-compilation-environment">
+<h3>1. Set Up Your Cross-Compilation Environment<a class="headerlink" href="#set-up-your-cross-compilation-environment" title="Link to this heading"></a></h3>
+<section id="install-required-tools">
+<h4>Install Required Tools<a class="headerlink" href="#install-required-tools" title="Link to this heading"></a></h4>
+<p>You will need a cross-compiler for ARM. For example, you can use the <code class="docutils literal notranslate"><span class="pre">gcc-arm-linux-gnueabi</span></code> or <code class="docutils literal notranslate"><span class="pre">gcc-arm-linux-gnueabihf</span></code> toolchain.</p>
+<p>On a Debian/Ubuntu system, you can install it using:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>gcc-arm-linux-gnueabi<span class="w"> </span>g++-arm-linux-gnueabi
+</pre></div>
+</div>
+<p>For ARM64 (AArch64):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>gcc-aarch64-linux-gnu<span class="w"> </span>g++-aarch64-linux-gnu
+</pre></div>
+</div>
+</section>
+<section id="install-cmake">
+<h4>Install CMake<a class="headerlink" href="#install-cmake" title="Link to this heading"></a></h4>
+<p>Make sure you have CMake installed:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>cmake
+</pre></div>
+</div>
+</section>
+</section>
+<section id="download-and-prepare-opencv">
+<h3>2. Download and Prepare OpenCV<a class="headerlink" href="#download-and-prepare-opencv" title="Link to this heading"></a></h3>
+<section id="get-opencv-source-code">
+<h4>Get OpenCV Source Code<a class="headerlink" href="#get-opencv-source-code" title="Link to this heading"></a></h4>
+<p>Download the OpenCV source code from the official repository or website.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/opencv/opencv.git
+<span class="nb">cd</span><span class="w"> </span>opencv
+git<span class="w"> </span>checkout<span class="w"> </span>&lt;desired-version&gt;<span class="w">  </span><span class="c1"># e.g., git checkout 4.5.1</span>
+</pre></div>
+</div>
+</section>
+<section id="create-a-build-directory">
+<h4>Create a Build Directory<a class="headerlink" href="#create-a-build-directory" title="Link to this heading"></a></h4>
+<p>Create a directory for the build process:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>build
+<span class="nb">cd</span><span class="w"> </span>build
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configure-the-build-with-cmake">
+<h3>3. Configure the Build with CMake<a class="headerlink" href="#configure-the-build-with-cmake" title="Link to this heading"></a></h3>
+<p>Use CMake to configure the build system for cross-compilation.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>../platforms/linux/arm-gnueabi.toolchain.cmake<span class="w"> </span>-DOPENCV_EXTRA_MODULES_PATH<span class="o">=</span>../../opencv_contrib/modules<span class="w"> </span>..
+</pre></div>
+</div>
+<p>If you don’t have a predefined toolchain file, you can create one. Here’s an example for ARM:</p>
+<section id="create-a-toolchain-file">
+<h4>Create a Toolchain File<a class="headerlink" href="#create-a-toolchain-file" title="Link to this heading"></a></h4>
+<p>Create a file named <code class="docutils literal notranslate"><span class="pre">arm-gnueabi.toolchain.cmake</span></code> with the following content:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># the name of the target operating system</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_SYSTEM_NAME</span><span class="w"> </span><span class="s">Linux</span><span class="p">)</span>
+
+<span class="c"># which compilers to use for C and C++</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span><span class="w">   </span><span class="s">arm-linux-gnueabi-gcc</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span><span class="w"> </span><span class="s">arm-linux-gnueabi-g++</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_INSTALL_PREFIX</span><span class="w"> </span><span class="s">/your/target/install/prefix</span><span class="p">)</span>
+
+<span class="c"># where is the target environment located</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_FIND_ROOT_PATH</span><span class="w">  </span><span class="s">/path/to/your/target/rootfs</span><span class="p">)</span>
+
+<span class="c"># search for programs in the build host directories</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_FIND_ROOT_PATH_MODE_PROGRAM</span><span class="w"> </span><span class="s">NEVER</span><span class="p">)</span>
+
+<span class="c"># for libraries and headers in the target directories</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_FIND_ROOT_PATH_MODE_LIBRARY</span><span class="w"> </span><span class="s">ONLY</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_FIND_ROOT_PATH_MODE_INCLUDE</span><span class="w"> </span><span class="s">ONLY</span><span class="p">)</span>
+
+<span class="c"># Adjust the following paths to your toolchain</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_SYSROOT</span><span class="w"> </span><span class="s">/path/to/your/target/rootfs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Modify the paths to match your setup.</p>
+</section>
+</section>
+<section id="build-opencv">
+<h3>4. Build OpenCV<a class="headerlink" href="#build-opencv" title="Link to this heading"></a></h3>
+<p>Run the build process using <code class="docutils literal notranslate"><span class="pre">make</span></code>.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
+</pre></div>
+</div>
+</section>
+<section id="install-opencv">
+<h3>5. Install OpenCV<a class="headerlink" href="#install-opencv" title="Link to this heading"></a></h3>
+<p>After the build completes, install OpenCV to the specified location.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>install
+</pre></div>
+</div>
+</section>
+<section id="cross-compile-your-opencv-program">
+<h3>6. Cross-Compile Your OpenCV Program<a class="headerlink" href="#cross-compile-your-opencv-program" title="Link to this heading"></a></h3>
+<p>Now you can cross-compile your OpenCV program.</p>
+<section id="create-a-simple-program">
+<h4>Create a Simple Program<a class="headerlink" href="#create-a-simple-program" title="Link to this heading"></a></h4>
+<p>Create a simple program, e.g., <code class="docutils literal notranslate"><span class="pre">test.cpp</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;opencv2/opencv.hpp&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="w"> </span><span class="n">img</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cv</span><span class="o">::</span><span class="n">imread</span><span class="p">(</span><span class="s">&quot;test.jpg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cv</span><span class="o">::</span><span class="n">IMREAD_COLOR</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">cv</span><span class="o">::</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;Display Image&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">img</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cv</span><span class="o">::</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="cross-compile-your-program">
+<h4>Cross-Compile Your Program<a class="headerlink" href="#cross-compile-your-program" title="Link to this heading"></a></h4>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file for your program:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.0</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">TestOpenCV</span><span class="p">)</span>
+
+<span class="nb">find_package</span><span class="p">(</span><span class="s">OpenCV</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">include_directories</span><span class="p">(</span><span class="o">${</span><span class="nv">OpenCV_INCLUDE_DIRS</span><span class="o">}</span><span class="p">)</span>
+
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">test</span><span class="w"> </span><span class="s">test.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">test</span><span class="w"> </span><span class="o">${</span><span class="nv">OpenCV_LIBS</span><span class="o">}</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a build directory for your program:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>build
+<span class="nb">cd</span><span class="w"> </span>build
+</pre></div>
+</div>
+<p>Run CMake with the toolchain file:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>path/to/your/arm-gnueabi.toolchain.cmake<span class="w"> </span>..
+make
+</pre></div>
+</div>
+<p>This should produce an executable that you can run on your ARM platform.</p>
+</section>
+</section>
+<section id="transfer-and-run-on-arm-platform">
+<h3>7. Transfer and Run on ARM Platform<a class="headerlink" href="#transfer-and-run-on-arm-platform" title="Link to this heading"></a></h3>
+<p>Transfer the compiled executable and any necessary libraries to your ARM platform using <code class="docutils literal notranslate"><span class="pre">scp</span></code> or any other file transfer method.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>scp<span class="w"> </span><span class="nb">test</span><span class="w"> </span>user@arm_device:/path/to/destination
+scp<span class="w"> </span>-r<span class="w"> </span>/your/target/install/prefix/lib<span class="w"> </span>user@arm_device:/path/to/destination/lib
+</pre></div>
+</div>
+<p>On your ARM device, you may need to set the library path:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/path/to/destination/lib:<span class="nv">$LD_LIBRARY_PATH</span>
+./test
+</pre></div>
+</div>
+<p>This should run your OpenCV program on the ARM platform.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cross_compile.html" class="btn btn-neutral float-left" title="Cross compile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

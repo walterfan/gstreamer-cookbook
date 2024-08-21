@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linux Tips &mdash; gstreamer_tutorial 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e536ea0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../_static/design-tabs.js?v=36754332"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cross compile" href="cross_compile.html" />
+    <link rel="prev" title="5. DeepStream" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            gstreamer_tutorial
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1.basic/index.html">1. GStreamer 基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.tutorial/index.html">2. GStreamer 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.application/index.html">3. GStreamer 应用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.plugin/index.html">4. GStreamer 插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.tool/index.html">6. GStreamer Tools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. DeepStream</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Linux Tips</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#network">Network</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">基本结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">详细解释</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">注意事项</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">配置文件示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">注意事项</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">在系统启动时自动播放视频</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">在系统启动模拟系统按键</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">在网卡启动时添加路由</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cross_compile.html">Cross compile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opencv.html">Opencv</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gstreamer_tutorial</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">5. DeepStream</a></li>
+      <li class="breadcrumb-item active">Linux Tips</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/6.misc/linux_tips.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux-tips">
+<h1>Linux Tips<a class="headerlink" href="#linux-tips" title="Link to this heading"></a></h1>
+<section id="network">
+<h2>Network<a class="headerlink" href="#network" title="Link to this heading"></a></h2>
+<p>在 Ubuntu 系统上，<code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces</span></code> 文件是网络配置文件，用于定义网络接口的配置。这个文件通常用于配置网络接口的 IP 地址、子网掩码、默认网关、DNS 服务器等信息。以下是一些基本用法和示例。</p>
+<section id="id1">
+<h3>基本结构<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces</span></code> 文件的基本结构如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># The primary network interface</span>
+auto<span class="w"> </span>eth0
+iface<span class="w"> </span>eth0<span class="w"> </span>inet<span class="w"> </span>static
+<span class="w">    </span>address<span class="w"> </span><span class="m">192</span>.168.1.100
+<span class="w">    </span>netmask<span class="w"> </span><span class="m">255</span>.255.255.0
+<span class="w">    </span>gateway<span class="w"> </span><span class="m">192</span>.168.1.1
+<span class="w">    </span>dns-nameservers<span class="w"> </span><span class="m">8</span>.8.8.8<span class="w"> </span><span class="m">8</span>.8.4.4
+
+<span class="c1"># The secondary network interface</span>
+auto<span class="w"> </span>eth1
+iface<span class="w"> </span>eth1<span class="w"> </span>inet<span class="w"> </span>static
+<span class="w">    </span>address<span class="w"> </span><span class="m">192</span>.168.2.100
+<span class="w">    </span>netmask<span class="w"> </span><span class="m">255</span>.255.255.0
+<span class="w">    </span>gateway<span class="w"> </span><span class="m">192</span>.168.2.1
+<span class="w">    </span>dns-nameservers<span class="w"> </span><span class="m">8</span>.8.8.8<span class="w"> </span><span class="m">8</span>.8.4.4
+
+<span class="c1"># Wireless interface</span>
+auto<span class="w"> </span>wlan0
+iface<span class="w"> </span>wlan0<span class="w"> </span>inet<span class="w"> </span>dhcp
+<span class="w">    </span>wireless-essid<span class="w"> </span>MyNetwork
+<span class="w">    </span>wireless-mode<span class="w"> </span>Managed
+<span class="w">    </span>wireless-channel<span class="w"> </span><span class="m">11</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>详细解释<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>auto</strong>: 这行指定了哪些接口在启动时应该被自动激活。如果某个接口不在这里列出，它将不会被自动激活。</p></li>
+<li><p><strong>iface</strong>: 这行指定了接口的名称和它应该使用的网络配置方法。常见的配置方法有：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inet</span> <span class="pre">static</span></code>: 静态 IP 地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inet</span> <span class="pre">dhcp</span></code>: 动态 IP 地址（通过 DHCP 服务器获取）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inet6</span> <span class="pre">static</span></code>: 静态 IPv6 地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inet6</span> <span class="pre">auto</span></code>: 自动获取 IPv6 地址</p></li>
+</ul>
+</li>
+<li><p><strong>address</strong>: 指定接口的 IP 地址。</p></li>
+<li><p><strong>netmask</strong>: 指定网络的子网掩码。</p></li>
+<li><p><strong>gateway</strong>: 指定默认网关，即默认路由。</p></li>
+<li><p><strong>dns-nameservers</strong>: 指定 DNS 服务器的地址。</p></li>
+<li><p><strong>wireless-essid</strong>: 指定无线网络的 SSID（服务集标识）。</p></li>
+<li><p><strong>wireless-mode</strong>: 指定无线网络的模式，如 Managed（管理模式）或 Ad-Hoc（对等模式）。</p></li>
+<li><p><strong>wireless-channel</strong>: 指定无线网络的频道。</p></li>
+</ol>
+</section>
+<section id="id3">
+<h3>示例<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>假设你有一个以太网接口 <code class="docutils literal notranslate"><span class="pre">eth0</span></code> 和一个无线接口 <code class="docutils literal notranslate"><span class="pre">wlan0</span></code>，你希望以太网接口使用静态 IP 地址，无线接口使用 DHCP 获取 IP 地址，配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># The primary network interface</span>
+auto<span class="w"> </span>eth0
+iface<span class="w"> </span>eth0<span class="w"> </span>inet<span class="w"> </span>static
+<span class="w">    </span>address<span class="w"> </span><span class="m">192</span>.168.1.100
+<span class="w">    </span>netmask<span class="w"> </span><span class="m">255</span>.255.255.0
+<span class="w">    </span>gateway<span class="w"> </span><span class="m">192</span>.168.1.1
+<span class="w">    </span>dns-nameservers<span class="w"> </span><span class="m">8</span>.8.8.8<span class="w"> </span><span class="m">8</span>.8.4.4
+
+<span class="c1"># Wireless interface</span>
+auto<span class="w"> </span>wlan0
+iface<span class="w"> </span>wlan0<span class="w"> </span>inet<span class="w"> </span>dhcp
+<span class="w">    </span>wireless-essid<span class="w"> </span>MyNetwork
+<span class="w">    </span>wireless-mode<span class="w"> </span>Managed
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>注意事项<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>修改 <code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces</span></code> 文件后，通常需要重启网络服务或重启计算机来使更改生效。</p></li>
+<li><p>确保在配置文件中使用正确的语法和参数，否则可能会导致网络连接问题。</p></li>
+</ul>
+<p>通过这些基本的用法和示例，你可以根据自己的需求配置 Ubuntu 系统的网络接口。</p>
+<p>在较新的 Ubuntu 版本中，<code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces.d/</span></code> 目录用于存放网络接口的配置文件。这种方式允许系统管理员将每个网络接口的配置分开管理，而不是将所有配置集中在单个 <code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces</span></code> 文件中。</p>
+</section>
+<section id="id5">
+<h3>配置文件示例<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>在 <code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces.d/</span></code> 目录下，每个文件通常对应一个网络接口或一组配置。例如，你可以为 <code class="docutils literal notranslate"><span class="pre">eth0</span></code> 接口创建一个名为 <code class="docutils literal notranslate"><span class="pre">eth0.cfg</span></code> 的文件：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># /etc/network/interfaces.d/eth0.cfg</span>
+auto<span class="w"> </span>eth0
+iface<span class="w"> </span>eth0<span class="w"> </span>inet<span class="w"> </span>static
+<span class="w">    </span>address<span class="w"> </span><span class="m">192</span>.168.1.100
+<span class="w">    </span>netmask<span class="w"> </span><span class="m">255</span>.255.255.0
+<span class="w">    </span>gateway<span class="w"> </span><span class="m">192</span>.168.1.1
+</pre></div>
+</div>
+<p>对于无线接口 <code class="docutils literal notranslate"><span class="pre">wlan0</span></code>，你可以创建一个名为 <code class="docutils literal notranslate"><span class="pre">wlan0.cfg</span></code> 的文件：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># /etc/network/interfaces.d/wlan0.cfg</span>
+auto<span class="w"> </span>wlan0
+iface<span class="w"> </span>wlan0<span class="w"> </span>inet<span class="w"> </span>dhcp
+<span class="w">    </span>wireless-essid<span class="w"> </span>MyNetwork
+<span class="w">    </span>wireless-mode<span class="w"> </span>Managed
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>注意事项<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces.d/</span></code> 目录存在，并且其中包含配置文件，<code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces</span></code> 文件将不再被使用，除非它被明确地包含在 <code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces.d/50-default.cfg</span></code> 文件中。</p></li>
+<li><p>确保每个配置文件的权限设置正确，通常应该是 <code class="docutils literal notranslate"><span class="pre">644</span></code>。</p></li>
+<li><p>在使用 <code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces.d/</span></code> 目录时，重启网络服务或计算机将重新加载所有配置文件。</p></li>
+</ul>
+<p>通过使用 <code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces.d/</span></code> 目录，Ubuntu 系统提供了一种更加灵活和模块化的网络配置方法。</p>
+</section>
+</section>
+<section id="id7">
+<h2>在系统启动时自动播放视频<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$HOME</span>/.config/autostart
+
+$<span class="w"> </span>cat<span class="w"> </span>&gt;<span class="w"> </span>auto_play.desktop<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<span class="s">[Desktop Entry]</span>
+<span class="s">Type=Application</span>
+<span class="s">Exec=/home/walter/gstreamer-cookbook/script/playback.sh</span>
+<span class="s">Hidden=false</span>
+<span class="s">NoDisplay=false</span>
+<span class="s">X-GNOME-Autostart-enabled=true</span>
+<span class="s">Name[en_US]=/home/walter/gstreamer-cookbook/script/playback.sh</span>
+<span class="s">Name=/home/walter/gstreamer-cookbook/script/playback.sh</span>
+<span class="s">Comment[en_US]=</span>
+<span class="s">Comment=</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h2>在系统启动模拟系统按键<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mkdir -p $HOME/.config/autostart
+$ cp auto_lock.desktop $HOME/.config/autostart
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+[Desktop Entry]
+Type=Application
+Exec=$HOME/auto_lock.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=auto_lock
+Name=auto_lock
+Comment[en_US]=lock screen and active monitor
+Comment=
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>auth_lock.sh</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="n">DISPLAY</span><span class="o">=</span><span class="p">:</span><span class="mi">0</span> <span class="n">xdotool</span> <span class="n">key</span> <span class="nb">super</span><span class="o">+</span><span class="n">l</span>
+<span class="n">DISPLAY</span><span class="o">=</span><span class="p">:</span><span class="mi">0</span> <span class="n">xdotool</span> <span class="n">click</span> <span class="mi">1</span>
+
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h2>在网卡启动时添加路由<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>vim<span class="w"> </span>/etc/network/if-up.d/eth0-routes
+<span class="c1">#!/bin/sh</span>
+<span class="c1"># /etc/network/if-up.d/eth0-routes</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$IFACE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;eth0&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>ip<span class="w"> </span>route<span class="w"> </span>add<span class="w"> </span><span class="m">192</span>.168.104.180<span class="w"> </span>via<span class="w"> </span><span class="m">192</span>.168.104.1
+<span class="k">fi</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="5. DeepStream" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cross_compile.html" class="btn btn-neutral float-right" title="Cross compile" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 ~ 2023, Walter Fan, Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
