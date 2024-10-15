@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream with flv.js and Controls</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- flv.js -->
+    <script src="https://cdn.jsdelivr.net/npm/flv.js@latest"></script>
+    <style>
+        .container-wide {
+            max-width: 80%; /* Extend the width of the container */
+        }
+        #videoElement {
+            width: 100%; /* Keep video responsive */
+            max-width: 1280px; /* Set maximum width of the video element */
+            height: auto; /* Keep aspect ratio */
+            max-height: 720px; /* Set maximum height of the video element */
+            border: 1px solid #ddd; /* Border around the video */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container container-wide my-5">
+    <h2 class="text-center mb-4">Remote Video Stream</h2>
+
+    <!-- URL Input Section -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-10">
+            <div class="input-group">
+                <span class="input-group-text">FLV URL:</span>
+                <input id="flvUrl" type="text" class="form-control" placeholder="FLV URL, e.g. http://192.168.0.108:8080/live/audio_test.flv">
+            </div>
+        </div>
+    </div>
+
+    <!-- Video and Controls Section -->
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body text-center">
+                    <video id="videoElement" controls></video>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button id="startButton" class="btn btn-success me-2">Start Play</button>
+                <button id="stopButton" class="btn btn-danger">Stop Play</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let flvPlayer;
+    let videoElement = document.getElementById('videoElement');
+
+    document.getElementById('startButton').addEventListener('click', function() {
+        const flvUrl = document.getElementById('flvUrl').value;
+
+        if (!flvUrl) {
+            alert("Please enter a device address.");
+            return;
+        }
+
+        if (flvjs.isSupported()) {
+            if (flvPlayer) {
+                flvPlayer.unload();
+                flvPlayer.detachMediaElement();
+                flvPlayer.destroy();
+            }
+            
+            flvPlayer = flvjs.createPlayer({
+                type: 'flv',
+                url: flvUrl
+            });
+            console.log("playback flv: ", flvUrl);
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load();
+            flvPlayer.play();
+        } else {
+            alert("FLV.js is not supported on this browser.");
+        }
+    });
+
+    document.getElementById('stopButton').addEventListener('click', function() {
+        if (flvPlayer) {
+            flvPlayer.pause();
+            flvPlayer.unload();
+            flvPlayer.detachMediaElement();
+            flvPlayer.destroy();
+            flvPlayer = null;
+        }
+    });
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
